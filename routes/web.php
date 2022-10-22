@@ -11,8 +11,4 @@
 |
 */
 
-Route::get('/', 'IndexController@index');
-Route::get('/coin-tossing', 'CoinTossingController@index');
-Route::get('/lottery', 'LotteryController@index');
-Route::get('/document', 'DocumentController@index');
-Route::get('non-linear/', 'NonLinearController@index');
+Route::get('/centipede', 'CentipedeController@index');

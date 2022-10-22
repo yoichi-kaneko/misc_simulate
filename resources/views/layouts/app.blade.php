@@ -9,7 +9,7 @@
     @if (View::hasSection('use_ajax_post'))
        <meta name="csrf-token" content="{{ csrf_token() }}">
     @endif
-    <title>セントペテルスブルクシミュレータ @include('sections.env')</title>
+    <title>Miscシミュレータ @include('sections.env')</title>
 
     <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/icon-192x192.png') }}" sizes="192x192">
