@@ -14,15 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('calculate/single', 'CalculateController@single');
-Route::post('calculate/multi', 'CalculateController@multi');
-Route::post('calculate/multi_queue', 'CalculateController@multi_queue');
-Route::post('calculate/multi_child', 'CalculateController@multi_child');
-Route::get('calculate/progress/{token}', 'CalculateController@progress');
-Route::post('linear/comparison/calculate', 'Linear\ComparisonController@calculate');
-Route::post('non_linear/comparison/calculate', 'NonLinear\ComparisonController@calculate');
-Route::post('participants_simulate/calculate', 'ParticipantsSimulateController@calculate');
-Route::post('lottery/calculate', 'LotteryController@calculate');
-Route::post('preset/save', 'PresetController@save');
-Route::post('preset/delete', 'PresetController@delete');
-Route::get('preset/find/{id}', 'PresetController@find');
+Route::get('centipede/calculate', 'CentipedeController@calculate');
