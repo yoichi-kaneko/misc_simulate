@@ -23,9 +23,7 @@ mix.sass('resources/sass/vendors.scss', 'public/css')
     .js('resources/js/katniss.js', 'public/js')
     .js('resources/js/ResizeSensor.js', 'public/js')
     .js('resources/js/main.js', 'public/js')
-    .js('resources/js/pages/coin_tossing.js', 'public/js/pages')
-    .js('resources/js/pages/lottery.js', 'public/js/pages')
-    .js('resources/js/pages/non_linear_coin_tossing.js', 'public/js/pages');
+    .js('resources/js/pages/centipede.js', 'public/js/pages');
 
 mix.copyDirectory('resources/images', 'public/images');
 

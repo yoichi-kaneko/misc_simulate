@@ -4,8 +4,6 @@ import {
     removeLastLotteryRateElement,
     resetLotteryRateElement
 } from "../functions/lottery_rate";
-import {doLotteryCalculate} from "../render_chart/lottery/lottery";
-import {beforeCalculate} from "../functions/calculate";
 
 initLotteryRate();
 
@@ -19,9 +17,4 @@ $('#remove_lottery_block').click(function () {
 
 $('#reset_lottery').click(function () {
     resetLotteryRateElement();
-});
-
-$('#calculate_lottery').click(function () {
-    beforeCalculate('lottery_spinner');
-    doLotteryCalculate();
 });
