@@ -1,20 +1,11 @@
-import {
-    addLotteryRateElement,
-    initLotteryRate,
-    removeLastLotteryRateElement,
-    resetLotteryRateElement
-} from "../functions/lottery_rate";
+const {beforeCalculate} = require("../functions/calculate");
+const {doCentipedeCalculate} = require("../functions/centipede");
 
-initLotteryRate();
-
-$('#add_lottery_block').click(function () {
-    addLotteryRateElement();
-});
-
-$('#remove_lottery_block').click(function () {
-    removeLastLotteryRateElement();
-});
-
-$('#reset_lottery').click(function () {
-    resetLotteryRateElement();
+$(function(){
+    $('.simulate_player button.calculate').click(function () {
+        if (!$(this).hasClass('disabled')) {
+            beforeCalculate('centipede_spinner');
+            doCentipedeCalculate();
+        }
+    });
 });

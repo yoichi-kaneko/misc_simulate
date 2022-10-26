@@ -14,4 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('centipede/calculate', 'CentipedeController@calculate');
+Route::post('centipede/calculate', 'CentipedeController@calculate');
