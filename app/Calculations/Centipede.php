@@ -20,9 +20,10 @@ class Centipede
 
     /**
      * 計算を実行する
+     * @param int $case
      * @return array
      */
-    public function run(): array
+    public function run(int $case): array
     {
         $data = [];
         for ($i = 1; $i <= self::MAX_COUNT; $i++) {

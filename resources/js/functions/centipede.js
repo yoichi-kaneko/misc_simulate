@@ -3,7 +3,9 @@ import {notifyComplete} from "./notify";
 
 export function doCentipedeCalculate()
 {
-    let data = {};
+    let data = {
+        case: $('#case').val()
+    };
     $.ajax({
         type: 'POST',
         url: '/api/centipede/calculate',
