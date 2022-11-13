@@ -1,6 +1,19 @@
 <div id="participants_block" class="tab_form card pd-20 mg-t-20">
     <h6 class="card-body-title">Calculation of Centipede</h6>
     <div class="card pd-20">
+        <div class="form-layout form-layout-4">
+            <h6 class="tx-inverse">Program Parameters</h6>
+            <div class="row mg-b-25">
+                <div class="col-lg-4">
+                    <div class="row row-xs">
+                        <label class="col-sm-6 form-control-label"><span class="tx-danger">*</span>Case: </label>
+                        <div class="col-sm-6 mg-t-10 mg-sm-t-0">
+                            {{Form::select('case', $case_list, '1', ['id' => 'case', 'class' => 'form-control select2'])}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-sm-6 col-md-3 simulate_player">
             <button class="btn btn-primary mg-b-10 calculate">Calculate</button>
         </div>
