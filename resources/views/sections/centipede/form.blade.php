@@ -1,4 +1,4 @@
-<div id="participants_block" class="tab_form card pd-20 mg-t-20">
+<div id="centipede_block" class="tab_form card pd-20 mg-t-20">
     <h6 class="card-body-title">Calculation of Centipede</h6>
     <div class="card pd-20">
         <div class="form-layout form-layout-4">
@@ -8,7 +8,18 @@
                     <div class="row row-xs">
                         <label class="col-sm-6 form-control-label"><span class="tx-danger">*</span>Case: </label>
                         <div class="col-sm-6 mg-t-10 mg-sm-t-0">
-                            {{Form::select('case', $case_list, '1', ['id' => 'case', 'class' => 'form-control select2'])}}
+                            {{Form::select('case', $case_list, '1', ['id' => 'case', 'class' => 'form-control select2', 'default_val' => 1])}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mg-b-25">
+                <div class="col-lg-4">
+                    <div class="row row-xs">
+                        <label class="col-sm-6 form-control-label"><span class="tx-danger">*</span> Denominator of Delta:</label>
+                        <div class="col-sm-4 mg-t-10 mg-sm-t-0">
+                            2^
+                            <input class="form-control" id="denominator_exp" type="text" name="denominator_exp" maxlength="2" value="8" default_val="8" placeholder="Enter Number of Participants" style="display: inline; width: 40%;">
                         </div>
                     </div>
                 </div>
@@ -16,6 +27,7 @@
         </div>
         <div class="col-sm-6 col-md-3 simulate_player">
             <button class="btn btn-primary mg-b-10 calculate">Calculate</button>
+            <button id="reset" class="btn btn-secondary mg-b-10">Reset</button>
         </div>
         <div id="centipede_spinner" class="d-flex ht-40 pos-relative align-items-center" style="display: none;">
             <div class="sk-chasing-dots">

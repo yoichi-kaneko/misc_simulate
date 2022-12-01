@@ -4,7 +4,8 @@ import {notifyComplete} from "./notify";
 export function doCentipedeCalculate()
 {
     let data = {
-        case: $('#case').val()
+        case: $('#case').val(),
+        denominator_exp: $('#denominator_exp').val()
     };
     $.ajax({
         type: 'POST',
@@ -39,8 +40,8 @@ function renderCentipedeReportArea(data)
         });
     });
     $('#chart_area_centipede').show();
-    if ($('#showmore-button-comparison_result').length == 0) {
-        $('#centipede_result').showMore({
+    if ($('#showmore-centipede_result').length == 0) {
+                $('#centipede_result').showMore({
             minheight: 300
         });
     }

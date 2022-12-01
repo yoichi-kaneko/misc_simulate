@@ -169,6 +169,7 @@ return [
         'prize_unit' => 'Prize Unit',
         'lottery_rates' => '抽選設定',
         'params' => 'パラメータ',
+        'denominator_exp' => '分母の指数',
     ],
 
 ];
