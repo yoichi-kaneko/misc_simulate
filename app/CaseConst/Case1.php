@@ -14,8 +14,13 @@ class Case1
     public const EVEN_LEFT_SIDE = '2 * %1$d + 3';
     public const EVEN_RIGHT_SIDE = '(%2$d + 1) * %1$.15f';
 
-    public function get_delta_value() :float
+    /**
+     * デルタ値を求める
+     * @param int $denominator_exp
+     * @return float
+     */
+    public function get_delta_value(int $denominator_exp) :float
     {
-        return 300 / 256;
+        return 300 / pow(2, $denominator_exp);
     }
 }

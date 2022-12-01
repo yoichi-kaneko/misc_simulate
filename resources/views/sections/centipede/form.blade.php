@@ -3,6 +3,7 @@
     <div class="card pd-20">
         <div class="form-layout form-layout-4">
             <h6 class="tx-inverse">Program Parameters</h6>
+            @include('sections/alert')
             <div class="row mg-b-25">
                 <div class="col-lg-4">
                     <div class="row row-xs">

@@ -17,7 +17,8 @@ class CentipedeController extends Controller
     public function calculate(CalculateCentipedeRequest $request): array
     {
         $case = (int) $request->get('case');
+        $denominator_exp = (int) $request->get('denominator_exp');
         $calculator = app()->make(Centipede::class);
-        return $calculator->run($case);
+        return $calculator->run($case, $denominator_exp);
     }
 }
