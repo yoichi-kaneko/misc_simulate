@@ -14,6 +14,7 @@ export function doCentipedeCalculate()
         format: 'json',
         success: function (data) {
             renderCentipedeReportArea(data.data);
+            $('#delta_denominator').html(data.delta_denominator);
             $('button.calculate').removeClass('disabled');
             $('#centipede_spinner').hide();
             notifyComplete();

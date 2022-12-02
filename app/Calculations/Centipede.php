@@ -60,6 +60,7 @@ class Centipede
         }
         return [
             'result' => 'ok',
+            'delta_denominator' => pow(2, $denominator_exp),
             'data' => $data,
         ];
     }
