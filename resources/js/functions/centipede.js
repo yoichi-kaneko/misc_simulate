@@ -4,7 +4,8 @@ import {notifyComplete} from "./notify";
 export function doCentipedeCalculate()
 {
     let data = {
-        case: $('#case').val()
+        case: $('#case').val(),
+        denominator_exp: $('#denominator_exp').val()
     };
     $.ajax({
         type: 'POST',
@@ -13,6 +14,7 @@ export function doCentipedeCalculate()
         format: 'json',
         success: function (data) {
             renderCentipedeReportArea(data.data);
+            $('#delta_denominator').html(data.delta_denominator);
             $('button.calculate').removeClass('disabled');
             $('#centipede_spinner').hide();
             notifyComplete();
@@ -39,8 +41,8 @@ function renderCentipedeReportArea(data)
         });
     });
     $('#chart_area_centipede').show();
-    if ($('#showmore-button-comparison_result').length == 0) {
-        $('#centipede_result').showMore({
+    if ($('#showmore-centipede_result').length == 0) {
+                $('#centipede_result').showMore({
             minheight: 300
         });
     }

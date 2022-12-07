@@ -25,6 +25,7 @@ class CalculateCentipedeRequest extends FormRequest
     {
         return [
             'case' => 'required|integer|min:1|max:2',
+            'denominator_exp' => 'required|integer|min:6|max:12',
         ];
     }
 

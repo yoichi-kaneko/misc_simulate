@@ -8,4 +8,17 @@ $(function(){
             doCentipedeCalculate();
         }
     });
+
+    $('button#reset').click(function () {
+        reset();
+    });
 });
+
+function reset()
+{
+    $('#centipede_block input.form-control').each(function () {
+        if (!$(this).attr('readonly')) {
+            $(this).val($(this).attr('default_val'));
+        }
+    });
+}

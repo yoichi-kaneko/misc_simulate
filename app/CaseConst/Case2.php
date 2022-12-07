@@ -14,8 +14,13 @@ class Case2
     public const EVEN_LEFT_SIDE = 'number_format(sqrt(2 * %1$d + 3), 8)';
     public const EVEN_RIGHT_SIDE = 'number_format((%2$d + 1) * %1$.15f, 8)';
 
-    public function get_delta_value() :float
+    /**
+     * デルタ値を求める
+     * @param int $denominator_exp
+     * @return float
+     */
+    public function get_delta_value(int $denominator_exp) :float
     {
-        return sqrt(300) / 256;
+        return sqrt(300) / pow(2, $denominator_exp);
     }
 }

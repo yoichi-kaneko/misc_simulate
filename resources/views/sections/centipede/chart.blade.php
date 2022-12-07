@@ -4,6 +4,12 @@
         <div class="col-lg-12">
             <div class="card pd-20">
                 <h6 class="tx-12 tx-uppercase tx-info tx-bold mg-b-15">Report</h6>
+                <div class="d-flex mg-b-10">
+                    <div class="bd-r pd-l-12">
+                        <label class="tx-12">denominator of delta</label>
+                        <p class="tx-lato tx-inverse tx-bold"><span id="delta_denominator"></span></p>
+                    </div>
+                </div>
                 <div id="centipede_result"></div>
             </div><!-- card -->
         </div><!-- col-6 -->
@@ -34,7 +40,7 @@
         </thead>
         <tbody>
             @{{for data}}
-                <tr class="centipede_result_body">
+                <tr class="centipede_result_body @{{if result}}result_true@{{/if}}">
                     <td>
                         @{{:t}}
                     </td>

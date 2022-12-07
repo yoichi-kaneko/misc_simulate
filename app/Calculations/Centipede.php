@@ -15,9 +15,10 @@ class Centipede
     /**
      * 計算を実行する
      * @param int $case
+     * @param int $denominator_exp デルタの分母の指数
      * @return array
      */
-    public function run(int $case): array
+    public function run(int $case, int $denominator_exp): array
     {
         $data = [];
 
@@ -44,9 +45,11 @@ class Centipede
              * - 計算式2の左辺と右辺を求める
              * - 右辺の方が大きい場合、結果はtrue
              */
-            $max_nu_value = $this->evalFormula(sprintf($max_nu_formula, $i, $const->get_delta_value()));
+
+            $delta_value = $const->get_delta_value($denominator_exp);
+            $max_nu_value = $this->evalFormula(sprintf($max_nu_formula, $i, $delta_value));
             $left_side_value = $this->evalFormula(sprintf($left_side_formula, $i));
-            $right_side_value = $this->evalFormula(sprintf($right_side_formula, $const->get_delta_value(), $max_nu_value));
+            $right_side_value = $this->evalFormula(sprintf($right_side_formula, $delta_value, $max_nu_value));
             $data[] =[
                 't' => $i,
                 'max_nu_value' => $max_nu_value,
@@ -57,6 +60,7 @@ class Centipede
         }
         return [
             'result' => 'ok',
+            'delta_denominator' => pow(2, $denominator_exp),
             'data' => $data,
         ];
     }
