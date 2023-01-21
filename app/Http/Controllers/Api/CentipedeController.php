@@ -17,7 +17,6 @@ class CentipedeController extends Controller
      */
     public function calculate(CalculateCentipedeRequest $request): JsonResponse
     {
-        $case = (int) $request->get('case');
         $base_numerator = (int) $request->get('base_numerator');
         $numerator_exp_1 = (int) $request->get('numerator_exp_1');
         $numerator_exp_2 = (int) $request->get('numerator_exp_2');
@@ -26,7 +25,6 @@ class CentipedeController extends Controller
 
         try {
             $result = $calculator->run(
-                $case,
                 $base_numerator,
                 $numerator_exp_1,
                 $numerator_exp_2,

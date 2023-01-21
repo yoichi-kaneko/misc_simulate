@@ -17,16 +17,6 @@
             <div class="row mg-b-25">
                 <div class="col-lg-4">
                     <div class="row row-xs">
-                        <label class="col-sm-6 form-control-label"><span class="tx-danger">*</span>Case: </label>
-                        <div class="col-sm-6 mg-t-10 mg-sm-t-0">
-                            {{Form::select('case', $case_list, '1', ['id' => 'case', 'class' => 'form-control select2', 'default_val' => 1])}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row mg-b-25">
-                <div class="col-lg-4">
-                    <div class="row row-xs">
                         <label class="col-sm-6 form-control-label">
                             <span class="tx-danger">*</span>
                             <span class="katex_exp" expression="[X_1]"></span>

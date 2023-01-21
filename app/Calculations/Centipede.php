@@ -2,9 +2,6 @@
 
 namespace App\Calculations;
 
-use App\CaseConst\Case1;
-use App\CaseConst\Case2;
-
 /**
  * Centipede計算を行うシミュレーター
  */
@@ -21,7 +18,6 @@ class Centipede
 
     /**
      * 計算を実行する
-     * @param int $case
      * @param int $base_numerator
      * @param int $numerator_exp_1
      * @param int $numerator_exp_2
@@ -30,7 +26,6 @@ class Centipede
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function run(
-        int $case,
         int $base_numerator,
         int $numerator_exp_1,
         int $numerator_exp_2,
