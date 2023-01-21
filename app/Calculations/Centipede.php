@@ -30,6 +30,12 @@ class Centipede
         int $denominator_exp
     ): array {
         $data = [];
+        $cognitive_unit_value = $this->calcCognitiveUnitValue(
+            $base_numerator,
+            $numerator_exp_1,
+            $numerator_exp_2,
+            $denominator_exp
+        );
 
         if ($case === 1) {
             $const = app()->make(Case1::class);
@@ -76,7 +82,7 @@ class Centipede
         return [
             'result' => 'ok',
             'cognitive_unit_latex_text' => $cognitive_unit_latex_text,
-            'cognitive_unit_value' => 999,
+            'cognitive_unit_value' => $cognitive_unit_value,
             'data' => $data,
         ];
     }
@@ -89,6 +95,31 @@ class Centipede
     private function evalFormula(string $str)
     {
         return eval('return ' . $str . ';');
+    }
+
+    /**
+     * Cognitive Unitの値を計算して返す
+     * @param int $base_numerator
+     * @param int $numerator_exp_1
+     * @param int $numerator_exp_2
+     * @param int $denominator_exp
+     * @return float
+     * @throws \Exception
+     */
+    private function calcCognitiveUnitValue(
+        int $base_numerator,
+        int $numerator_exp_1,
+        int $numerator_exp_2,
+        int $denominator_exp
+    ): float {
+        $numerator = pow($base_numerator, ($numerator_exp_1 / $numerator_exp_2));
+
+        if(is_nan($numerator) || is_infinite($numerator)) {
+            throw new \Exception(trans('validation.invalid_cognitive_unit'));
+        }
+
+        $denominator = pow(2, $denominator_exp);
+        return $numerator / $denominator;
     }
 
     /**

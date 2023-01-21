@@ -116,6 +116,7 @@ return [
     'not_over_1' => ':attributeの当選確率の合計値が1を超えないように指定してください。',
     'too_many_iterations' => '演算の試行回数が多すぎます。',
     'theta_function' => '数式が正しくありません。',
+    'invalid_cognitive_unit' => 'Cognitive Unitが計算できません。',
 
     /*
     |--------------------------------------------------------------------------
