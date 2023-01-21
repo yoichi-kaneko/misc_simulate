@@ -17,7 +17,13 @@ export function doCentipedeCalculate()
         format: 'json',
         success: function (data) {
             renderCentipedeReportArea(data.data);
-            $('#delta_denominator').html(data.delta_denominator);
+            $('#cognitive_unit_value').html(data.cognitive_unit_value);
+
+            let element = $('#cognitive_unit_latex_text');
+            katex.render(data.cognitive_unit_latex_text, element[0], {
+                throwOnError: false
+            });
+
             $('button.calculate').removeClass('disabled');
             $('#centipede_spinner').hide();
             notifyComplete();

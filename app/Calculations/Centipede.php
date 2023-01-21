@@ -67,9 +67,16 @@ class Centipede
                 'result' => ($left_side_value < $right_side_value),
             ];
         }
+        $cognitive_unit_latex_text = $this->makeCognitiveUnitLatexText(
+            $base_numerator,
+            $numerator_exp_1,
+            $numerator_exp_2,
+            $denominator_exp
+        );
         return [
             'result' => 'ok',
-            'delta_denominator' => pow(2, $denominator_exp),
+            'cognitive_unit_latex_text' => $cognitive_unit_latex_text,
+            'cognitive_unit_value' => 999,
             'data' => $data,
         ];
     }
@@ -82,5 +89,30 @@ class Centipede
     private function evalFormula(string $str)
     {
         return eval('return ' . $str . ';');
+    }
+
+    /**
+     * Cognitive UnitのLatex形式のテキストを返す
+     * @param int $base_numerator
+     * @param int $numerator_exp_1
+     * @param int $numerator_exp_2
+     * @param int $denominator_exp
+     * @return string
+     */
+    private function makeCognitiveUnitLatexText(
+        int $base_numerator,
+        int $numerator_exp_1,
+        int $numerator_exp_2,
+        int $denominator_exp
+    ):string {
+        $format = '\dfrac{%d^{\frac{%d}{%d}}}{2^{%d}}';
+
+        return sprintf(
+            $format,
+            $base_numerator,
+            $numerator_exp_1,
+            $numerator_exp_2,
+            $denominator_exp
+        );
     }
 }
