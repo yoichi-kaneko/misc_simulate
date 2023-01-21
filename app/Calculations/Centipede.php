@@ -12,6 +12,13 @@ class Centipede
 {
     private const MAX_COUNT = 148;
 
+    private const ODD_NU = 'floor(pow(2 * %1$d - 1, %3$d / %4$d) / %2$.15f)';
+    private const ODD_LEFT_SIDE = 'number_format(pow(2 * %1$d, %2$d / %3$d), 8)';
+    private const ODD_RIGHT_SIDE = 'number_format((%2$d + 1) * %1$.15f, 8)';
+    private const EVEN_NU = 'floor(pow(2 * %1$d + 2, %3$d / %4$d) / %2$.15f)';
+    private const EVEN_LEFT_SIDE = 'number_format(pow(2 * %1$d + 3, %2$d / %3$d), 8)';
+    private const EVEN_RIGHT_SIDE = 'number_format((%2$d + 1) * %1$.15f, 8)';
+
     /**
      * 計算を実行する
      * @param int $case
@@ -37,34 +44,47 @@ class Centipede
             $denominator_exp
         );
 
-        if ($case === 1) {
-            $const = app()->make(Case1::class);
-
-        } else {
-            $const = app()->make(Case2::class);
-        }
-
         for ($i = 1; $i <= self::MAX_COUNT; $i++) {
-            if ($i % 2 > 0) {
-                $max_nu_formula = $const::ODD_NU;
-                $left_side_formula = $const::ODD_LEFT_SIDE;
-                $right_side_formula = $const::ODD_RIGHT_SIDE;
-            } else {
-                $max_nu_formula = $const::EVEN_NU;
-                $left_side_formula = $const::EVEN_LEFT_SIDE;
-                $right_side_formula = $const::EVEN_RIGHT_SIDE;
-            }
             /*
              * 次の手順で計算を行う。
              * - 計算式1で、nuの最大値を求める
              * - 計算式2の左辺と右辺を求める
              * - 右辺の方が大きい場合、結果はtrue
              */
+            if ($i % 2 > 0) {
+                $max_nu_formula = self::ODD_NU;
+                $left_side_formula = self::ODD_LEFT_SIDE;
+                $right_side_formula = self::ODD_RIGHT_SIDE;
+            } else {
+                $max_nu_formula = self::EVEN_NU;
+                $left_side_formula = self::EVEN_LEFT_SIDE;
+                $right_side_formula = self::EVEN_RIGHT_SIDE;
+            }
 
-            $delta_value = $const->get_delta_value($denominator_exp);
-            $max_nu_value = $this->evalFormula(sprintf($max_nu_formula, $i, $delta_value));
-            $left_side_value = $this->evalFormula(sprintf($left_side_formula, $i));
-            $right_side_value = $this->evalFormula(sprintf($right_side_formula, $delta_value, $max_nu_value));
+            $max_nu_value = $this->evalFormula(
+                sprintf(
+                    $max_nu_formula,
+                    $i,
+                    $cognitive_unit_value,
+                    $numerator_exp_1,
+                    $numerator_exp_2
+                )
+            );
+            $left_side_value = $this->evalFormula(
+                sprintf(
+                    $left_side_formula,
+                    $i,
+                    $numerator_exp_1,
+                    $numerator_exp_2
+                )
+            );
+            $right_side_value = $this->evalFormula(
+                sprintf(
+                    $right_side_formula,
+                    $cognitive_unit_value,
+                    $max_nu_value
+                )
+            );
             $data[] =[
                 't' => $i,
                 'max_nu_value' => $max_nu_value,
