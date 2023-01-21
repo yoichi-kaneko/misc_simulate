@@ -5,6 +5,9 @@ export function doCentipedeCalculate()
 {
     let data = {
         case: $('#case').val(),
+        base_numerator: $('#base_numerator').val(),
+        numerator_exp_1: $('#numerator_exp_1').val(),
+        numerator_exp_2: $('#numerator_exp_2').val(),
         denominator_exp: $('#denominator_exp').val()
     };
     $.ajax({

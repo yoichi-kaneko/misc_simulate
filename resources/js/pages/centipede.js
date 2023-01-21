@@ -19,7 +19,7 @@ $(function(){
             throwOnError: false
         });
     });
-    $('.katex').css('font-size', '1.3rem');
+    $('#cognitive_unit_formula .katex').css('font-size', '1.3rem');
 });
 
 function reset()

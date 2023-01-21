@@ -15,11 +15,20 @@ class Centipede
     /**
      * 計算を実行する
      * @param int $case
+     * @param int $base_numerator
+     * @param int $numerator_exp_1
+     * @param int $numerator_exp_2
      * @param int $denominator_exp デルタの分母の指数
      * @return array
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function run(int $case, int $denominator_exp): array
-    {
+    public function run(
+        int $case,
+        int $base_numerator,
+        int $numerator_exp_1,
+        int $numerator_exp_2,
+        int $denominator_exp
+    ): array {
         $data = [];
 
         if ($case === 1) {

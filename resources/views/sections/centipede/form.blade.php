@@ -9,7 +9,7 @@
                     <div class="row row-xs">
                         <label class="col-sm-6 form-control-label"><span class="tx-danger">*</span>Cognitive Unit: </label>
                         <div class="col-sm-6 mg-t-10 mg-sm-t-0">
-                            <span class="katex_exp" expression="\dfrac{[X_1]^{\frac{[X_2]}{[X_3]}}}{2^{[X_4]}}"></span>
+                            <span id="cognitive_unit_formula" class="katex_exp" expression="\dfrac{[X_1]^{\frac{[X_2]}{[X_3]}}}{2^{[X_4]}}"></span>
                         </div>
                     </div>
                 </div>
@@ -27,10 +27,51 @@
             <div class="row mg-b-25">
                 <div class="col-lg-4">
                     <div class="row row-xs">
-                        <label class="col-sm-6 form-control-label"><span class="tx-danger">*</span> Denominator of Delta:</label>
+                        <label class="col-sm-6 form-control-label">
+                            <span class="tx-danger">*</span>
+                            <span class="katex_exp" expression="[X_1]"></span>
+                            :</label>
                         <div class="col-sm-4 mg-t-10 mg-sm-t-0">
-                            2^
-                            <input class="form-control" id="denominator_exp" type="text" name="denominator_exp" maxlength="2" value="8" default_val="8" placeholder="Enter Number of Participants" style="display: inline; width: 40%;">
+                            <input class="form-control" id="base_numerator" type="text" name="base_numerator" maxlength="3" value="300" default_val="300" placeholder="Enter X1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mg-b-25">
+                <div class="col-lg-4">
+                    <div class="row row-xs">
+                        <label class="col-sm-6 form-control-label">
+                            <span class="tx-danger">*</span>
+                            <span class="katex_exp" expression="[X_2]"></span>
+                            :</label>
+                        <div class="col-sm-4 mg-t-10 mg-sm-t-0">
+                            <input class="form-control" id="numerator_exp_1" type="text" name="numerator_exp_1" maxlength="1" value="1" default_val="1" placeholder="Enter X2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mg-b-25">
+                <div class="col-lg-4">
+                    <div class="row row-xs">
+                        <label class="col-sm-6 form-control-label">
+                            <span class="tx-danger">*</span>
+                            <span class="katex_exp" expression="[X_3]"></span>
+                            :</label>
+                        <div class="col-sm-4 mg-t-10 mg-sm-t-0">
+                            <input class="form-control" id="numerator_exp_2" type="text" name="numerator_exp_2" maxlength="1" value="1" default_val="1" placeholder="Enter X3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mg-b-25">
+                <div class="col-lg-4">
+                    <div class="row row-xs">
+                        <label class="col-sm-6 form-control-label">
+                            <span class="tx-danger">*</span>
+                            <span class="katex_exp" expression="[X_4]"></span>
+                            :</label>
+                        <div class="col-sm-4 mg-t-10 mg-sm-t-0">
+                            <input class="form-control" id="denominator_exp" type="text" name="denominator_exp" maxlength="2" value="8" default_val="8" placeholder="Enter X4">
                         </div>
                     </div>
                 </div>
