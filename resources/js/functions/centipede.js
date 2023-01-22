@@ -4,7 +4,9 @@ import {notifyComplete} from "./notify";
 export function doCentipedeCalculate()
 {
     let data = {
-        case: $('#case').val(),
+        base_numerator: $('#base_numerator').val(),
+        numerator_exp_1: $('#numerator_exp_1').val(),
+        numerator_exp_2: $('#numerator_exp_2').val(),
         denominator_exp: $('#denominator_exp').val()
     };
     $.ajax({
@@ -14,7 +16,13 @@ export function doCentipedeCalculate()
         format: 'json',
         success: function (data) {
             renderCentipedeReportArea(data.data);
-            $('#delta_denominator').html(data.delta_denominator);
+            $('#cognitive_unit_value').html(data.cognitive_unit_value);
+
+            let element = $('#cognitive_unit_latex_text');
+            katex.render(data.cognitive_unit_latex_text, element[0], {
+                throwOnError: false
+            });
+
             $('button.calculate').removeClass('disabled');
             $('#centipede_spinner').hide();
             notifyComplete();

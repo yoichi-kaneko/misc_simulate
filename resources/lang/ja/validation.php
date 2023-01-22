@@ -116,6 +116,7 @@ return [
     'not_over_1' => ':attributeの当選確率の合計値が1を超えないように指定してください。',
     'too_many_iterations' => '演算の試行回数が多すぎます。',
     'theta_function' => '数式が正しくありません。',
+    'invalid_cognitive_unit' => 'Cognitive Unitが計算できません。',
 
     /*
     |--------------------------------------------------------------------------
@@ -169,7 +170,10 @@ return [
         'prize_unit' => 'Prize Unit',
         'lottery_rates' => '抽選設定',
         'params' => 'パラメータ',
-        'denominator_exp' => '分母の指数',
+        'base_numerator' => 'X1',
+        'numerator_exp_1' => 'X2',
+        'numerator_exp_2' => 'X3',
+        'denominator_exp' => 'X4',
     ],
 
 ];
