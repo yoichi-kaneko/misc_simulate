@@ -52,7 +52,7 @@
         "select2": "^4.0.13",
         "show-more": "^1.0.1",
         "sortablejs": "^1.13.0",
-        "ua-parser-js": "^0.7.24",
+        "ua-parser-js": "^0.7.33",
         "underscore": "^1.12.0"
     }
 }
