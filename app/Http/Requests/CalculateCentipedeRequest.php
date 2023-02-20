@@ -27,7 +27,7 @@ class CalculateCentipedeRequest extends FormRequest
             'base_numerator' => 'required|integer|min:100|max:700',
             'numerator_exp_1' => 'required|integer|min:1|max:5',
             'numerator_exp_2' => 'required|integer|min:1|max:5',
-            'denominator_exp' => 'required|integer|min:6|max:12',
+            'denominator_exp' => 'required|integer|min:0|max:12',
         ];
     }
 
