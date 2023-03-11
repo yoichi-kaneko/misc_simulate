@@ -33,6 +33,7 @@ class Centipede
         int $denominator_exp
     ): array {
         $data = [];
+        $chart_data = [];
         $cognitive_unit_value = $this->calcCognitiveUnitValue(
             $base_numerator,
             $numerator_exp_1,
@@ -88,6 +89,10 @@ class Centipede
                 'right_side_value' => $right_side_value,
                 'result' => ($left_side_value < $right_side_value),
             ];
+            $chart_data[] = [
+                'x' => $i,
+                'y' => $i,
+            ];
         }
         $cognitive_unit_latex_text = $this->makeCognitiveUnitLatexText(
             $base_numerator,
@@ -100,6 +105,7 @@ class Centipede
             'cognitive_unit_latex_text' => $cognitive_unit_latex_text,
             'cognitive_unit_value' => $cognitive_unit_value,
             'data' => $data,
+            'chart_data' => $chart_data,
         ];
     }
 
