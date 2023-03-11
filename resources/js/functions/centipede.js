@@ -134,7 +134,7 @@ function getCentipedeSimulationOption(chart_data)
                     scaleLabel: {
                         display: true,
                         fontSize: 15,
-                        labelString: '#CF(Linear)'
+                        labelString: '#CF'
                     }
                 }],
                 xAxes: [{
@@ -154,7 +154,7 @@ function getCentipedeSimulationOption(chart_data)
                 intersect: false,
                 callbacks: {
                     label: function(tooltipItem, data) {
-                        let label = '#CF(Linear): ';
+                        let label = '#CF: ';
                         label += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].y;
                         return label;
                     }
