@@ -9,10 +9,11 @@ class Centipede
 {
     private const MAX_COUNT = 148;
 
-    private const ODD_NU = 'floor(pow(2 * %1$d - 1, %3$d / %4$d) / %2$.15f)';
+    // NUの値は「所定の計算式の値より小さい整数」のため、計算式が整数ちょうどになった場合を考慮してceil() - 1という式としている
+    private const ODD_NU = 'ceil(pow(2 * %1$d - 1, %3$d / %4$d) / %2$.15f) - 1';
     private const ODD_LEFT_SIDE = 'number_format(pow(2 * %1$d, %2$d / %3$d), 8)';
     private const ODD_RIGHT_SIDE = 'number_format((%2$d + 1) * %1$.15f, 8)';
-    private const EVEN_NU = 'floor(pow(2 * %1$d + 2, %3$d / %4$d) / %2$.15f)';
+    private const EVEN_NU = 'ceil(pow(2 * %1$d + 2, %3$d / %4$d) / %2$.15f) - 1';
     private const EVEN_LEFT_SIDE = 'number_format(pow(2 * %1$d + 3, %2$d / %3$d), 8)';
     private const EVEN_RIGHT_SIDE = 'number_format((%2$d + 1) * %1$.15f, 8)';
 
