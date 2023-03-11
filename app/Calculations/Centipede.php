@@ -23,6 +23,7 @@ class Centipede
      * @param int $numerator_exp_1
      * @param int $numerator_exp_2
      * @param int $denominator_exp デルタの分母の指数
+     * @param int $chart_offset チャート出力の際のオフセット値
      * @return array
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
@@ -30,7 +31,8 @@ class Centipede
         int $base_numerator,
         int $numerator_exp_1,
         int $numerator_exp_2,
-        int $denominator_exp
+        int $denominator_exp,
+        int $chart_offset
     ): array {
         $data = [];
         $cognitive_unit_value = $this->calcCognitiveUnitValue(
@@ -89,6 +91,7 @@ class Centipede
                 'result' => ($left_side_value < $right_side_value),
             ];
         }
+        $chart_data = $this->makeChartData($data, $chart_offset);
         $cognitive_unit_latex_text = $this->makeCognitiveUnitLatexText(
             $base_numerator,
             $numerator_exp_1,
@@ -100,6 +103,7 @@ class Centipede
             'cognitive_unit_latex_text' => $cognitive_unit_latex_text,
             'cognitive_unit_value' => $cognitive_unit_value,
             'data' => $data,
+            'chart_data' => $chart_data,
         ];
     }
 
@@ -161,5 +165,41 @@ class Centipede
             $numerator_exp_2,
             $denominator_exp
         );
+    }
+
+    /**
+     * チャート用のデータを生成する
+     * @param array $data
+     * @param int $chart_offset
+     * @return array
+     */
+    private function makeChartData(array $data, int $chart_offset): array
+    {
+        $chart_data = [];
+        $last_skipped_t = 0;
+
+        foreach ($data as $value) {
+            // Tがオフセットより小さい場合はデータの生成対象外
+            if ($value['t'] < $chart_offset) {
+                continue;
+            }
+            // resultがtrueのデータが出た場合、それを最後にスキップしたtとして値を保存する。
+            if ($value['result'] === true) {
+                $last_skipped_t = $value['t'];
+            }
+            // スキップしたtが一度も出ていない間は、yはtの2倍になる。
+            if ($last_skipped_t === 0) {
+                $y = 2 * $value['t'];
+            // スキップしたtが出た場合、オフセットを起点として、そこから2ずつインクリメントしていく。
+            } else {
+                $y = $chart_offset + (2 * ($value['t'] - $last_skipped_t));
+            }
+            $chart_data[] = [
+                'x' => $value['t'],
+                'y' => $y,
+            ];
+        }
+
+        return $chart_data;
     }
 }

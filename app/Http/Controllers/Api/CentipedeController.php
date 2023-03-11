@@ -21,6 +21,7 @@ class CentipedeController extends Controller
         $numerator_exp_1 = (int) $request->get('numerator_exp_1');
         $numerator_exp_2 = (int) $request->get('numerator_exp_2');
         $denominator_exp = (int) $request->get('denominator_exp');
+        $chart_offset = (int) $request->get('chart_offset');
         $calculator = app()->make(Centipede::class);
 
         try {
@@ -28,7 +29,8 @@ class CentipedeController extends Controller
                 $base_numerator,
                 $numerator_exp_1,
                 $numerator_exp_2,
-                $denominator_exp
+                $denominator_exp,
+                $chart_offset
             );
         } catch (\Exception $e) {
             return $this->responseException($e->getMessage());
