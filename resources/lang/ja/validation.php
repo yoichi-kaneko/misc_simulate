@@ -174,6 +174,7 @@ return [
         'numerator_exp_1' => 'X2',
         'numerator_exp_2' => 'X3',
         'denominator_exp' => 'X4',
+        'chart_offset' => 'b_ast',
     ],
 
 ];

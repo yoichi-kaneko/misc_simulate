@@ -9,7 +9,8 @@ export function doCentipedeCalculate()
         base_numerator: $('#base_numerator').val(),
         numerator_exp_1: $('#numerator_exp_1').val(),
         numerator_exp_2: $('#numerator_exp_2').val(),
-        denominator_exp: $('#denominator_exp').val()
+        denominator_exp: $('#denominator_exp').val(),
+        chart_offset: $('#chart_offset').val()
     };
     $.ajax({
         type: 'POST',
@@ -105,7 +106,7 @@ function getCentipedeSimulationOption(chart_data)
                     data: data_array,
                     borderColor: '#324463',
                     borderWidth: 2,
-                    lineTension: 0.5,
+                    lineTension: 0,
                     pointRadius: 0,
                     fill: false
                 },
@@ -133,7 +134,7 @@ function getCentipedeSimulationOption(chart_data)
                     scaleLabel: {
                         display: true,
                         fontSize: 15,
-                        labelString: '#CF'
+                        labelString: '#CF(Linear)'
                     }
                 }],
                 xAxes: [{
@@ -153,7 +154,7 @@ function getCentipedeSimulationOption(chart_data)
                 intersect: false,
                 callbacks: {
                     label: function(tooltipItem, data) {
-                        let label = '#CF: ';
+                        let label = '#CF(Linear): ';
                         label += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].y;
                         return label;
                     }
