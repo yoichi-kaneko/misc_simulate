@@ -46,9 +46,9 @@ export function doCentipedeCalculate()
  */
 function renderCentipedeReportArea(pattern_data)
 {
+    // レポートデータの生成
     $('#centipede_result').html('');
 
-    console.log(pattern_data);
     $.each(pattern_data, function(index,val) {
         let tmpl = $('#centipedeResultTemplate').render({
             pattern: index,
@@ -57,8 +57,14 @@ function renderCentipedeReportArea(pattern_data)
             cognitive_unit_latex_text: val.cognitive_unit_latex_text,
         });
         $('#centipede_result').append(tmpl);
-        console.log(tmpl);
     });
+
+    // 切り替えタブの生成
+    let tmpl = $('#centipedeTabTemplate').render({
+        pattern_data: pattern_data,
+    });
+    $('#centipede_tab').html(tmpl);
+    // レポートのタブ切り替えをバインド
 
     $('#centipede_result .katex_exp').each(function () {
         let element = $(this)[0];

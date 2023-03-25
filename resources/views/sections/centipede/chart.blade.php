@@ -8,16 +8,27 @@
             </div><!-- card -->
         </div>
     </div>
-    <div class="row row-sm mg-t-50">
+
+    <div class="pd-10 mg-t-20 bg-gray-300" id="centipede_tab"></div><!-- pd-10 -->
+    <div class="row row-sm">
         <div class="col-lg-12" id="centipede_result">
         </div><!-- col-6 -->
     </div>
 
 </div>
 
+<script id="centipedeTabTemplate" type="text/x-jsrender">
+    <ul class="nav nav-gray-600 flex-column flex-sm-row" role="tablist">
+        @{{props pattern_data}}
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#" role="tab">
+                Pattern <span style="text-transform: uppercase;">@{{:key}}</span>
+            </a></li>
+        @{{/props}}
+    </ul>
+</script>
 
 <script id="centipedeResultTemplate" type="text/x-jsrender">
-    <div class="card pd-20">
+    <div class="card pd-20" id="report_pattern_@{{:k}}">
         <h6 class="tx-12 tx-uppercase tx-info tx-bold mg-b-15">Report</h6>
         <div class="d-flex mg-b-10">
             <div class="bd-r pd-l-12">

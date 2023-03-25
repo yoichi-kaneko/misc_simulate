@@ -19,6 +19,7 @@ mix.webpackConfig({
 });
 mix.sass('resources/sass/vendors.scss', 'public/css')
     .sass('resources/sass/katniss.scss', 'public/css')
+    .sass('resources/sass/app.scss', 'public/css')
     .js('resources/js/vendors.js', 'public/js')
     .js('resources/js/katniss.js', 'public/js')
     .js('resources/js/ResizeSensor.js', 'public/js')
