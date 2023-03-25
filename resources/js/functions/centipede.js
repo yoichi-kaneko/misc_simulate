@@ -24,14 +24,8 @@ export function doCentipedeCalculate()
         data: data,
         format: 'json',
         success: function (data) {
-            renderCentipedeReportArea(data.pattern_data.a.data);
+            renderCentipedeReportArea(data.pattern_data);
             renderCentipedeSimulationChart(data.pattern_data.a.chart_data);
-            $('#cognitive_unit_value').html(data.pattern_data.a.cognitive_unit_value);
-
-            let element = $('#cognitive_unit_latex_text');
-            katex.render(data.pattern_data.a.cognitive_unit_latex_text, element[0], {
-                throwOnError: false
-            });
 
             $('button.calculate').removeClass('disabled');
             $('#centipede_spinner').hide();
@@ -50,12 +44,22 @@ export function doCentipedeCalculate()
  * レポートエリアの描画を行う
  * @param data
  */
-function renderCentipedeReportArea(data)
+function renderCentipedeReportArea(pattern_data)
 {
-    let tmpl = $('#centipedeTemplate').render({
-        data: data,
+    $('#centipede_result').html('');
+
+    console.log(pattern_data);
+    $.each(pattern_data, function(index,val) {
+        let tmpl = $('#centipedeResultTemplate').render({
+            pattern: index,
+            table_data: val.data,
+            cognitive_unit_value: val.cognitive_unit_value,
+            cognitive_unit_latex_text: val.cognitive_unit_latex_text,
+        });
+        $('#centipede_result').append(tmpl);
+        console.log(tmpl);
     });
-    $('#centipede_result').html(tmpl);
+
     $('#centipede_result .katex_exp').each(function () {
         let element = $(this)[0];
         katex.render($(this).attr('expression'), element, {
@@ -63,11 +67,17 @@ function renderCentipedeReportArea(data)
         });
     });
     $('#chart_area_centipede').show();
-    if ($('#showmore-centipede_result').length == 0) {
-                $('#centipede_result').showMore({
-            minheight: 300
-        });
-    }
+
+    $('.showmore_block').each(function() {
+        let id = $(this).attr('id');
+        if ($('#showmore-' + id).length == 0) {
+            $('#' + id).showMore({
+                minheight: 300
+            });
+        }
+    });
+
+
 }
 
 /**
