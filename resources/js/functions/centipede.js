@@ -10,7 +10,8 @@ export function doCentipedeCalculate()
         numerator_exp_1: $('#numerator_exp_1').val(),
         numerator_exp_2: $('#numerator_exp_2').val(),
         denominator_exp: $('#denominator_exp').val(),
-        chart_offset: $('#chart_offset').val()
+        chart_offset: $('#chart_offset').val(),
+        max_step: $('#max_step').val()
     };
     $.ajax({
         type: 'POST',
@@ -102,7 +103,7 @@ function getCentipedeSimulationOption(chart_data)
                 {
                     type: 'line',
                     yAxisID: 'y-axis-1',
-                    label: 'x-axis-#T / y-axis-#CF',
+                    label: 'x-axis-#k / y-axis-#CF',
                     data: data_array,
                     borderColor: '#324463',
                     borderWidth: 2,
@@ -145,7 +146,7 @@ function getCentipedeSimulationOption(chart_data)
                     scaleLabel: {
                         display: true,
                         fontSize: 15,
-                        labelString: '#T'
+                        labelString: '#k'
                     }
                 }]
             },
