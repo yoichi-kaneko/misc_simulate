@@ -5,11 +5,16 @@ let myChartCentipedeSimulation;
 
 export function doCentipedeCalculate()
 {
+    let pattern = {
+        a: {
+            base_numerator: $('#base_numerator_a').val(),
+            numerator_exp_1: $('#numerator_exp_1_a').val(),
+            numerator_exp_2: $('#numerator_exp_2_a').val(),
+            denominator_exp: $('#denominator_exp_a').val(),
+        }
+    }
     let data = {
-        base_numerator: $('#base_numerator').val(),
-        numerator_exp_1: $('#numerator_exp_1').val(),
-        numerator_exp_2: $('#numerator_exp_2').val(),
-        denominator_exp: $('#denominator_exp').val(),
+        pattern: pattern,
         chart_offset: $('#chart_offset').val(),
         max_step: $('#max_step').val()
     };
