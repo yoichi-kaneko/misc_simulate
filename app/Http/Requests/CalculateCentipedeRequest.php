@@ -24,10 +24,10 @@ class CalculateCentipedeRequest extends FormRequest
     public function rules()
     {
         return [
-            'pattern.*.base_numerator' => 'required|integer|min:100|max:700',
-            'pattern.*.numerator_exp_1' => 'required|integer|min:1|max:5',
-            'pattern.*.numerator_exp_2' => 'required|integer|min:1|max:5',
-            'pattern.*.denominator_exp' => 'required|integer|min:0|max:12',
+            'patterns.*.base_numerator' => 'required|integer|min:100|max:700',
+            'patterns.*.numerator_exp_1' => 'required|integer|min:1|max:5',
+            'patterns.*.numerator_exp_2' => 'required|integer|min:1|max:5',
+            'patterns.*.denominator_exp' => 'required|integer|min:0|max:12',
             'max_step' => 'required|integer|min:50|max:200',
             'chart_offset' => 'required|integer|min:1|lt:max_step',
         ];
@@ -36,10 +36,10 @@ class CalculateCentipedeRequest extends FormRequest
     public function attributes()
     {
         return [
-            'pattern.*.base_numerator' => trans('validation.attributes.base_numerator'),
-            'pattern.*.numerator_exp_1' => trans('validation.attributes.numerator_exp_1'),
-            'pattern.*.numerator_exp_2' => trans('validation.attributes.numerator_exp_2'),
-            'pattern.*.denominator_exp' => trans('validation.attributes.denominator_exp'),
+            'patterns.*.base_numerator' => trans('validation.attributes.base_numerator'),
+            'patterns.*.numerator_exp_1' => trans('validation.attributes.numerator_exp_1'),
+            'patterns.*.numerator_exp_2' => trans('validation.attributes.numerator_exp_2'),
+            'patterns.*.denominator_exp' => trans('validation.attributes.denominator_exp'),
         ];
     }
 

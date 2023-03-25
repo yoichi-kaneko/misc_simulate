@@ -5,7 +5,7 @@ let myChartCentipedeSimulation;
 
 export function doCentipedeCalculate()
 {
-    let pattern = {
+    let patterns = {
         a: {
             base_numerator: $('#base_numerator_a').val(),
             numerator_exp_1: $('#numerator_exp_1_a').val(),
@@ -14,7 +14,7 @@ export function doCentipedeCalculate()
         }
     }
     let data = {
-        pattern: pattern,
+        patterns: patterns,
         chart_offset: $('#chart_offset').val(),
         max_step: $('#max_step').val()
     };
@@ -24,12 +24,12 @@ export function doCentipedeCalculate()
         data: data,
         format: 'json',
         success: function (data) {
-            renderCentipedeReportArea(data.data);
-            renderCentipedeSimulationChart(data.chart_data);
-            $('#cognitive_unit_value').html(data.cognitive_unit_value);
+            renderCentipedeReportArea(data.pattern_data.a.data);
+            renderCentipedeSimulationChart(data.pattern_data.a.chart_data);
+            $('#cognitive_unit_value').html(data.pattern_data.a.cognitive_unit_value);
 
             let element = $('#cognitive_unit_latex_text');
-            katex.render(data.cognitive_unit_latex_text, element[0], {
+            katex.render(data.pattern_data.a.cognitive_unit_latex_text, element[0], {
                 throwOnError: false
             });
 

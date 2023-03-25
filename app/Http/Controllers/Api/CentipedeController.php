@@ -18,20 +18,14 @@ class CentipedeController extends Controller
      */
     public function calculate(CalculateCentipedeRequest $request): JsonResponse
     {
-        $base_numerator = (int) $request->input('pattern.a.base_numerator');
-        $numerator_exp_1 = (int) $request->input('pattern.a.numerator_exp_1');
-        $numerator_exp_2 = (int) $request->input('pattern.a.numerator_exp_2');
-        $denominator_exp = (int) $request->input('pattern.a.denominator_exp');
+        $patterns = $request->input('patterns');
         $max_step = (int) $request->input('max_step');
         $chart_offset = (int) $request->input('chart_offset');
         $calculator = app()->make(Centipede::class);
 
         try {
             $result = $calculator->run(
-                $base_numerator,
-                $numerator_exp_1,
-                $numerator_exp_2,
-                $denominator_exp,
+                $patterns,
                 $max_step,
                 $chart_offset
             );
