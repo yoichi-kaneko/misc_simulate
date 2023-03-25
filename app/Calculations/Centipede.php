@@ -7,8 +7,6 @@ namespace App\Calculations;
  */
 class Centipede
 {
-    private const MAX_COUNT = 148;
-
     // NUの値は「所定の計算式の値より小さい整数」のため、計算式が整数ちょうどになった場合を考慮してceil() - 1という式としている
     private const ODD_NU = 'ceil(pow(2 * %1$d - 1, %3$d / %4$d) / %2$.15f) - 1';
     private const ODD_LEFT_SIDE = 'number_format(pow(2 * %1$d, %2$d / %3$d), 8)';
@@ -23,15 +21,17 @@ class Centipede
      * @param int $numerator_exp_1
      * @param int $numerator_exp_2
      * @param int $denominator_exp デルタの分母の指数
+     * @param int $max_step
      * @param int $chart_offset チャート出力の際のオフセット値
      * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException|\Exception
      */
     public function run(
         int $base_numerator,
         int $numerator_exp_1,
         int $numerator_exp_2,
         int $denominator_exp,
+        int $max_step,
         int $chart_offset
     ): array {
         $data = [];
@@ -42,7 +42,7 @@ class Centipede
             $denominator_exp
         );
 
-        for ($i = 1; $i <= self::MAX_COUNT; $i++) {
+        for ($i = 1; $i <= $max_step; $i++) {
             /*
              * 次の手順で計算を行う。
              * - 計算式1で、nuの最大値を求める

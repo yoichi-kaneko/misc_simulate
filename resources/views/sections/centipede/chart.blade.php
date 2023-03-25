@@ -37,8 +37,8 @@
     <table id="centipede_result_table" class="table mg-b-0">
         <thead>
             <tr class="centipede_result_body">
-                <th>
-                    t
+                <th style="text-transform: none;">
+                    k
                 </th>
                 <th>
                     <span class="katex_exp" expression="\nu_{M}"></span>
