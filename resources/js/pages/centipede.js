@@ -12,6 +12,9 @@ $(function(){
     $('button#reset').click(function () {
         reset();
     });
+    $('input#enable_pattern_b').click(function () {
+        togglePatternB();
+    });
 
     $('.form-layout .katex_exp').each(function () {
         let element = $(this)[0];
@@ -20,6 +23,7 @@ $(function(){
         });
     });
     $('#cognitive_unit_formula .katex').css('font-size', '1.3rem');
+    $('input.pattern_b').prop('disabled', true);
 });
 
 function reset()
@@ -29,4 +33,14 @@ function reset()
             $(this).val($(this).attr('default_val'));
         }
     });
+}
+
+function togglePatternB()
+{
+    let is_enable = $('input#enable_pattern_b').prop('checked');
+    if (is_enable) {
+        $('input.pattern_b').prop('disabled', false);
+    } else {
+        $('input.pattern_b').prop('disabled', true);
+    }
 }
