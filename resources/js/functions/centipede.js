@@ -33,7 +33,7 @@ export function doCentipedeCalculate()
         format: 'json',
         success: function (data) {
             renderCentipedeReportArea(data.pattern_data);
-            renderCentipedeSimulationChart(data.pattern_data.a.chart_data);
+            renderCentipedeSimulationChart(data.pattern_data);
 
             $('button.calculate').removeClass('disabled');
             $('#centipede_spinner').hide();
@@ -75,7 +75,6 @@ function renderCentipedeReportArea(pattern_data)
     // レポートのタブ切り替えをバインド
     $('#centipede_tab .switch_pattern').click(function () {
         let pattern = $(this).attr('pattern');
-        console.log(pattern);
         $('#centipede_result .report_block').each(function () {
             let id = 'report_pattern_' + pattern;
             if ($(this).attr('id') == id) {
@@ -107,51 +106,58 @@ function renderCentipedeReportArea(pattern_data)
 
 /**
  * チャートの出力を行う
- * @param data
+ * @param pattern_data
  */
-function renderCentipedeSimulationChart(chart_data)
+function renderCentipedeSimulationChart(pattern_data)
 {
     let ctx_simulation = document.getElementById('chart_centipede_simulation');
     if(myChartCentipedeSimulation) {
         myChartCentipedeSimulation.destroy();
         $('#chart_centipede_simulation').removeAttr('width');
     }
-    myChartCentipedeSimulation = new Chart(ctx_simulation, getCentipedeSimulationOption(chart_data));
+    myChartCentipedeSimulation = new Chart(ctx_simulation, getCentipedeSimulationOption(pattern_data));
 }
 
 /**
  * チャートのパラメータ生成を行う
  * @param chart_data
  */
-function getCentipedeSimulationOption(chart_data)
+function getCentipedeSimulationOption(pattern_data)
 {
+    let chart_data = pattern_data.a.chart_data;
+    let datasets = [];
     let label_array = [];
-    let data_array = [];
+    let border_color_list = ['#324463', '#5B93D3'];
 
-    $.each(chart_data, function(index,val) {
-        label_array.push(val.x);
-        data_array.push({
-            x: val.x,
-            y: val.y,
+    $.each(pattern_data, function(pattern, val) {
+        chart_data = val.chart_data;
+        let data_array = [];
+        $.each(chart_data, function(index, val2) {
+            data_array.push({
+                x: val2.x,
+                y: val2.y,
+            });
         });
-    });
 
+        let dataset = {
+            type: 'line',
+            label: 'Pattern ' + pattern.toUpperCase(),
+            data: data_array,
+            borderColor: border_color_list.shift(),
+            borderWidth: 2,
+            lineTension: 0,
+            pointRadius: 0,
+            fill: false
+        };
+        datasets.push(dataset);
+    });
+    $.each(pattern_data.a.chart_data, function(index, val) {
+        label_array.push(val.x);
+    });
     return {
         data: {
             labels: label_array,
-            datasets: [
-                {
-                    type: 'line',
-                    yAxisID: 'y-axis-1',
-                    label: 'x-axis-#k / y-axis-#CF',
-                    data: data_array,
-                    borderColor: '#324463',
-                    borderWidth: 2,
-                    lineTension: 0,
-                    pointRadius: 0,
-                    fill: false
-                },
-            ]
+            datasets: datasets,
         },
         options: {
             responsive: true,
@@ -164,7 +170,6 @@ function getCentipedeSimulationOption(chart_data)
             },
             scales: {
                 yAxes: [{
-                    id: "y-axis-1",
                     type: "linear",
                     position: "left",
                     ticks: {
@@ -192,10 +197,15 @@ function getCentipedeSimulationOption(chart_data)
             },
             tooltips: {
                 mode: 'index',
+                displayColors: false,
                 intersect: false,
                 callbacks: {
                     label: function(tooltipItem, data) {
-                        let label = '#CF: ';
+                        let label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+                        if (label) {
+                            label += ': ';
+                        }
                         label += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].y;
                         return label;
                     }
