@@ -12,6 +12,14 @@ export function doCentipedeCalculate()
             numerator_exp_2: $('#numerator_exp_2_a').val(),
             denominator_exp: $('#denominator_exp_a').val(),
         }
+    };
+    if ($('input#enable_pattern_b').prop('checked')) {
+        patterns['b'] = {
+            base_numerator: $('#base_numerator_b').val(),
+            numerator_exp_1: $('#numerator_exp_1_b').val(),
+            numerator_exp_2: $('#numerator_exp_2_b').val(),
+            denominator_exp: $('#denominator_exp_b').val(),
+        };
     }
     let data = {
         patterns: patterns,
@@ -65,6 +73,18 @@ function renderCentipedeReportArea(pattern_data)
     });
     $('#centipede_tab').html(tmpl);
     // レポートのタブ切り替えをバインド
+    $('#centipede_tab .switch_pattern').click(function () {
+        let pattern = $(this).attr('pattern');
+        console.log(pattern);
+        $('#centipede_result .report_block').each(function () {
+            let id = 'report_pattern_' + pattern;
+            if ($(this).attr('id') == id) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
 
     $('#centipede_result .katex_exp').each(function () {
         let element = $(this)[0];
@@ -82,8 +102,7 @@ function renderCentipedeReportArea(pattern_data)
             });
         }
     });
-
-
+    $('#centipede_result .report_block').not(':first').hide();
 }
 
 /**

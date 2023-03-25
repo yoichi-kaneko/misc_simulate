@@ -20,7 +20,7 @@
 <script id="centipedeTabTemplate" type="text/x-jsrender">
     <ul class="nav nav-gray-600 flex-column flex-sm-row" role="tablist">
         @{{props pattern_data}}
-            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#" role="tab">
+            <li class="nav-item"><a class="nav-link switch_pattern" data-toggle="tab" href="#" pattern="@{{:key}}">
                 Pattern <span style="text-transform: uppercase;">@{{:key}}</span>
             </a></li>
         @{{/props}}
@@ -28,7 +28,7 @@
 </script>
 
 <script id="centipedeResultTemplate" type="text/x-jsrender">
-    <div class="card pd-20" id="report_pattern_@{{:k}}">
+    <div class="card pd-20 report_block" id="report_pattern_@{{:pattern}}">
         <h6 class="tx-12 tx-uppercase tx-info tx-bold mg-b-15">Report</h6>
         <div class="d-flex mg-b-10">
             <div class="bd-r pd-l-12">
@@ -44,23 +44,23 @@
                 </p>
             </div>
         </div>
-        <div class="showmore_block" id="centipede_result_block_@{{:k}}">
+        <div class="showmore_block" id="centipede_result_block_@{{:pattern}}">
             <table id="centipede_result_table" class="table mg-b-0">
                 <thead>
                     <tr class="centipede_result_body">
-                        <th style="text-transform: none;">
+                        <th style="text-transform: none; width=15%;">
                             k
                         </th>
-                        <th>
+                        <th style="text-transform: none; width=20%;">
                             <span class="katex_exp" expression="\nu_{M}"></span>
                         </th>
-                        <th>
+                        <th style="width=25%;">
                             left side
                         </th>
-                        <th>
+                        <th style="width=25%;">
                             right side
                         </th>
-                        <th>
+                        <th style="width=15%;">
                             result
                         </th>
                     </tr>
