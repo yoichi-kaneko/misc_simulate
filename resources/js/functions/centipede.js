@@ -103,7 +103,7 @@ function getCentipedeSimulationOption(chart_data)
                 {
                     type: 'line',
                     yAxisID: 'y-axis-1',
-                    label: 'x-axis-#k / y-axis-#CF',
+                    label: 'x-axis-#n / y-axis-#CF',
                     data: data_array,
                     borderColor: '#324463',
                     borderWidth: 2,
@@ -146,7 +146,7 @@ function getCentipedeSimulationOption(chart_data)
                     scaleLabel: {
                         display: true,
                         fontSize: 15,
-                        labelString: '#k'
+                        labelString: '#n'
                     }
                 }]
             },
