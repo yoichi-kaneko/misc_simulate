@@ -38,7 +38,7 @@
         <thead>
             <tr class="centipede_result_body">
                 <th style="text-transform: none;">
-                    k
+                    n
                 </th>
                 <th>
                     <span class="katex_exp" expression="\nu_{M}"></span>
