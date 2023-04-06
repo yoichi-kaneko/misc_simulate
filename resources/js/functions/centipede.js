@@ -180,7 +180,7 @@ function getCentipedeSimulationOption(pattern_data)
                     scaleLabel: {
                         display: true,
                         fontSize: 15,
-                        labelString: '#CF'
+                        labelString: '#RC'
                     }
                 }],
                 xAxes: [{
@@ -189,9 +189,8 @@ function getCentipedeSimulationOption(pattern_data)
                         fontSize: 11,
                     },
                     scaleLabel: {
-                        display: true,
-                        fontSize: 15,
-                        labelString: '#n'
+                        labelString: 'k',
+                        display: false,
                     }
                 }]
             },
@@ -200,6 +199,9 @@ function getCentipedeSimulationOption(pattern_data)
                 displayColors: false,
                 intersect: false,
                 callbacks: {
+                    title: function(tooltipItems) {
+                        return 'k: ' + tooltipItems[0].xLabel;
+                    },
                     label: function(tooltipItem, data) {
                         let label = data.datasets[tooltipItem.datasetIndex].label || '';
 
