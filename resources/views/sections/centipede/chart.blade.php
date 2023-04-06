@@ -1,28 +1,6 @@
 <div id="chart_area_centipede" class="tab_chart card pd-20 mg-t-50" style="display: none;">
     <h6 class="card-body-title">Result</h6>
-    <div class="row row-sm">
-        <div class="col-lg-12">
-            <div class="card pd-20">
-                <h6 class="tx-12 tx-uppercase tx-info tx-bold mg-b-15">Report</h6>
-                <div class="d-flex mg-b-10">
-                    <div class="bd-r pd-l-12">
-                        <label class="tx-12">Cognitive Unit</label>
-                        <p class="tx-lato tx-inverse tx-bold">
-                            <span id="cognitive_unit_latex_text" class="katex_exp"></span>
-                        </p>
-                    </div>
-                    <div class="bd-r pd-l-12">
-                        <label class="tx-12">Cognitive Unit Value</label>
-                        <p class="tx-lato tx-inverse tx-bold">
-                            <span id="cognitive_unit_value"></span>
-                        </p>
-                    </div>
-                </div>
-                <div id="centipede_result"></div>
-            </div><!-- card -->
-        </div><!-- col-6 -->
-    </div>
-    <div class="row row-sm mg-t-50 chart_area">
+    <div class="row row-sm chart_area">
         <div class="col-xl-12">
             <div class="card pd-20 pd-sm-40">
                 <h6 class="card-body-title">Simulation Chart:</h6>
@@ -30,8 +8,87 @@
             </div><!-- card -->
         </div>
     </div>
+
+    <div class="pd-10 mg-t-20 bg-gray-300" id="centipede_tab"></div><!-- pd-10 -->
+    <div class="row row-sm">
+        <div class="col-lg-12" id="centipede_result">
+        </div><!-- col-6 -->
+    </div>
+
 </div>
 
+<script id="centipedeTabTemplate" type="text/x-jsrender">
+    <ul class="nav nav-gray-600 flex-column flex-sm-row" role="tablist">
+        @{{props pattern_data}}
+            <li class="nav-item"><a class="nav-link switch_pattern" data-toggle="tab" href="#" pattern="@{{:key}}">
+                Pattern <span style="text-transform: uppercase;">@{{:key}}</span>
+            </a></li>
+        @{{/props}}
+    </ul>
+</script>
+
+<script id="centipedeResultTemplate" type="text/x-jsrender">
+    <div class="card pd-20 report_block" id="report_pattern_@{{:pattern}}">
+        <h6 class="tx-12 tx-uppercase tx-info tx-bold mg-b-15">Report</h6>
+        <div class="d-flex mg-b-10">
+            <div class="bd-r pd-l-12">
+                <label class="tx-12">Cognitive Unit</label>
+                <p class="tx-lato tx-inverse tx-bold">
+                    <span class="katex_exp" expression="@{{:cognitive_unit_latex_text}}"></span>
+                </p>
+            </div>
+            <div class="bd-r pd-l-12">
+                <label class="tx-12">Cognitive Unit Value</label>
+                <p class="tx-lato tx-inverse tx-bold">
+                    <span>@{{:cognitive_unit_value}}</span>
+                </p>
+            </div>
+        </div>
+        <div class="showmore_block" id="centipede_result_block_@{{:pattern}}">
+            <table id="centipede_result_table" class="table mg-b-0">
+                <thead>
+                    <tr class="centipede_result_body">
+                        <th style="text-transform: none; width=15%;">
+                            k
+                        </th>
+                        <th style="text-transform: none; width=20%;">
+                            <span class="katex_exp" expression="\nu_{M}"></span>
+                        </th>
+                        <th style="width=25%;">
+                            left side
+                        </th>
+                        <th style="width=25%;">
+                            right side
+                        </th>
+                        <th style="width=15%;">
+                            result
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{{for table_data}}
+                        <tr class="centipede_result_body @{{if result}}result_true@{{/if}}">
+                            <td>
+                                @{{:t}}
+                            </td>
+                            <td>
+                                @{{:max_nu_value}}
+                            </td>
+                            <td>
+                                @{{:left_side_value}}
+                            </td>
+                            <td>
+                                @{{:right_side_value}}
+                            </td>
+                            <td>
+                                @{{:result}}
+                            </td>
+                        </tr>
+                    @{{/for}}
+                </tbody>
+            </table>
+        </div>
+    </div><!-- card -->
 
 <script id="centipedeTemplate" type="text/x-jsrender">
     <table id="centipede_result_table" class="table mg-b-0">

@@ -15,53 +15,84 @@
                 </div>
             </div>
             <div class="row mg-b-25">
+                <div class="col-lg-2">
+                    &nbsp;
+                </div>
+                <div class="col-lg-2">
+                    <div class="row row-xs">
+                        <label class="form-control-label">Pattern A: </label>
+                    </div>
+                </div>
                 <div class="col-lg-4">
                     <div class="row row-xs">
-                        <label class="col-sm-6 form-control-label">
+                        <label class="form-control-label">
+                            <span>Pattern B: </span>
+                            &nbsp;
+                            <input type="checkbox" id="enable_pattern_b" name="enable_pattern_b">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row mg-b-25">
+                <div class="col-lg-6">
+                    <div class="row row-xs">
+                        <label class="col-sm-4 form-control-label">
                             <span class="tx-danger">*</span>
                             <span class="katex_exp" expression="[X_1]"></span>
                             :</label>
                         <div class="col-sm-4 mg-t-10 mg-sm-t-0">
-                            <input class="form-control" id="base_numerator" type="text" name="base_numerator" maxlength="3" value="300" default_val="300" placeholder="Enter X1">
+                            <input class="form-control pattern_a" id="base_numerator_a" type="text" name="base_numerator_a" maxlength="3" value="300" default_val="300" placeholder="Enter X1">
+                        </div>
+                        <div class="col-sm-4 mg-t-10 mg-sm-t-0">
+                            <input class="form-control pattern_b" id="base_numerator_b" type="text" name="base_numerator_b" maxlength="3" value="300" default_val="300" placeholder="Enter X1">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row mg-b-25">
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                     <div class="row row-xs">
-                        <label class="col-sm-6 form-control-label">
+                        <label class="col-sm-4 form-control-label">
                             <span class="tx-danger">*</span>
                             <span class="katex_exp" expression="[X_2]"></span>
                             :</label>
                         <div class="col-sm-4 mg-t-10 mg-sm-t-0">
-                            <input class="form-control" id="numerator_exp_1" type="text" name="numerator_exp_1" maxlength="1" value="1" default_val="1" placeholder="Enter X2">
+                            <input class="form-control pattern_a" id="numerator_exp_1_a" type="text" name="numerator_exp_1_a" maxlength="1" value="1" default_val="1" placeholder="Enter X2">
+                        </div>
+                        <div class="col-sm-4 mg-t-10 mg-sm-t-0">
+                            <input class="form-control pattern_b" id="numerator_exp_1_b" type="text" name="numerator_exp_1_b" maxlength="1" value="1" default_val="1" placeholder="Enter X2">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row mg-b-25">
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                     <div class="row row-xs">
-                        <label class="col-sm-6 form-control-label">
+                        <label class="col-sm-4 form-control-label">
                             <span class="tx-danger">*</span>
                             <span class="katex_exp" expression="[X_3]"></span>
                             :</label>
                         <div class="col-sm-4 mg-t-10 mg-sm-t-0">
-                            <input class="form-control" id="numerator_exp_2" type="text" name="numerator_exp_2" maxlength="1" value="1" default_val="1" placeholder="Enter X3">
+                            <input class="form-control pattern_a" id="numerator_exp_2_a" type="text" name="numerator_exp_2_a" maxlength="1" value="1" default_val="1" placeholder="Enter X3">
+                        </div>
+                        <div class="col-sm-4 mg-t-10 mg-sm-t-0">
+                            <input class="form-control pattern_b" id="numerator_exp_2_b" type="text" name="numerator_exp_2_b" maxlength="1" value="1" default_val="1" placeholder="Enter X3">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row mg-b-25">
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                     <div class="row row-xs">
-                        <label class="col-sm-6 form-control-label">
+                        <label class="col-sm-4 form-control-label">
                             <span class="tx-danger">*</span>
                             <span class="katex_exp" expression="[X_4]"></span>
                             :</label>
                         <div class="col-sm-4 mg-t-10 mg-sm-t-0">
-                            <input class="form-control" id="denominator_exp" type="text" name="denominator_exp" maxlength="2" value="8" default_val="8" placeholder="Enter X4">
+                            <input class="form-control pattern_a" id="denominator_exp_a" type="text" name="denominator_exp_a" maxlength="2" value="8" default_val="8" placeholder="Enter X4">
+                        </div>
+                        <div class="col-sm-4 mg-t-10 mg-sm-t-0">
+                            <input class="form-control pattern_b" id="denominator_exp_b" type="text" name="denominator_exp_b" maxlength="2" value="8" default_val="8" placeholder="Enter X4">
                         </div>
                     </div>
                 </div>

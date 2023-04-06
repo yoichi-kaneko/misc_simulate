@@ -17,16 +17,49 @@ class Centipede
 
     /**
      * 計算を実行する
-     * @param int $base_numerator
-     * @param int $numerator_exp_1
-     * @param int $numerator_exp_2
-     * @param int $denominator_exp デルタの分母の指数
+     * @param array $patterns
      * @param int $max_step
      * @param int $chart_offset チャート出力の際のオフセット値
      * @return array
      * @throws \Illuminate\Contracts\Container\BindingResolutionException|\Exception
      */
     public function run(
+        array $patterns,
+        int $max_step,
+        int $chart_offset
+    ): array {
+        $pattern_data = [];
+
+        foreach ($patterns as $key => $pattern_val) {
+            $pattern_result = $this->calculatePattern(
+                (int) $pattern_val['base_numerator'],
+                (int) $pattern_val['numerator_exp_1'],
+                (int) $pattern_val['numerator_exp_2'],
+                (int) $pattern_val['denominator_exp'],
+                $max_step,
+                $chart_offset
+            );
+            $pattern_data[$key] = $pattern_result;
+        }
+
+        return [
+            'result' => 'ok',
+            'pattern_data' => $pattern_data,
+        ];
+    }
+
+    /**
+     * それぞれのパターンについて計算を行う
+     * @param int $base_numerator
+     * @param int $numerator_exp_1
+     * @param int $numerator_exp_2
+     * @param int $denominator_exp
+     * @param int $max_step
+     * @param int $chart_offset
+     * @return array
+     * @throws \Exception
+     */
+    private function calculatePattern(
         int $base_numerator,
         int $numerator_exp_1,
         int $numerator_exp_2,
@@ -34,7 +67,6 @@ class Centipede
         int $max_step,
         int $chart_offset
     ): array {
-        $data = [];
         $cognitive_unit_value = $this->calcCognitiveUnitValue(
             $base_numerator,
             $numerator_exp_1,
@@ -98,8 +130,8 @@ class Centipede
             $numerator_exp_2,
             $denominator_exp
         );
+
         return [
-            'result' => 'ok',
             'cognitive_unit_latex_text' => $cognitive_unit_latex_text,
             'cognitive_unit_value' => $cognitive_unit_value,
             'data' => $data,

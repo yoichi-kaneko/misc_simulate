@@ -5,11 +5,24 @@ let myChartCentipedeSimulation;
 
 export function doCentipedeCalculate()
 {
+    let patterns = {
+        a: {
+            base_numerator: $('#base_numerator_a').val(),
+            numerator_exp_1: $('#numerator_exp_1_a').val(),
+            numerator_exp_2: $('#numerator_exp_2_a').val(),
+            denominator_exp: $('#denominator_exp_a').val(),
+        }
+    };
+    if ($('input#enable_pattern_b').prop('checked')) {
+        patterns['b'] = {
+            base_numerator: $('#base_numerator_b').val(),
+            numerator_exp_1: $('#numerator_exp_1_b').val(),
+            numerator_exp_2: $('#numerator_exp_2_b').val(),
+            denominator_exp: $('#denominator_exp_b').val(),
+        };
+    }
     let data = {
-        base_numerator: $('#base_numerator').val(),
-        numerator_exp_1: $('#numerator_exp_1').val(),
-        numerator_exp_2: $('#numerator_exp_2').val(),
-        denominator_exp: $('#denominator_exp').val(),
+        patterns: patterns,
         chart_offset: $('#chart_offset').val(),
         max_step: $('#max_step').val()
     };
@@ -19,14 +32,8 @@ export function doCentipedeCalculate()
         data: data,
         format: 'json',
         success: function (data) {
-            renderCentipedeReportArea(data.data);
-            renderCentipedeSimulationChart(data.chart_data);
-            $('#cognitive_unit_value').html(data.cognitive_unit_value);
-
-            let element = $('#cognitive_unit_latex_text');
-            katex.render(data.cognitive_unit_latex_text, element[0], {
-                throwOnError: false
-            });
+            renderCentipedeReportArea(data.pattern_data);
+            renderCentipedeSimulationChart(data.pattern_data);
 
             $('button.calculate').removeClass('disabled');
             $('#centipede_spinner').hide();
@@ -45,12 +52,39 @@ export function doCentipedeCalculate()
  * レポートエリアの描画を行う
  * @param data
  */
-function renderCentipedeReportArea(data)
+function renderCentipedeReportArea(pattern_data)
 {
-    let tmpl = $('#centipedeTemplate').render({
-        data: data,
+    // レポートデータの生成
+    $('#centipede_result').html('');
+
+    $.each(pattern_data, function(index,val) {
+        let tmpl = $('#centipedeResultTemplate').render({
+            pattern: index,
+            table_data: val.data,
+            cognitive_unit_value: val.cognitive_unit_value,
+            cognitive_unit_latex_text: val.cognitive_unit_latex_text,
+        });
+        $('#centipede_result').append(tmpl);
     });
-    $('#centipede_result').html(tmpl);
+
+    // 切り替えタブの生成
+    let tmpl = $('#centipedeTabTemplate').render({
+        pattern_data: pattern_data,
+    });
+    $('#centipede_tab').html(tmpl);
+    // レポートのタブ切り替えをバインド
+    $('#centipede_tab .switch_pattern').click(function () {
+        let pattern = $(this).attr('pattern');
+        $('#centipede_result .report_block').each(function () {
+            let id = 'report_pattern_' + pattern;
+            if ($(this).attr('id') == id) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    });
+
     $('#centipede_result .katex_exp').each(function () {
         let element = $(this)[0];
         katex.render($(this).attr('expression'), element, {
@@ -58,60 +92,72 @@ function renderCentipedeReportArea(data)
         });
     });
     $('#chart_area_centipede').show();
-    if ($('#showmore-centipede_result').length == 0) {
-                $('#centipede_result').showMore({
-            minheight: 300
-        });
-    }
+
+    $('.showmore_block').each(function() {
+        let id = $(this).attr('id');
+        if ($('#showmore-' + id).length == 0) {
+            $('#' + id).showMore({
+                minheight: 300
+            });
+        }
+    });
+    $('#centipede_result .report_block').not(':first').hide();
 }
 
 /**
  * チャートの出力を行う
- * @param data
+ * @param pattern_data
  */
-function renderCentipedeSimulationChart(chart_data)
+function renderCentipedeSimulationChart(pattern_data)
 {
     let ctx_simulation = document.getElementById('chart_centipede_simulation');
     if(myChartCentipedeSimulation) {
         myChartCentipedeSimulation.destroy();
         $('#chart_centipede_simulation').removeAttr('width');
     }
-    myChartCentipedeSimulation = new Chart(ctx_simulation, getCentipedeSimulationOption(chart_data));
+    myChartCentipedeSimulation = new Chart(ctx_simulation, getCentipedeSimulationOption(pattern_data));
 }
 
 /**
  * チャートのパラメータ生成を行う
  * @param chart_data
  */
-function getCentipedeSimulationOption(chart_data)
+function getCentipedeSimulationOption(pattern_data)
 {
+    let chart_data = pattern_data.a.chart_data;
+    let datasets = [];
     let label_array = [];
-    let data_array = [];
+    let border_color_list = ['#324463', '#5B93D3'];
 
-    $.each(chart_data, function(index,val) {
-        label_array.push(val.x);
-        data_array.push({
-            x: val.x,
-            y: val.y,
+    $.each(pattern_data, function(pattern, val) {
+        chart_data = val.chart_data;
+        let data_array = [];
+        $.each(chart_data, function(index, val2) {
+            data_array.push({
+                x: val2.x,
+                y: val2.y,
+            });
         });
-    });
 
+        let dataset = {
+            type: 'line',
+            label: 'Pattern ' + pattern.toUpperCase(),
+            data: data_array,
+            borderColor: border_color_list.shift(),
+            borderWidth: 2,
+            lineTension: 0,
+            pointRadius: 0,
+            fill: false
+        };
+        datasets.push(dataset);
+    });
+    $.each(pattern_data.a.chart_data, function(index, val) {
+        label_array.push(val.x);
+    });
     return {
         data: {
             labels: label_array,
-            datasets: [
-                {
-                    type: 'line',
-                    yAxisID: 'y-axis-1',
-                    label: 'x-axis-#n / y-axis-#CF',
-                    data: data_array,
-                    borderColor: '#324463',
-                    borderWidth: 2,
-                    lineTension: 0,
-                    pointRadius: 0,
-                    fill: false
-                },
-            ]
+            datasets: datasets,
         },
         options: {
             responsive: true,
@@ -124,7 +170,6 @@ function getCentipedeSimulationOption(chart_data)
             },
             scales: {
                 yAxes: [{
-                    id: "y-axis-1",
                     type: "linear",
                     position: "left",
                     ticks: {
@@ -152,10 +197,15 @@ function getCentipedeSimulationOption(chart_data)
             },
             tooltips: {
                 mode: 'index',
+                displayColors: false,
                 intersect: false,
                 callbacks: {
                     label: function(tooltipItem, data) {
-                        let label = '#CF: ';
+                        let label = data.datasets[tooltipItem.datasetIndex].label || '';
+
+                        if (label) {
+                            label += ': ';
+                        }
                         label += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].y;
                         return label;
                     }
