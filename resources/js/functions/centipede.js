@@ -191,7 +191,7 @@ function getCentipedeSimulationOption(pattern_data)
                     scaleLabel: {
                         display: true,
                         fontSize: 15,
-                        labelString: '#k'
+                        labelString: '#n'
                     }
                 }]
             },

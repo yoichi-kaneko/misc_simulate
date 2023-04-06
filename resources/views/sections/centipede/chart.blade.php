@@ -90,7 +90,49 @@
         </div>
     </div><!-- card -->
 
-
+<script id="centipedeTemplate" type="text/x-jsrender">
+    <table id="centipede_result_table" class="table mg-b-0">
+        <thead>
+            <tr class="centipede_result_body">
+                <th style="text-transform: none;">
+                    n
+                </th>
+                <th>
+                    <span class="katex_exp" expression="\nu_{M}"></span>
+                </th>
+                <th>
+                    left side
+                </th>
+                <th>
+                    right side
+                </th>
+                <th>
+                    result
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{{for data}}
+                <tr class="centipede_result_body @{{if result}}result_true@{{/if}}">
+                    <td>
+                        @{{:t}}
+                    </td>
+                    <td>
+                        @{{:max_nu_value}}
+                    </td>
+                    <td>
+                        @{{:left_side_value}}
+                    </td>
+                    <td>
+                        @{{:right_side_value}}
+                    </td>
+                    <td>
+                        @{{:result}}
+                    </td>
+                </tr>
+            @{{/for}}
+        </tbody>
+    </table>
 </script>
 
 <script id="participantsSimulationResultTemplate" type="text/x-jsrender">
