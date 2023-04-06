@@ -23,7 +23,6 @@ export function doCentipedeCalculate()
     }
     let data = {
         patterns: patterns,
-        chart_offset: $('#chart_offset').val(),
         max_step: $('#max_step').val()
     };
     $.ajax({
@@ -175,6 +174,7 @@ function getCentipedeSimulationOption(pattern_data)
                     ticks: {
                         beginAtZero: true,
                         min: 0,
+                        max: label_array.length,
                         fontSize: 10,
                     },
                     scaleLabel: {

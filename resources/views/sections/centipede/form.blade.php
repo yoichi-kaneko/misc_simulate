@@ -110,19 +110,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row mg-b-25">
-                <div class="col-lg-4">
-                    <div class="row row-xs">
-                        <label class="col-sm-6 form-control-label">
-                            <span class="tx-danger">*</span>
-                            <span class="katex_exp" expression="B^\ast "></span>
-                            :</label>
-                        <div class="col-sm-4 mg-t-10 mg-sm-t-0">
-                            <input class="form-control" id="chart_offset" type="text" name="chart_offset" maxlength="3" value="6" default_val="6" placeholder="Enter b_ast">
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="col-sm-6 col-md-3 simulate_player">
             <button class="btn btn-primary mg-b-10 calculate">Calculate</button>
