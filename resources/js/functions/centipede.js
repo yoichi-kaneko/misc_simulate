@@ -62,6 +62,7 @@ function renderCentipedeReportArea(pattern_data)
             table_data: val.data,
             cognitive_unit_value: val.cognitive_unit_value,
             cognitive_unit_latex_text: val.cognitive_unit_latex_text,
+            average_of_reversed_causality: val.average_of_reversed_causality,
         });
         $('#centipede_result').append(tmpl);
     });
@@ -100,6 +101,7 @@ function renderCentipedeReportArea(pattern_data)
             });
         }
     });
+    $('#centipede_tab .switch_pattern:first').addClass('active');
     $('#centipede_result .report_block').not(':first').hide();
 }
 

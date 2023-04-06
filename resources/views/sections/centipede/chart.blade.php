@@ -43,6 +43,12 @@
                     <span>@{{:cognitive_unit_value}}</span>
                 </p>
             </div>
+            <div class="bd-r pd-l-12">
+                <label class="tx-12">Average of Reversed Causality</label>
+                <p class="tx-lato tx-inverse tx-bold">
+                    <span>@{{:average_of_reversed_causality}}</span>
+                </p>
+            </div>
         </div>
         <div class="showmore_block" id="centipede_result_block_@{{:pattern}}">
             <table id="centipede_result_table" class="table mg-b-0">
