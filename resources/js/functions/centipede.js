@@ -23,7 +23,6 @@ export function doCentipedeCalculate()
     }
     let data = {
         patterns: patterns,
-        chart_offset: $('#chart_offset').val(),
         max_step: $('#max_step').val()
     };
     $.ajax({
@@ -63,6 +62,7 @@ function renderCentipedeReportArea(pattern_data)
             table_data: val.data,
             cognitive_unit_value: val.cognitive_unit_value,
             cognitive_unit_latex_text: val.cognitive_unit_latex_text,
+            average_of_reversed_causality: val.average_of_reversed_causality,
         });
         $('#centipede_result').append(tmpl);
     });
@@ -101,6 +101,7 @@ function renderCentipedeReportArea(pattern_data)
             });
         }
     });
+    $('#centipede_tab .switch_pattern:first').addClass('active');
     $('#centipede_result .report_block').not(':first').hide();
 }
 
@@ -175,12 +176,13 @@ function getCentipedeSimulationOption(pattern_data)
                     ticks: {
                         beginAtZero: true,
                         min: 0,
+                        max: label_array.length,
                         fontSize: 10,
                     },
                     scaleLabel: {
                         display: true,
                         fontSize: 15,
-                        labelString: '#CF'
+                        labelString: '#RC'
                     }
                 }],
                 xAxes: [{
@@ -189,9 +191,8 @@ function getCentipedeSimulationOption(pattern_data)
                         fontSize: 11,
                     },
                     scaleLabel: {
-                        display: true,
-                        fontSize: 15,
-                        labelString: '#n'
+                        labelString: 'k',
+                        display: false,
                     }
                 }]
             },
@@ -200,6 +201,9 @@ function getCentipedeSimulationOption(pattern_data)
                 displayColors: false,
                 intersect: false,
                 callbacks: {
+                    title: function(tooltipItems) {
+                        return 'k: ' + tooltipItems[0].xLabel;
+                    },
                     label: function(tooltipItem, data) {
                         let label = data.datasets[tooltipItem.datasetIndex].label || '';
 

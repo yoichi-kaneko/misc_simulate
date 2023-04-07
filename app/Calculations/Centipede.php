@@ -2,6 +2,8 @@
 
 namespace App\Calculations;
 
+use Illuminate\Support\Arr;
+
 /**
  * Centipede計算を行うシミュレーター
  */
@@ -19,14 +21,12 @@ class Centipede
      * 計算を実行する
      * @param array $patterns
      * @param int $max_step
-     * @param int $chart_offset チャート出力の際のオフセット値
      * @return array
      * @throws \Illuminate\Contracts\Container\BindingResolutionException|\Exception
      */
     public function run(
         array $patterns,
-        int $max_step,
-        int $chart_offset
+        int $max_step
     ): array {
         $pattern_data = [];
 
@@ -36,8 +36,7 @@ class Centipede
                 (int) $pattern_val['numerator_exp_1'],
                 (int) $pattern_val['numerator_exp_2'],
                 (int) $pattern_val['denominator_exp'],
-                $max_step,
-                $chart_offset
+                $max_step
             );
             $pattern_data[$key] = $pattern_result;
         }
@@ -55,7 +54,6 @@ class Centipede
      * @param int $numerator_exp_2
      * @param int $denominator_exp
      * @param int $max_step
-     * @param int $chart_offset
      * @return array
      * @throws \Exception
      */
@@ -64,8 +62,7 @@ class Centipede
         int $numerator_exp_1,
         int $numerator_exp_2,
         int $denominator_exp,
-        int $max_step,
-        int $chart_offset
+        int $max_step
     ): array {
         $cognitive_unit_value = $this->calcCognitiveUnitValue(
             $base_numerator,
@@ -123,17 +120,19 @@ class Centipede
                 'result' => ($left_side_value < $right_side_value),
             ];
         }
-        $chart_data = $this->makeChartData($data, $chart_offset);
+        $chart_data = $this->makeChartData($data);
         $cognitive_unit_latex_text = $this->makeCognitiveUnitLatexText(
             $base_numerator,
             $numerator_exp_1,
             $numerator_exp_2,
             $denominator_exp
         );
+        $average_of_reversed_causality = (array_sum(Arr::pluck($chart_data, 'y')) / count($chart_data));
 
         return [
             'cognitive_unit_latex_text' => $cognitive_unit_latex_text,
             'cognitive_unit_value' => $cognitive_unit_value,
+            'average_of_reversed_causality' => $average_of_reversed_causality,
             'data' => $data,
             'chart_data' => $chart_data,
         ];
@@ -202,29 +201,24 @@ class Centipede
     /**
      * チャート用のデータを生成する
      * @param array $data
-     * @param int $chart_offset
      * @return array
      */
-    private function makeChartData(array $data, int $chart_offset): array
+    private function makeChartData(array $data): array
     {
         $chart_data = [];
         $last_skipped_t = 0;
 
         foreach ($data as $value) {
-            // Tがオフセットより小さい場合はデータの生成対象外
-            if ($value['t'] < $chart_offset) {
-                continue;
-            }
             // resultがtrueのデータが出た場合、それを最後にスキップしたtとして値を保存する。
             if ($value['result'] === true) {
                 $last_skipped_t = $value['t'];
             }
-            // スキップしたtが一度も出ていない間は、yはtの2倍になる。
+            // スキップしたtが一度も出ていない間は、yはtに等しい。
             if ($last_skipped_t === 0) {
-                $y = 2 * $value['t'];
-            // スキップしたtが出た場合、オフセットを起点として、そこから2ずつインクリメントしていく。
+                $y = $value['t'];
+            // スキップしたtが出た場合、スキップした点を起点として、そこから1ずつインクリメントしていく。
             } else {
-                $y = $chart_offset + (2 * ($value['t'] - $last_skipped_t));
+                $y = $value['t'] - $last_skipped_t + 1;
             }
             $chart_data[] = [
                 'x' => $value['t'],
