@@ -213,12 +213,12 @@ class Centipede
             if ($value['result'] === true) {
                 $last_skipped_t = $value['t'];
             }
-            // スキップしたtが一度も出ていない間は、yはtに等しい。
+            // スキップしたtが一度も出ていない間は、yはt - 1に等しい。
             if ($last_skipped_t === 0) {
-                $y = $value['t'];
-            // スキップしたtが出た場合、スキップした点を起点として、そこから1ずつインクリメントしていく。
+                $y = $value['t'] - 1;
+            // スキップしたtが出た場合、スキップした点を起点(0)として、そこから1ずつインクリメントしていく。
             } else {
-                $y = $value['t'] - $last_skipped_t + 1;
+                $y = $value['t'] - $last_skipped_t;
             }
             $chart_data[] = [
                 'x' => $value['t'],
