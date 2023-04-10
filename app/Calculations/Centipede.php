@@ -208,6 +208,10 @@ class Centipede
         $chart_data = [];
         $last_skipped_t = 0;
 
+        // result中にtrueが1件でもあればyは0から開始する。ない場合は1。
+        $results = Arr::pluck($data, 'result');
+        $y_offset = in_array(true, $results) ? 0 : 1;
+
         foreach ($data as $value) {
             // resultがtrueのデータが出た場合、それを最後にスキップしたtとして値を保存する。
             if ($value['result'] === true) {
@@ -215,10 +219,10 @@ class Centipede
             }
             // スキップしたtが一度も出ていない間は、yはt - 1に等しい。
             if ($last_skipped_t === 0) {
-                $y = $value['t'] - 1;
+                $y = $value['t'] - 1 + $y_offset;
             // スキップしたtが出た場合、スキップした点を起点(0)として、そこから1ずつインクリメントしていく。
             } else {
-                $y = $value['t'] - $last_skipped_t;
+                $y = $value['t'] - $last_skipped_t + $y_offset;
             }
             $chart_data[] = [
                 'x' => $value['t'],
