@@ -1,6 +1,8 @@
 const {beforeCalculate} = require("../functions/calculate");
 const {doCentipedeCalculate} = require("../functions/centipede");
 
+let parser = UAParser();
+
 $(function(){
     $('.simulate_player button.calculate').click(function () {
         if (!$(this).hasClass('disabled')) {
@@ -24,6 +26,20 @@ $(function(){
     });
     $('#cognitive_unit_formula .katex').css('font-size', '1.3rem');
     $('input.pattern_b').prop('disabled', true);
+
+    $('button.chart_download').click(function () {
+        if (parser.browser.name == 'IE') {
+            alert('ダウンロード機能はIEでは利用できません。他のブラウザで再度確認してください。');
+            return;
+        }
+        let target = '#' + $(this).attr('target');
+        let canvas = $(target)[0];
+
+        let tmpl = $('#downloadTemplate').render({href: canvas.toDataURL('image/png')});
+        $('body').append(tmpl);
+        $('#image-file')[0].click();
+        $('#image-file').remove();
+    });
 });
 
 function reset()
