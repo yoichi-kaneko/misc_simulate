@@ -5,6 +5,9 @@
             <div class="card pd-20 pd-sm-40">
                 <h6 class="card-body-title">Simulation Chart:</h6>
                 <canvas id="chart_centipede_simulation" height="450"></canvas>
+                <div class="col-sm-6 col-md-3">
+                    <button target="chart_centipede_simulation" class="btn btn-primary mg-b-10 chart_download">Download</button>
+                </div>
             </div><!-- card -->
         </div>
     </div>

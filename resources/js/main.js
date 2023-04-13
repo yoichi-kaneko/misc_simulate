@@ -47,7 +47,7 @@ function initializeAll() {
         });
     }
 
-    if (parser.browser.name == 'IE' || parser.browser.name == 'Edge') {
+    if (parser.browser.name == 'IE') {
         $('.chart_download').hide();
     }
 
