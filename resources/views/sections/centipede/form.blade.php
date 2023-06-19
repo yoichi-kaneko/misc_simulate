@@ -41,10 +41,10 @@
                             <span class="katex_exp" expression="[X_1]"></span>
                             :</label>
                         <div class="col-sm-4 mg-t-10 mg-sm-t-0">
-                            <input class="form-control pattern_a" id="base_numerator_a" type="text" name="base_numerator_a" maxlength="3" value="300" default_val="300" placeholder="Enter X1">
+                            <input class="form-control pattern_a" id="base_numerator_a" type="text" name="base_numerator_a" maxlength="4" value="300" default_val="300" placeholder="Enter X1">
                         </div>
                         <div class="col-sm-4 mg-t-10 mg-sm-t-0">
-                            <input class="form-control pattern_b" id="base_numerator_b" type="text" name="base_numerator_b" maxlength="3" value="300" default_val="300" placeholder="Enter X1">
+                            <input class="form-control pattern_b" id="base_numerator_b" type="text" name="base_numerator_b" maxlength="4" value="300" default_val="300" placeholder="Enter X1">
                         </div>
                     </div>
                 </div>
