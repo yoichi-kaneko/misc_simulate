@@ -110,6 +110,33 @@
                     </div>
                 </div>
             </div>
+            <div class="row mg-b-25">
+                <div class="col-lg-4">
+                    <div class="row row-xs">
+                        <label class="col-sm-6 form-control-label">
+                            Simulate Union Mode :
+                        </label>
+                        <div class="col-sm-4 mg-t-10 mg-sm-t-0">
+                            <input type="checkbox" id="simulate_union_mode" name="simulate_union_mode">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mg-b-25">
+                <div class="col-lg-6">
+                    <div class="row row-xs">
+                        <label class="col-sm-4 form-control-label">
+                            Player 1:
+                        </label>
+                        <div class="col-sm-4 mg-t-10 mg-sm-t-0">
+                            <input class="union_player" id="union_player_1" type="radio" name="union_player" value="a" checked>
+                        </div>
+                        <div class="col-sm-4 mg-t-10 mg-sm-t-0">
+                            <input class="union_player" id="union_player_2" type="radio" name="union_player" value="b">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-sm-6 col-md-3 simulate_player">
             <button class="btn btn-primary mg-b-10 calculate">Calculate</button>

@@ -21,10 +21,14 @@ export function doCentipedeCalculate()
             denominator_exp: $('#denominator_exp_b').val(),
         };
     }
+
     let data = {
         patterns: patterns,
         max_step: $('#max_step').val()
     };
+    if ($('input#simulate_union_mode').prop('checked') && $('input#enable_pattern_b').prop('checked')) {
+        data['union_player'] = $('input:radio[name="union_player"]:checked').val();
+    }
     $.ajax({
         type: 'POST',
         url: '/api/centipede/calculate',
