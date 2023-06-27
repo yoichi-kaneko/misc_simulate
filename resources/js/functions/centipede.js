@@ -36,7 +36,7 @@ export function doCentipedeCalculate()
         format: 'json',
         success: function (data) {
             renderCentipedeReportArea(data.pattern_data, data.union_data);
-            renderCentipedeSimulationChart(data.pattern_data);
+            renderCentipedeSimulationChart(data.pattern_data, data.union_data);
 
             $('button.calculate').removeClass('disabled');
             $('#centipede_spinner').hide();
@@ -119,27 +119,32 @@ function renderCentipedeReportArea(pattern_data, union_data)
 /**
  * チャートの出力を行う
  * @param pattern_data
+ * @param union_data
  */
-function renderCentipedeSimulationChart(pattern_data)
+function renderCentipedeSimulationChart(pattern_data, union_data)
 {
     let ctx_simulation = document.getElementById('chart_centipede_simulation');
     if(myChartCentipedeSimulation) {
         myChartCentipedeSimulation.destroy();
         $('#chart_centipede_simulation').removeAttr('width');
     }
-    myChartCentipedeSimulation = new Chart(ctx_simulation, getCentipedeSimulationOption(pattern_data));
+    myChartCentipedeSimulation = new Chart(ctx_simulation, getCentipedeSimulationOption(pattern_data, union_data));
 }
 
 /**
  * チャートのパラメータ生成を行う
  * @param chart_data
  */
-function getCentipedeSimulationOption(pattern_data)
+function getCentipedeSimulationOption(pattern_data, union_data)
 {
     let chart_data = pattern_data.a.chart_data;
     let datasets = [];
     let label_array = [];
-    let border_color_list = ['#324463', '#5B93D3'];
+    let border_color_list = [
+        '#324463',
+        '#5B93D3',
+        '#DC3545'
+    ];
 
     $.each(pattern_data, function(pattern, val) {
         chart_data = val.chart_data;
@@ -166,6 +171,30 @@ function getCentipedeSimulationOption(pattern_data)
     $.each(pattern_data.a.chart_data, function(index, val) {
         label_array.push(val.x);
     });
+
+    if (union_data) {
+        chart_data = union_data.chart_data;
+        let data_array = [];
+        $.each(chart_data, function(index, val) {
+            data_array.push({
+                x: val.x,
+                y: val.y,
+            });
+        });
+
+        let dataset = {
+            type: 'line',
+            label: 'Union Mode',
+            data: data_array,
+            borderColor: border_color_list.shift(),
+            borderWidth: 2,
+            lineTension: 0,
+            pointRadius: 0,
+            fill: false
+        };
+        datasets.push(dataset);
+    }
+
     return {
         data: {
             labels: label_array,
