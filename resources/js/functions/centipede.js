@@ -35,7 +35,7 @@ export function doCentipedeCalculate()
         data: data,
         format: 'json',
         success: function (data) {
-            renderCentipedeReportArea(data.pattern_data);
+            renderCentipedeReportArea(data.pattern_data, data.union_data);
             renderCentipedeSimulationChart(data.pattern_data);
 
             $('button.calculate').removeClass('disabled');
@@ -55,7 +55,7 @@ export function doCentipedeCalculate()
  * レポートエリアの描画を行う
  * @param data
  */
-function renderCentipedeReportArea(pattern_data)
+function renderCentipedeReportArea(pattern_data, union_data)
 {
     // レポートデータの生成
     $('#centipede_result').html('');
@@ -70,10 +70,17 @@ function renderCentipedeReportArea(pattern_data)
         });
         $('#centipede_result').append(tmpl);
     });
+    if (union_data) {
+        let tmpl = $('#centipedeUnionResultTemplate').render({
+            table_data: union_data.data,
+        });
+        $('#centipede_result').append(tmpl);
+    }
 
     // 切り替えタブの生成
     let tmpl = $('#centipedeTabTemplate').render({
         pattern_data: pattern_data,
+        union_data: union_data,
     });
     $('#centipede_tab').html(tmpl);
     // レポートのタブ切り替えをバインド
