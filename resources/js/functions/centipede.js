@@ -27,7 +27,7 @@ export function doCentipedeCalculate()
         max_step: $('#max_step').val()
     };
     if ($('input#simulate_union_mode').prop('checked') && $('input#enable_pattern_b').prop('checked')) {
-        data['union_player'] = $('input:radio[name="union_player"]:checked').val();
+        data['union_player_1'] = $('input:radio[name="union_player_1"]:checked').val();
     }
     $.ajax({
         type: 'POST',

@@ -129,10 +129,10 @@
                             Player 1:
                         </label>
                         <div class="col-sm-4 mg-t-10 mg-sm-t-0">
-                            <input class="union_player" id="union_player_1" type="radio" name="union_player" value="a" checked>
+                            <input class="union_player_1" id="union_player_a" type="radio" name="union_player_1" value="a" checked>
                         </div>
                         <div class="col-sm-4 mg-t-10 mg-sm-t-0">
-                            <input class="union_player" id="union_player_2" type="radio" name="union_player" value="b">
+                            <input class="union_player_1" id="union_player_b" type="radio" name="union_player_1" value="b">
                         </div>
                     </div>
                 </div>
