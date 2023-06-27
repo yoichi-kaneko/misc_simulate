@@ -3,6 +3,7 @@
 namespace App\Calculations;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Centipede計算を行うシミュレーター
@@ -21,12 +22,14 @@ class Centipede
      * 計算を実行する
      * @param array $patterns
      * @param int $max_step
+     * @param string|null $union_player_1
      * @return array
      * @throws \Illuminate\Contracts\Container\BindingResolutionException|\Exception
      */
     public function run(
         array $patterns,
-        int $max_step
+        int $max_step,
+        ?string $union_player_1
     ): array {
         $pattern_data = [];
 
@@ -40,10 +43,16 @@ class Centipede
             );
             $pattern_data[$key] = $pattern_result;
         }
+        if (!is_null($union_player_1)) {
+            $union_data = $this->unionCalculateData($union_player_1, $pattern_data);
+        } else {
+            $union_data = null;
+        }
 
         return [
             'result' => 'ok',
             'pattern_data' => $pattern_data,
+            'union_data' => $union_data,
         ];
     }
 
@@ -64,6 +73,7 @@ class Centipede
         int $denominator_exp,
         int $max_step
     ): array {
+        $data = [];
         $cognitive_unit_value = $this->calcCognitiveUnitValue(
             $base_numerator,
             $numerator_exp_1,
@@ -146,6 +156,40 @@ class Centipede
     private function evalFormula(string $str)
     {
         return eval('return ' . $str . ';');
+    }
+
+    /**
+     * 2つのシミュレート結果を合算する
+     * @param string $union_player_1
+     * @param array $pattern_data
+     * @return array
+     */
+    private function unionCalculateData(string $union_player_1, array $pattern_data): array
+    {
+        // Requestのバリデーションで $union_player_1 にはa,bいずれかがセットされていると想定
+        $pattern_data_a = $pattern_data['a']['data'];
+        $pattern_data_b = $pattern_data['b']['data'];
+        $player_1_is_a = ($union_player_1 === 'a');
+
+        $data = [];
+        $max_count = count($pattern_data_a);
+        for ($i = 0; $i < $max_count; $i++) {
+            // Player1がAで$iが偶数（0から始まるため）、Player1がBで$iが奇数の場合にAをセット
+            if (
+                $player_1_is_a && $i %2 === 0 ||
+                !$player_1_is_a && $i %2 > 0
+            ) {
+                $data[] = $pattern_data_a[$i];
+            } else {
+                $data[] = $pattern_data_b[$i];
+            }
+        }
+        $chart_data = $this->makeChartData($data);
+
+        return [
+            'data' => $data,
+            'chart_data' => $chart_data,
+        ];
     }
 
     /**

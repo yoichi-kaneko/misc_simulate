@@ -17,6 +17,9 @@ $(function(){
     $('input#enable_pattern_b').click(function () {
         togglePatternB();
     });
+    $('input#simulate_union_mode').click(function () {
+        togglePatternB();
+    });
 
     $('.form-layout .katex_exp').each(function () {
         let element = $(this)[0];
@@ -26,6 +29,7 @@ $(function(){
     });
     $('#cognitive_unit_formula .katex').css('font-size', '1.3rem');
     $('input.pattern_b').prop('disabled', true);
+    $('input.union_player_1').prop('disabled', true);
 
     $('button.chart_download').click(function () {
         if (parser.browser.name == 'IE') {
@@ -58,5 +62,10 @@ function togglePatternB()
         $('input.pattern_b').prop('disabled', false);
     } else {
         $('input.pattern_b').prop('disabled', true);
+    }
+    if (is_enable && $('input#simulate_union_mode').prop('checked')) {
+        $('input.union_player_1').prop('disabled', false);
+    } else {
+        $('input.union_player_1').prop('disabled', true);
     }
 }

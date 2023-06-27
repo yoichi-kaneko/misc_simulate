@@ -27,6 +27,11 @@
                 Pattern <span style="text-transform: uppercase;">@{{:key}}</span>
             </a></li>
         @{{/props}}
+        @{{if union_data}}
+            <li class="nav-item"><a class="nav-link switch_pattern" data-toggle="tab" href="#" pattern="union">
+                Union Mode
+            </a></li>
+        @{{/if}}
     </ul>
 </script>
 
@@ -98,50 +103,56 @@
             </table>
         </div>
     </div><!-- card -->
+</script>
 
-<script id="centipedeTemplate" type="text/x-jsrender">
-    <table id="centipede_result_table" class="table mg-b-0">
-        <thead>
-            <tr class="centipede_result_body">
-                <th style="text-transform: none;">
-                    n
-                </th>
-                <th>
-                    <span class="katex_exp" expression="\nu_{M}"></span>
-                </th>
-                <th>
-                    left side
-                </th>
-                <th>
-                    right side
-                </th>
-                <th>
-                    result
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @{{for data}}
-                <tr class="centipede_result_body @{{if result}}result_true@{{/if}}">
-                    <td>
-                        @{{:t}}
-                    </td>
-                    <td>
-                        @{{:max_nu_value}}
-                    </td>
-                    <td>
-                        @{{:left_side_value}}
-                    </td>
-                    <td>
-                        @{{:right_side_value}}
-                    </td>
-                    <td>
-                        @{{:result}}
-                    </td>
-                </tr>
-            @{{/for}}
-        </tbody>
-    </table>
+<script id="centipedeUnionResultTemplate" type="text/x-jsrender">
+    <div class="card pd-20 report_block" id="report_pattern_union">
+        <h6 class="tx-12 tx-uppercase tx-info tx-bold mg-b-15">Report</h6>
+        <div class="showmore_block" id="centipede_result_block_union">
+            <table id="centipede_result_table" class="table mg-b-0">
+                <thead>
+                    <tr class="centipede_result_body">
+                        <th style="text-transform: none; width=15%;">
+                            k
+                        </th>
+                        <th style="text-transform: none; width=20%;">
+                            <span class="katex_exp" expression="\nu_{M}"></span>
+                        </th>
+                        <th style="width=25%;">
+                            left side
+                        </th>
+                        <th style="width=25%;">
+                            right side
+                        </th>
+                        <th style="width=15%;">
+                            result
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{{for table_data}}
+                        <tr class="centipede_result_body @{{if result}}result_true@{{/if}}">
+                            <td>
+                                @{{:t}}
+                            </td>
+                            <td>
+                                @{{:max_nu_value}}
+                            </td>
+                            <td>
+                                @{{:left_side_value}}
+                            </td>
+                            <td>
+                                @{{:right_side_value}}
+                            </td>
+                            <td>
+                                @{{:result}}
+                            </td>
+                        </tr>
+                    @{{/for}}
+                </tbody>
+            </table>
+        </div>
+    </div><!-- card -->
 </script>
 
 <script id="participantsSimulationResultTemplate" type="text/x-jsrender">
