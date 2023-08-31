@@ -73,6 +73,11 @@ function renderCentipedeReportArea(pattern_data, union_data)
     if (union_data) {
         let tmpl = $('#centipedeUnionResultTemplate').render({
             table_data: union_data.data,
+            cognitive_unit_value_a: union_data.cognitive_unit_value_a,
+            cognitive_unit_value_b: union_data.cognitive_unit_value_b,
+            cognitive_unit_latex_text_a: union_data.cognitive_unit_latex_text_a,
+            cognitive_unit_latex_text_b: union_data.cognitive_unit_latex_text_b,
+            average_of_reversed_causality: union_data.average_of_reversed_causality,
         });
         $('#centipede_result').append(tmpl);
     }

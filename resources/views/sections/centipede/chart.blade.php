@@ -108,6 +108,38 @@
 <script id="centipedeUnionResultTemplate" type="text/x-jsrender">
     <div class="card pd-20 report_block" id="report_pattern_union">
         <h6 class="tx-12 tx-uppercase tx-info tx-bold mg-b-15">Report</h6>
+        <div class="d-flex mg-b-10">
+            <div class="bd-r pd-l-12">
+                <label class="tx-12">Cognitive Unit(A)</label>
+                <p class="tx-lato tx-inverse tx-bold">
+                    <span class="katex_exp" expression="@{{:cognitive_unit_latex_text_a}}"></span>
+                </p>
+            </div>
+            <div class="bd-r pd-l-12">
+                <label class="tx-12">Cognitive Unit(B)</label>
+                <p class="tx-lato tx-inverse tx-bold">
+                    <span class="katex_exp" expression="@{{:cognitive_unit_latex_text_b}}"></span>
+                </p>
+            </div>
+            <div class="bd-r pd-l-12">
+                <label class="tx-12">Cognitive Unit Value(A)</label>
+                <p class="tx-lato tx-inverse tx-bold">
+                    <span>@{{:cognitive_unit_value_a}}</span>
+                </p>
+            </div>
+            <div class="bd-r pd-l-12">
+                <label class="tx-12">Cognitive Unit Value(B)</label>
+                <p class="tx-lato tx-inverse tx-bold">
+                    <span>@{{:cognitive_unit_value_b}}</span>
+                </p>
+            </div>
+            <div class="bd-r pd-l-12">
+                <label class="tx-12">Average of Reversed Causality</label>
+                <p class="tx-lato tx-inverse tx-bold">
+                    <span>@{{:average_of_reversed_causality}}</span>
+                </p>
+            </div>
+        </div>
         <div class="showmore_block" id="centipede_result_block_union">
             <table id="centipede_result_table" class="table mg-b-0">
                 <thead>
