@@ -186,9 +186,15 @@ class Centipede
         }
         $chart_data = $this->makeChartData($data);
 
+        $average_of_reversed_causality = (array_sum(Arr::pluck($chart_data, 'y')) / count($chart_data));
         return [
             'data' => $data,
             'chart_data' => $chart_data,
+            'cognitive_unit_latex_text_a' => $pattern_data['a']['cognitive_unit_latex_text'],
+            'cognitive_unit_latex_text_b' => $pattern_data['b']['cognitive_unit_latex_text'],
+            'cognitive_unit_value_a' => $pattern_data['a']['cognitive_unit_value'],
+            'cognitive_unit_value_b' => $pattern_data['b']['cognitive_unit_value'],
+            'average_of_reversed_causality' => $average_of_reversed_causality,
         ];
     }
 
