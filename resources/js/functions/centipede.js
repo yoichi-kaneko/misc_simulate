@@ -6,19 +6,35 @@ let myChartCentipedeSimulation;
 export function doCentipedeCalculate()
 {
     let patterns = {
-        a: {
-            base_numerator: $('#base_numerator_a').val(),
-            numerator_exp_1: $('#numerator_exp_1_a').val(),
-            numerator_exp_2: $('#numerator_exp_2_a').val(),
-            denominator_exp: $('#denominator_exp_a').val(),
+        a_1: {
+            base_numerator: $('#base_numerator_a_1').val(),
+            numerator_exp_1: $('#numerator_exp_1_a_1').val(),
+            numerator_exp_2: $('#numerator_exp_2_a_1').val(),
+            denominator_exp: $('#denominator_exp_a_1').val(),
         }
     };
     if ($('input#simulate_union_mode').prop('checked')) {
-        patterns['b'] = {
-            base_numerator: $('#base_numerator_b').val(),
-            numerator_exp_1: $('#numerator_exp_1_b').val(),
-            numerator_exp_2: $('#numerator_exp_2_b').val(),
-            denominator_exp: $('#denominator_exp_b').val(),
+        patterns['a_2'] = {
+            base_numerator: $('#base_numerator_a_2').val(),
+            numerator_exp_1: $('#numerator_exp_1_a_2').val(),
+            numerator_exp_2: $('#numerator_exp_2_a_2').val(),
+            denominator_exp: $('#denominator_exp_a_2').val(),
+        };
+    }
+    if ($('input#enable_pattern_b').prop('checked')) {
+        patterns['b_1'] = {
+            base_numerator: $('#base_numerator_b_1').val(),
+            numerator_exp_1: $('#numerator_exp_1_b_1').val(),
+            numerator_exp_2: $('#numerator_exp_2_b_1').val(),
+            denominator_exp: $('#denominator_exp_b_1').val(),
+        };
+    }
+    if ($('input#simulate_union_mode').prop('checked') && $('input#enable_pattern_b').prop('checked')) {
+        patterns['b_2'] = {
+            base_numerator: $('#base_numerator_b_2').val(),
+            numerator_exp_1: $('#numerator_exp_1_b_2').val(),
+            numerator_exp_2: $('#numerator_exp_2_b_2').val(),
+            denominator_exp: $('#denominator_exp_b_2').val(),
         };
     }
 
@@ -28,7 +44,13 @@ export function doCentipedeCalculate()
         max_rc: $('#max_rc').val(),
     };
     if ($('input#simulate_union_mode').prop('checked')) {
-        data['union_player_1'] = $('input:radio[name="union_player_1"]:checked').val();
+        let union_player_1 = {
+            a: $('input:radio[name="union_player_1_a"]:checked').val(),
+        };
+        if ($('input#enable_pattern_b').prop('checked')) {
+            union_player_1['b'] = $('input:radio[name="union_player_1_b"]:checked').val();
+        }
+        data['union_player_1'] = union_player_1;
     }
     $.ajax({
         type: 'POST',

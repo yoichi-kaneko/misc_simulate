@@ -23,7 +23,7 @@ class Centipede
      * @param array $patterns
      * @param int $max_step
      * @param int|null $max_rc
-     * @param string|null $union_player_1
+     * @param array|null $union_player_1
      * @return array
      * @throws \Illuminate\Contracts\Container\BindingResolutionException|\Exception
      */
@@ -31,7 +31,7 @@ class Centipede
         array $patterns,
         int $max_step,
         ?int $max_rc,
-        ?string $union_player_1
+        ?array $union_player_1
     ): array {
         $pattern_data = [];
 
@@ -166,42 +166,49 @@ class Centipede
 
     /**
      * 2つのシミュレート結果を合算する
-     * @param string $union_player_1
+     * @param array $union_player_1
      * @param array $pattern_data
      * @return array
      */
-    private function unionCalculateData(string $union_player_1, array $pattern_data): array
+    private function unionCalculateData(array $union_player_1, array $pattern_data): array
     {
-        // Requestのバリデーションで $union_player_1 にはa,bいずれかがセットされていると想定
-        $pattern_data_a = $pattern_data['a']['data'];
-        $pattern_data_b = $pattern_data['b']['data'];
-        $player_1_is_a = ($union_player_1 === 'a');
+        $unioned_data = [];
 
-        $data = [];
-        $max_count = count($pattern_data_a);
-        for ($i = 0; $i < $max_count; $i++) {
-            // Player1がAで$iが偶数（0から始まるため）、Player1がBで$iが奇数の場合にAをセット
-            if (
-                $player_1_is_a && $i %2 === 0 ||
-                !$player_1_is_a && $i %2 > 0
-            ) {
-                $data[] = $pattern_data_a[$i];
-            } else {
-                $data[] = $pattern_data_b[$i];
+        foreach ($union_player_1 as $union_player_key => $union_player_val) {
+            // Requestのバリデーションで $union_player_val には1,2いずれかがセットされていると想定
+            $pattern_data_1 = $pattern_data[$union_player_key . '_1']['data'];
+            $pattern_data_2 = $pattern_data[$union_player_key . '_2']['data'];
+            $player_1_is_1 = ($union_player_val === '1');
+
+            $data = [];
+            $max_count = count($pattern_data_1);
+            for ($i = 0; $i < $max_count; $i++) {
+                // Player1が1で$iが偶数（0から始まるため）、Player1が2で$iが奇数の場合にAをセット
+                if (
+                    $player_1_is_1 && $i %2 === 0 ||
+                    !$player_1_is_1 && $i %2 > 0
+                ) {
+                    $data[] = $pattern_data_1[$i];
+                } else {
+                    $data[] = $pattern_data_2[$i];
+                }
             }
-        }
-        $chart_data = $this->makeChartData($data);
+            $chart_data = $this->makeChartData($data);
 
-        $average_of_reversed_causality = (array_sum(Arr::pluck($chart_data, 'y')) / count($chart_data));
-        return [
-            'data' => $data,
-            'chart_data' => $chart_data,
-            'cognitive_unit_latex_text_a' => $pattern_data['a']['cognitive_unit_latex_text'],
-            'cognitive_unit_latex_text_b' => $pattern_data['b']['cognitive_unit_latex_text'],
-            'cognitive_unit_value_a' => $pattern_data['a']['cognitive_unit_value'],
-            'cognitive_unit_value_b' => $pattern_data['b']['cognitive_unit_value'],
-            'average_of_reversed_causality' => $average_of_reversed_causality,
-        ];
+            $average_of_reversed_causality = (array_sum(Arr::pluck($chart_data, 'y')) / count($chart_data));
+
+            $unioned_data[$union_player_key] = [
+                'data' => $data,
+                'chart_data' => $chart_data,
+                'cognitive_unit_latex_text_1' => $pattern_data[$union_player_key . '_1']['cognitive_unit_latex_text'],
+                'cognitive_unit_latex_text_2' => $pattern_data[$union_player_key . '_2']['cognitive_unit_latex_text'],
+                'cognitive_unit_value_1' => $pattern_data[$union_player_key . '_1']['cognitive_unit_value'],
+                'cognitive_unit_value_2' => $pattern_data[$union_player_key . '_2']['cognitive_unit_value'],
+                'average_of_reversed_causality' => $average_of_reversed_causality,
+            ];
+        }
+
+        return $unioned_data;
     }
 
     /**

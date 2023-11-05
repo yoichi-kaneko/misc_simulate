@@ -156,16 +156,16 @@
                             Player 1:
                         </label>
                         <div class="col-sm-2 mg-t-10 mg-sm-t-0">
-                            <input class="union_player_a" id="union_player_a_1" type="radio" name="union_player_a" value="1" checked>
+                            <input class="union_player_1_a" id="union_player_1_a_1" type="radio" name="union_player_1_a" value="1" checked>
                         </div>
                         <div class="col-sm-2 mg-t-10 mg-sm-t-0">
-                            <input class="union_player_a" id="union_player_a_2" type="radio" name="union_player_a" value="2">
+                            <input class="union_player_1_a" id="union_player_1_a_2" type="radio" name="union_player_1_a" value="2">
                         </div>
                         <div class="col-sm-2 mg-t-10 mg-sm-t-0">
-                            <input class="union_player_b" id="union_player_b_1" type="radio" name="union_player_b" value="1" checked>
+                            <input class="union_player_1_b" id="union_player_1_b_1" type="radio" name="union_player_1_b" value="1" checked>
                         </div>
                         <div class="col-sm-2s mg-t-10 mg-sm-t-0">
-                            <input class="union_player_b" id="union_player_b_2" type="radio" name="union_player_b" value="2">
+                            <input class="union_player_1_b" id="union_player_1_b_2" type="radio" name="union_player_1_b" value="2">
                         </div>
                     </div>
                 </div>
