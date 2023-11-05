@@ -20,6 +20,7 @@ class CentipedeController extends Controller
     {
         $patterns = $request->input('patterns');
         $max_step = (int) $request->input('max_step');
+        $max_rc = $request->input('max_rc') ? (int) $request->input('max_rc') : null;
         $union_player_1 = $request->input('union_player_1', null);
         $calculator = app()->make(Centipede::class);
 
@@ -27,6 +28,7 @@ class CentipedeController extends Controller
             $result = $calculator->run(
                 $patterns,
                 $max_step,
+                $max_rc,
                 $union_player_1
             );
         } catch (\Exception $e) {

@@ -22,6 +22,7 @@ class Centipede
      * 計算を実行する
      * @param array $patterns
      * @param int $max_step
+     * @param int|null $max_rc
      * @param string|null $union_player_1
      * @return array
      * @throws \Illuminate\Contracts\Container\BindingResolutionException|\Exception
@@ -29,6 +30,7 @@ class Centipede
     public function run(
         array $patterns,
         int $max_step,
+        ?int $max_rc,
         ?string $union_player_1
     ): array {
         $pattern_data = [];
@@ -51,6 +53,10 @@ class Centipede
 
         return [
             'result' => 'ok',
+            'render_params' => [
+                'max_step' => $max_step,
+                'max_rc' => $max_rc,
+            ],
             'pattern_data' => $pattern_data,
             'union_data' => $union_data,
         ];

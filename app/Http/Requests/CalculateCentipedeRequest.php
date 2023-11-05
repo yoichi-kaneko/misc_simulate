@@ -29,6 +29,7 @@ class CalculateCentipedeRequest extends FormRequest
             'patterns.*.numerator_exp_2' => 'required|integer|min:1|max:5',
             'patterns.*.denominator_exp' => 'required|integer|min:0|max:12',
             'max_step' => 'required|integer|min:1|max:200',
+            'max_rc' => 'nullable|integer|min:1|max:200',
             'union_player_1' => 'regex:/^[ab]$/'
         ];
     }

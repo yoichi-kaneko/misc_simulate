@@ -24,7 +24,8 @@ export function doCentipedeCalculate()
 
     let data = {
         patterns: patterns,
-        max_step: $('#max_step').val()
+        max_step: $('#max_step').val(),
+        max_rc: $('#max_rc').val(),
     };
     if ($('input#simulate_union_mode').prop('checked') && $('input#enable_pattern_b').prop('checked')) {
         data['union_player_1'] = $('input:radio[name="union_player_1"]:checked').val();
@@ -36,7 +37,11 @@ export function doCentipedeCalculate()
         format: 'json',
         success: function (data) {
             renderCentipedeReportArea(data.pattern_data, data.union_data);
-            renderCentipedeSimulationChart(data.pattern_data, data.union_data);
+            renderCentipedeSimulationChart(
+                data.render_params,
+                data.pattern_data,
+                data.union_data
+            );
 
             $('button.calculate').removeClass('disabled');
             $('#centipede_spinner').hide();
@@ -123,24 +128,34 @@ function renderCentipedeReportArea(pattern_data, union_data)
 
 /**
  * チャートの出力を行う
+ * @param render_params
  * @param pattern_data
  * @param union_data
  */
-function renderCentipedeSimulationChart(pattern_data, union_data)
+function renderCentipedeSimulationChart(render_params, pattern_data, union_data)
 {
     let ctx_simulation = document.getElementById('chart_centipede_simulation');
     if(myChartCentipedeSimulation) {
         myChartCentipedeSimulation.destroy();
         $('#chart_centipede_simulation').removeAttr('width');
     }
-    myChartCentipedeSimulation = new Chart(ctx_simulation, getCentipedeSimulationOption(pattern_data, union_data));
+    myChartCentipedeSimulation = new Chart(
+        ctx_simulation,
+        getCentipedeSimulationOption(
+            render_params,
+            pattern_data,
+            union_data
+        )
+    );
 }
 
 /**
  * チャートのパラメータ生成を行う
+ * @param render_params
+ * @param pattern_data
  * @param chart_data
  */
-function getCentipedeSimulationOption(pattern_data, union_data)
+function getCentipedeSimulationOption(render_params, pattern_data, union_data)
 {
     let chart_data = pattern_data.a.chart_data;
     let datasets = [];
@@ -200,6 +215,12 @@ function getCentipedeSimulationOption(pattern_data, union_data)
         datasets.push(dataset);
     }
 
+    // RCの最大値が指定されていればその値を、指定されていない場合はステップ数をy軸最大値にする
+    let max_y_axes = render_params.max_step;
+    if (render_params.max_rc) {
+        max_y_axes = render_params.max_rc;
+    }
+
     return {
         data: {
             labels: label_array,
@@ -221,7 +242,7 @@ function getCentipedeSimulationOption(pattern_data, union_data)
                     ticks: {
                         beginAtZero: true,
                         min: 0,
-                        max: label_array.length,
+                        max: max_y_axes,
                         fontSize: 10,
                     },
                     scaleLabel: {
