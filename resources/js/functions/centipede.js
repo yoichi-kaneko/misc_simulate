@@ -98,15 +98,18 @@ function renderCentipedeReportArea(pattern_data, union_data)
         $('#centipede_result').append(tmpl);
     });
     if (union_data) {
-        let tmpl = $('#centipedeUnionResultTemplate').render({
-            table_data: union_data.data,
-            cognitive_unit_value_a: union_data.cognitive_unit_value_a,
-            cognitive_unit_value_b: union_data.cognitive_unit_value_b,
-            cognitive_unit_latex_text_a: union_data.cognitive_unit_latex_text_a,
-            cognitive_unit_latex_text_b: union_data.cognitive_unit_latex_text_b,
-            average_of_reversed_causality: union_data.average_of_reversed_causality,
+        $.each(union_data, function(index,val) {
+            let tmpl = $('#centipedeUnionResultTemplate').render({
+                pattern: index,
+                table_data: val.data,
+                cognitive_unit_value_1: val.cognitive_unit_value_1,
+                cognitive_unit_value_2: val.cognitive_unit_value_2,
+                cognitive_unit_latex_text_1: val.cognitive_unit_latex_text_1,
+                cognitive_unit_latex_text_2: val.cognitive_unit_latex_text_2,
+                average_of_reversed_causality: val.average_of_reversed_causality,
+            });
+            $('#centipede_result').append(tmpl);
         });
-        $('#centipede_result').append(tmpl);
     }
 
     // 切り替えタブの生成
@@ -179,13 +182,17 @@ function renderCentipedeSimulationChart(render_params, pattern_data, union_data)
  */
 function getCentipedeSimulationOption(render_params, pattern_data, union_data)
 {
-    let chart_data = pattern_data.a.chart_data;
+    let base_key = 'a_1';
+    let chart_data = pattern_data[base_key].chart_data;
     let datasets = [];
     let label_array = [];
     let border_color_list = [
         '#324463',
         '#5B93D3',
-        '#DC3545'
+        '#DC3545',
+        '#324463',
+        '#5B93D3',
+        '#DC3545',
     ];
 
     $.each(pattern_data, function(pattern, val) {
@@ -210,31 +217,33 @@ function getCentipedeSimulationOption(render_params, pattern_data, union_data)
         };
         datasets.push(dataset);
     });
-    $.each(pattern_data.a.chart_data, function(index, val) {
+    $.each(pattern_data[base_key].chart_data, function(index, val) {
         label_array.push(val.x);
     });
 
     if (union_data) {
-        chart_data = union_data.chart_data;
-        let data_array = [];
-        $.each(chart_data, function(index, val) {
-            data_array.push({
-                x: val.x,
-                y: val.y,
+        $.each(union_data, function(union_pattern, val) {
+            chart_data = val.chart_data;
+            let data_array = [];
+            $.each(chart_data, function(index, val) {
+                data_array.push({
+                    x: val.x,
+                    y: val.y,
+                });
             });
-        });
 
-        let dataset = {
-            type: 'line',
-            label: 'Union Mode',
-            data: data_array,
-            borderColor: border_color_list.shift(),
-            borderWidth: 2,
-            lineTension: 0,
-            pointRadius: 0,
-            fill: false
-        };
-        datasets.push(dataset);
+            let dataset = {
+                type: 'line',
+                label: 'Union Mode ' + union_pattern.toUpperCase(),
+                data: data_array,
+                borderColor: border_color_list.shift(),
+                borderWidth: 2,
+                lineTension: 0,
+                pointRadius: 0,
+                fill: false
+            };
+            datasets.push(dataset);
+        });
     }
 
     // RCの最大値が指定されていればその値を、指定されていない場合はステップ数をy軸最大値にする
