@@ -14,9 +14,6 @@ $(function(){
     $('button#reset').click(function () {
         reset();
     });
-    $('input#enable_pattern_b').click(function () {
-        togglePatternB();
-    });
     $('input#simulate_union_mode').click(function () {
         togglePatternB();
     });
@@ -57,15 +54,11 @@ function reset()
 
 function togglePatternB()
 {
-    let is_enable = $('input#enable_pattern_b').prop('checked');
-    if (is_enable) {
+    if ($('input#simulate_union_mode').prop('checked')) {
         $('input.pattern_b').prop('disabled', false);
-    } else {
-        $('input.pattern_b').prop('disabled', true);
-    }
-    if (is_enable && $('input#simulate_union_mode').prop('checked')) {
         $('input.union_player_1').prop('disabled', false);
     } else {
+        $('input.pattern_b').prop('disabled', true);
         $('input.union_player_1').prop('disabled', true);
     }
 }

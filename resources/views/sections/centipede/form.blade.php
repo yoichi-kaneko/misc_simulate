@@ -15,6 +15,18 @@
                 </div>
             </div>
             <div class="row mg-b-25">
+                <div class="col-lg-4">
+                    <div class="row row-xs">
+                        <label class="col-sm-6 form-control-label">
+                            Simulate Union Mode :
+                        </label>
+                        <div class="col-sm-4 mg-t-10 mg-sm-t-0">
+                            <input type="checkbox" id="simulate_union_mode" name="simulate_union_mode">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mg-b-25">
                 <div class="col-lg-2">
                     &nbsp;
                 </div>
@@ -27,8 +39,6 @@
                     <div class="row row-xs">
                         <label class="form-control-label">
                             <span>Pattern B: </span>
-                            &nbsp;
-                            <input type="checkbox" id="enable_pattern_b" name="enable_pattern_b">
                         </label>
                     </div>
                 </div>
@@ -118,18 +128,6 @@
                             :</label>
                         <div class="col-sm-4 mg-t-10 mg-sm-t-0">
                             <input class="form-control" id="max_rc" type="text" name="max_rc" maxlength="3" value="" default_val="" placeholder="Enter RC_MAX(optional)">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row mg-b-25">
-                <div class="col-lg-4">
-                    <div class="row row-xs">
-                        <label class="col-sm-6 form-control-label">
-                            Simulate Union Mode :
-                        </label>
-                        <div class="col-sm-4 mg-t-10 mg-sm-t-0">
-                            <input type="checkbox" id="simulate_union_mode" name="simulate_union_mode">
                         </div>
                     </div>
                 </div>

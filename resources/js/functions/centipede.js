@@ -13,7 +13,7 @@ export function doCentipedeCalculate()
             denominator_exp: $('#denominator_exp_a').val(),
         }
     };
-    if ($('input#enable_pattern_b').prop('checked')) {
+    if ($('input#simulate_union_mode').prop('checked')) {
         patterns['b'] = {
             base_numerator: $('#base_numerator_b').val(),
             numerator_exp_1: $('#numerator_exp_1_b').val(),
@@ -27,7 +27,7 @@ export function doCentipedeCalculate()
         max_step: $('#max_step').val(),
         max_rc: $('#max_rc').val(),
     };
-    if ($('input#simulate_union_mode').prop('checked') && $('input#enable_pattern_b').prop('checked')) {
+    if ($('input#simulate_union_mode').prop('checked')) {
         data['union_player_1'] = $('input:radio[name="union_player_1"]:checked').val();
     }
     $.ajax({
