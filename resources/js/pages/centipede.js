@@ -14,9 +14,13 @@ $(function(){
     $('button#reset').click(function () {
         reset();
     });
-    $('input#simulate_union_mode').click(function () {
-        togglePatternB();
+    $('input#enable_pattern_b').click(function () {
+        toggleRenderPattern();
     });
+    $('input#simulate_union_mode').click(function () {
+        toggleRenderPattern();
+    });
+    toggleRenderPattern();
 
     $('.form-layout .katex_exp').each(function () {
         let element = $(this)[0];
@@ -52,13 +56,25 @@ function reset()
     });
 }
 
-function togglePatternB()
+function toggleRenderPattern()
 {
     if ($('input#simulate_union_mode').prop('checked')) {
-        $('input.pattern_b').prop('disabled', false);
-        $('input.union_player_1').prop('disabled', false);
+        $('input.pattern_a_2').prop('disabled', false);
+        $('input.union_player_a').prop('disabled', false);
     } else {
-        $('input.pattern_b').prop('disabled', true);
-        $('input.union_player_1').prop('disabled', true);
+        $('input.pattern_a_2').prop('disabled', true);
+        $('input.union_player_a').prop('disabled', true);
+    }
+    if ($('input#enable_pattern_b').prop('checked')) {
+        $('input.pattern_b_1').prop('disabled', false);
+    } else {
+        $('input.pattern_b_1').prop('disabled', true);
+    }
+    if ($('input#simulate_union_mode').prop('checked') && $('input#enable_pattern_b').prop('checked')) {
+        $('input.pattern_b_2').prop('disabled', false);
+        $('input.union_player_b').prop('disabled', false);
+    } else {
+        $('input.pattern_b_2').prop('disabled', true);
+        $('input.union_player_b').prop('disabled', true);
     }
 }
