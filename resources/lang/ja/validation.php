@@ -175,6 +175,7 @@ return [
         'numerator_exp_2' => 'X3',
         'denominator_exp' => 'X4',
         'max_step' => 'k_max',
+        'max_rc' => 'rc_max',
     ],
 
 ];

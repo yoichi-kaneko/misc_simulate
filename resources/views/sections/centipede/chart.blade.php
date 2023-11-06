@@ -28,9 +28,11 @@
             </a></li>
         @{{/props}}
         @{{if union_data}}
-            <li class="nav-item"><a class="nav-link switch_pattern" data-toggle="tab" href="#" pattern="union">
-                Union Mode
+            @{{props union_data}}
+            <li class="nav-item"><a class="nav-link switch_pattern" data-toggle="tab" href="#" pattern="union_@{{:key}}">
+                Union Mode(<span style="text-transform: uppercase;">@{{:key}}</span>)
             </a></li>
+            @{{/props}}
         @{{/if}}
     </ul>
 </script>
@@ -106,31 +108,31 @@
 </script>
 
 <script id="centipedeUnionResultTemplate" type="text/x-jsrender">
-    <div class="card pd-20 report_block" id="report_pattern_union">
+    <div class="card pd-20 report_block" id="report_pattern_union_@{{:pattern}}">
         <h6 class="tx-12 tx-uppercase tx-info tx-bold mg-b-15">Report</h6>
         <div class="d-flex mg-b-10">
             <div class="bd-r pd-l-12">
-                <label class="tx-12">Cognitive Unit(A)</label>
+                <label class="tx-12">Cognitive Unit(1)</label>
                 <p class="tx-lato tx-inverse tx-bold">
-                    <span class="katex_exp" expression="@{{:cognitive_unit_latex_text_a}}"></span>
+                    <span class="katex_exp" expression="@{{:cognitive_unit_latex_text_1}}"></span>
                 </p>
             </div>
             <div class="bd-r pd-l-12">
-                <label class="tx-12">Cognitive Unit(B)</label>
+                <label class="tx-12">Cognitive Unit(2)</label>
                 <p class="tx-lato tx-inverse tx-bold">
-                    <span class="katex_exp" expression="@{{:cognitive_unit_latex_text_b}}"></span>
+                    <span class="katex_exp" expression="@{{:cognitive_unit_latex_text_2}}"></span>
                 </p>
             </div>
             <div class="bd-r pd-l-12">
-                <label class="tx-12">Cognitive Unit Value(A)</label>
+                <label class="tx-12">Cognitive Unit Value(1)</label>
                 <p class="tx-lato tx-inverse tx-bold">
-                    <span>@{{:cognitive_unit_value_a}}</span>
+                    <span>@{{:cognitive_unit_value_1}}</span>
                 </p>
             </div>
             <div class="bd-r pd-l-12">
-                <label class="tx-12">Cognitive Unit Value(B)</label>
+                <label class="tx-12">Cognitive Unit Value(2)</label>
                 <p class="tx-lato tx-inverse tx-bold">
-                    <span>@{{:cognitive_unit_value_b}}</span>
+                    <span>@{{:cognitive_unit_value_2}}</span>
                 </p>
             </div>
             <div class="bd-r pd-l-12">
