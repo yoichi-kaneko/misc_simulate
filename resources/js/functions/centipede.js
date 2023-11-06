@@ -189,10 +189,10 @@ function getCentipedeSimulationOption(render_params, pattern_data, union_data)
     let border_color_list = [
         '#324463',
         '#5B93D3',
+        '#7CBDDF',
+        '#17A2B8',
         '#DC3545',
-        '#324463',
-        '#5B93D3',
-        '#DC3545',
+        '#6F42C1'
     ];
 
     $.each(pattern_data, function(pattern, val) {
