@@ -1,5 +1,7 @@
 import {afterCalculateByError, setErrorMessage} from "./calculate";
 import {notifyComplete} from "./notify";
+import {Chart, registerables} from "chart.js";
+Chart.register(...registerables);
 
 let myChartCentipedeSimulation;
 
@@ -194,6 +196,7 @@ function getCentipedeSimulationOption(render_params, pattern_data, union_data)
         '#DC3545',
         '#6F42C1'
     ];
+    let border_color = '';
 
     $.each(pattern_data, function(pattern, val) {
         chart_data = val.chart_data;
@@ -204,12 +207,14 @@ function getCentipedeSimulationOption(render_params, pattern_data, union_data)
                 y: val2.y,
             });
         });
+        border_color = border_color_list.shift();
 
         let dataset = {
             type: 'line',
             label: 'Pattern ' + pattern.toUpperCase(),
             data: data_array,
-            borderColor: border_color_list.shift(),
+            borderColor: border_color,
+            backgroundColor: border_color,
             borderWidth: 2,
             lineTension: 0,
             pointRadius: 0,
@@ -232,11 +237,14 @@ function getCentipedeSimulationOption(render_params, pattern_data, union_data)
                 });
             });
 
+            border_color = border_color_list.shift();
+
             let dataset = {
                 type: 'line',
                 label: 'Union Mode ' + union_pattern.toUpperCase(),
                 data: data_array,
-                borderColor: border_color_list.shift(),
+                borderColor: border_color,
+                backgroundColor: border_color,
                 borderWidth: 2,
                 lineTension: 0,
                 pointRadius: 0,
@@ -260,58 +268,68 @@ function getCentipedeSimulationOption(render_params, pattern_data, union_data)
         options: {
             responsive: true,
             animation: false,
-            legend: {
-                display: true,
-                labels: {
-                    display: true
-                }
-            },
             scales: {
-                yAxes: [{
+                y: {
                     type: "linear",
                     position: "left",
-                    ticks: {
-                        beginAtZero: true,
-                        min: 0,
-                        max: max_y_axes,
-                        fontSize: 10,
-                    },
-                    scaleLabel: {
+                    beginAtZero: true,
+                    min: 0,
+                    max: max_y_axes,
+                    fontSize: 10,
+                    title: {
                         display: true,
                         fontSize: 15,
                         labelString: '#RC'
                     }
-                }],
-                xAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        fontSize: 11,
-                    },
-                    scaleLabel: {
+                },
+                x: {
+                    beginAtZero: true,
+                    fontSize: 11,
+                    title: {
                         labelString: 'k',
                         display: false,
                     }
-                }]
-            },
-            tooltips: {
-                mode: 'index',
-                displayColors: false,
-                intersect: false,
-                callbacks: {
-                    title: function(tooltipItems) {
-                        return 'k: ' + tooltipItems[0].xLabel;
-                    },
-                    label: function(tooltipItem, data) {
-                        let label = data.datasets[tooltipItem.datasetIndex].label || '';
-
-                        if (label) {
-                            label += ': ';
-                        }
-                        label += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].y;
-                        return label;
-                    }
                 }
             },
-        }
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        display: true
+                    }
+                },
+                tooltip: {
+                    mode: 'index',
+                    displayColors: false,
+                    intersect: false,
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            return 'k: ' + tooltipItems[0].label;
+                        },
+                        label: function(tooltipItem) {
+                            let label = tooltipItem.dataset.label || '';
+
+                            if (label) {
+                                label += ': ';
+                            }
+                            label += tooltipItem.dataset.data[tooltipItem.dataIndex].y;
+                            return label;
+                        }
+                    }
+                }
+            }
+        },
+        plugins: [{
+            beforeDraw: drawBackground
+        }]
     }
+}
+
+function drawBackground(target) { // 引数はmyChart自身とされる。
+    let cvs = document.getElementById(target.canvas.id); // もちろん'my_graph'で直接指定してもOK
+    let ctx = cvs.getContext('2d');
+
+    // プロット領域に重なるように、背景色の四角形を描画
+    ctx.fillStyle = "white";              // 背景色（今回は濃いグレー）
+    ctx.fillRect(0, 0, target.width, target.height);
 }
