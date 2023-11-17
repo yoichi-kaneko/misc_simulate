@@ -1,6 +1,7 @@
 import {afterCalculateByError, setErrorMessage} from "./calculate";
 import {notifyComplete} from "./notify";
 import {Chart, registerables} from "chart.js";
+import {htmlLegendPlugin} from "../chartjs/plugins/html_legend.js";
 Chart.register(...registerables);
 
 let myChartCentipedeSimulation;
@@ -292,11 +293,12 @@ function getCentipedeSimulationOption(render_params, pattern_data, combination_d
                 }
             },
             plugins: {
+                htmlLegend: {
+                    // ID of the container to put the legend in
+                    containerID: 'legend-container',
+                },
                 legend: {
-                    display: true,
-                    labels: {
-                        display: true
-                    }
+                    display: false,
                 },
                 tooltip: {
                     mode: 'index',
@@ -319,9 +321,12 @@ function getCentipedeSimulationOption(render_params, pattern_data, combination_d
                 }
             }
         },
-        plugins: [{
-            beforeDraw: drawBackground
-        }]
+        plugins: [
+            {
+                beforeDraw: drawBackground
+            },
+            htmlLegendPlugin
+        ]
     }
 }
 
