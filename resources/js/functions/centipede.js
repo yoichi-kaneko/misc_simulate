@@ -15,7 +15,7 @@ export function doCentipedeCalculate()
             denominator_exp: $('#denominator_exp_a_1').val(),
         }
     };
-    if ($('input#simulate_union_mode').prop('checked')) {
+    if ($('input#simulate_combination').prop('checked')) {
         patterns['a_2'] = {
             base_numerator: $('#base_numerator_a_2').val(),
             numerator_exp_1: $('#numerator_exp_1_a_2').val(),
@@ -31,7 +31,7 @@ export function doCentipedeCalculate()
             denominator_exp: $('#denominator_exp_b_1').val(),
         };
     }
-    if ($('input#simulate_union_mode').prop('checked') && $('input#enable_pattern_b').prop('checked')) {
+    if ($('input#simulate_combination').prop('checked') && $('input#enable_pattern_b').prop('checked')) {
         patterns['b_2'] = {
             base_numerator: $('#base_numerator_b_2').val(),
             numerator_exp_1: $('#numerator_exp_1_b_2').val(),
@@ -45,14 +45,14 @@ export function doCentipedeCalculate()
         max_step: $('#max_step').val(),
         max_rc: $('#max_rc').val(),
     };
-    if ($('input#simulate_union_mode').prop('checked')) {
-        let union_player_1 = {
-            a: $('input:radio[name="union_player_1_a"]:checked').val(),
+    if ($('input#simulate_combination').prop('checked')) {
+        let combination_player_1 = {
+            a: $('input:radio[name="combination_player_1_a"]:checked').val(),
         };
         if ($('input#enable_pattern_b').prop('checked')) {
-            union_player_1['b'] = $('input:radio[name="union_player_1_b"]:checked').val();
+            combination_player_1['b'] = $('input:radio[name="combination_player_1_b"]:checked').val();
         }
-        data['union_player_1'] = union_player_1;
+        data['combination_player_1'] = combination_player_1;
     }
     $.ajax({
         type: 'POST',
@@ -60,11 +60,11 @@ export function doCentipedeCalculate()
         data: data,
         format: 'json',
         success: function (data) {
-            renderCentipedeReportArea(data.pattern_data, data.union_data);
+            renderCentipedeReportArea(data.pattern_data, data.combination_data);
             renderCentipedeSimulationChart(
                 data.render_params,
                 data.pattern_data,
-                data.union_data
+                data.combination_data
             );
 
             $('button.calculate').removeClass('disabled');
@@ -84,7 +84,7 @@ export function doCentipedeCalculate()
  * レポートエリアの描画を行う
  * @param data
  */
-function renderCentipedeReportArea(pattern_data, union_data)
+function renderCentipedeReportArea(pattern_data, combination_data)
 {
     // レポートデータの生成
     $('#centipede_result').html('');
@@ -99,9 +99,9 @@ function renderCentipedeReportArea(pattern_data, union_data)
         });
         $('#centipede_result').append(tmpl);
     });
-    if (union_data) {
-        $.each(union_data, function(index,val) {
-            let tmpl = $('#centipedeUnionResultTemplate').render({
+    if (combination_data) {
+        $.each(combination_data, function(index,val) {
+            let tmpl = $('#centipedeCombinationResultTemplate').render({
                 pattern: index,
                 table_data: val.data,
                 cognitive_unit_value_1: val.cognitive_unit_value_1,
@@ -117,7 +117,7 @@ function renderCentipedeReportArea(pattern_data, union_data)
     // 切り替えタブの生成
     let tmpl = $('#centipedeTabTemplate').render({
         pattern_data: pattern_data,
-        union_data: union_data,
+        combination_data: combination_data,
     });
     $('#centipede_tab').html(tmpl);
     // レポートのタブ切り替えをバインド
@@ -157,9 +157,9 @@ function renderCentipedeReportArea(pattern_data, union_data)
  * チャートの出力を行う
  * @param render_params
  * @param pattern_data
- * @param union_data
+ * @param combination_data
  */
-function renderCentipedeSimulationChart(render_params, pattern_data, union_data)
+function renderCentipedeSimulationChart(render_params, pattern_data, combination_data)
 {
     let ctx_simulation = document.getElementById('chart_centipede_simulation');
     if(myChartCentipedeSimulation) {
@@ -171,7 +171,7 @@ function renderCentipedeSimulationChart(render_params, pattern_data, union_data)
         getCentipedeSimulationOption(
             render_params,
             pattern_data,
-            union_data
+            combination_data
         )
     );
 }
@@ -180,9 +180,9 @@ function renderCentipedeSimulationChart(render_params, pattern_data, union_data)
  * チャートのパラメータ生成を行う
  * @param render_params
  * @param pattern_data
- * @param chart_data
+ * @param combination_data
  */
-function getCentipedeSimulationOption(render_params, pattern_data, union_data)
+function getCentipedeSimulationOption(render_params, pattern_data, combination_data)
 {
     let base_key = 'a_1';
     let chart_data = pattern_data[base_key].chart_data;
@@ -226,8 +226,8 @@ function getCentipedeSimulationOption(render_params, pattern_data, union_data)
         label_array.push(val.x);
     });
 
-    if (union_data) {
-        $.each(union_data, function(union_pattern, val) {
+    if (combination_data) {
+        $.each(combination_data, function(combination_pattern, val) {
             chart_data = val.chart_data;
             let data_array = [];
             $.each(chart_data, function(index, val) {
@@ -241,7 +241,7 @@ function getCentipedeSimulationOption(render_params, pattern_data, union_data)
 
             let dataset = {
                 type: 'line',
-                label: 'Union Mode ' + union_pattern.toUpperCase(),
+                label: 'Combination ' + combination_pattern.toUpperCase(),
                 data: data_array,
                 borderColor: border_color,
                 backgroundColor: border_color,

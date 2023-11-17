@@ -17,7 +17,7 @@ $(function(){
     $('input#enable_pattern_b').click(function () {
         toggleRenderPattern();
     });
-    $('input#simulate_union_mode').click(function () {
+    $('input#simulate_combination').click(function () {
         toggleRenderPattern();
     });
     toggleRenderPattern();
@@ -30,7 +30,7 @@ $(function(){
     });
     $('#cognitive_unit_formula .katex').css('font-size', '1.3rem');
     $('input.pattern_b').prop('disabled', true);
-    $('input.union_player_1').prop('disabled', true);
+    $('input.combination_player_1').prop('disabled', true);
 
     $('button.chart_download').click(function () {
         if (parser.browser.name == 'IE') {
@@ -58,23 +58,23 @@ function reset()
 
 function toggleRenderPattern()
 {
-    if ($('input#simulate_union_mode').prop('checked')) {
+    if ($('input#simulate_combination').prop('checked')) {
         $('input.pattern_a_2').prop('disabled', false);
-        $('input.union_player_1_a').prop('disabled', false);
+        $('input.combination_player_1_a').prop('disabled', false);
     } else {
         $('input.pattern_a_2').prop('disabled', true);
-        $('input.union_player_1_a').prop('disabled', true);
+        $('input.combination_player_1_a').prop('disabled', true);
     }
     if ($('input#enable_pattern_b').prop('checked')) {
         $('input.pattern_b_1').prop('disabled', false);
     } else {
         $('input.pattern_b_1').prop('disabled', true);
     }
-    if ($('input#simulate_union_mode').prop('checked') && $('input#enable_pattern_b').prop('checked')) {
+    if ($('input#simulate_combination').prop('checked') && $('input#enable_pattern_b').prop('checked')) {
         $('input.pattern_b_2').prop('disabled', false);
-        $('input.union_player_1_b').prop('disabled', false);
+        $('input.combination_player_1_b').prop('disabled', false);
     } else {
         $('input.pattern_b_2').prop('disabled', true);
-        $('input.union_player_1_b').prop('disabled', true);
+        $('input.combination_player_1_b').prop('disabled', true);
     }
 }
