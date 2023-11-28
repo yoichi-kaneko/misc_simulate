@@ -23,7 +23,7 @@ class Centipede
      * @param array $patterns
      * @param int $max_step
      * @param int|null $max_rc
-     * @param array|null $union_player_1
+     * @param array|null $combination_player_1
      * @return array
      * @throws \Illuminate\Contracts\Container\BindingResolutionException|\Exception
      */
@@ -31,7 +31,7 @@ class Centipede
         array $patterns,
         int $max_step,
         ?int $max_rc,
-        ?array $union_player_1
+        ?array $combination_player_1
     ): array {
         $pattern_data = [];
 
@@ -45,10 +45,10 @@ class Centipede
             );
             $pattern_data[$key] = $pattern_result;
         }
-        if (!is_null($union_player_1)) {
-            $union_data = $this->unionCalculateData($union_player_1, $pattern_data);
+        if (!is_null($combination_player_1)) {
+            $combination_data = $this->unionCalculateData($combination_player_1, $pattern_data);
         } else {
-            $union_data = null;
+            $combination_data = null;
         }
 
         return [
@@ -58,7 +58,7 @@ class Centipede
                 'max_rc' => $max_rc,
             ],
             'pattern_data' => $pattern_data,
-            'union_data' => $union_data,
+            'combination_data' => $combination_data,
         ];
     }
 
@@ -166,19 +166,19 @@ class Centipede
 
     /**
      * 2つのシミュレート結果を合算する
-     * @param array $union_player_1
+     * @param array $combination_player_1
      * @param array $pattern_data
      * @return array
      */
-    private function unionCalculateData(array $union_player_1, array $pattern_data): array
+    private function unionCalculateData(array $combination_player_1, array $pattern_data): array
     {
-        $unioned_data = [];
+        $combination_data = [];
 
-        foreach ($union_player_1 as $union_player_key => $union_player_val) {
-            // Requestのバリデーションで $union_player_val には1,2いずれかがセットされていると想定
-            $pattern_data_1 = $pattern_data[$union_player_key . '_1']['data'];
-            $pattern_data_2 = $pattern_data[$union_player_key . '_2']['data'];
-            $player_1_is_1 = ($union_player_val === '1');
+        foreach ($combination_player_1 as $combination_player_key => $combination_player_val) {
+            // Requestのバリデーションで $combination_player_val には1,2いずれかがセットされていると想定
+            $pattern_data_1 = $pattern_data[$combination_player_key . '_1']['data'];
+            $pattern_data_2 = $pattern_data[$combination_player_key . '_2']['data'];
+            $player_1_is_1 = ($combination_player_val === '1');
 
             $data = [];
             $max_count = count($pattern_data_1);
@@ -197,18 +197,18 @@ class Centipede
 
             $average_of_reversed_causality = (array_sum(Arr::pluck($chart_data, 'y')) / count($chart_data));
 
-            $unioned_data[$union_player_key] = [
+            $combination_data[$combination_player_key] = [
                 'data' => $data,
                 'chart_data' => $chart_data,
-                'cognitive_unit_latex_text_1' => $pattern_data[$union_player_key . '_1']['cognitive_unit_latex_text'],
-                'cognitive_unit_latex_text_2' => $pattern_data[$union_player_key . '_2']['cognitive_unit_latex_text'],
-                'cognitive_unit_value_1' => $pattern_data[$union_player_key . '_1']['cognitive_unit_value'],
-                'cognitive_unit_value_2' => $pattern_data[$union_player_key . '_2']['cognitive_unit_value'],
+                'cognitive_unit_latex_text_1' => $pattern_data[$combination_player_key . '_1']['cognitive_unit_latex_text'],
+                'cognitive_unit_latex_text_2' => $pattern_data[$combination_player_key . '_2']['cognitive_unit_latex_text'],
+                'cognitive_unit_value_1' => $pattern_data[$combination_player_key . '_1']['cognitive_unit_value'],
+                'cognitive_unit_value_2' => $pattern_data[$combination_player_key . '_2']['cognitive_unit_value'],
                 'average_of_reversed_causality' => $average_of_reversed_causality,
             ];
         }
 
-        return $unioned_data;
+        return $combination_data;
     }
 
     /**

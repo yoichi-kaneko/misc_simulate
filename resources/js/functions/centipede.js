@@ -1,5 +1,8 @@
 import {afterCalculateByError, setErrorMessage} from "./calculate";
 import {notifyComplete} from "./notify";
+import {Chart, registerables} from "chart.js";
+import {htmlLegendPlugin} from "../chartjs/plugins/html_legend.js";
+Chart.register(...registerables);
 
 let myChartCentipedeSimulation;
 
@@ -13,7 +16,7 @@ export function doCentipedeCalculate()
             denominator_exp: $('#denominator_exp_a_1').val(),
         }
     };
-    if ($('input#simulate_union_mode').prop('checked')) {
+    if ($('input#simulate_combination').prop('checked')) {
         patterns['a_2'] = {
             base_numerator: $('#base_numerator_a_2').val(),
             numerator_exp_1: $('#numerator_exp_1_a_2').val(),
@@ -29,7 +32,7 @@ export function doCentipedeCalculate()
             denominator_exp: $('#denominator_exp_b_1').val(),
         };
     }
-    if ($('input#simulate_union_mode').prop('checked') && $('input#enable_pattern_b').prop('checked')) {
+    if ($('input#simulate_combination').prop('checked') && $('input#enable_pattern_b').prop('checked')) {
         patterns['b_2'] = {
             base_numerator: $('#base_numerator_b_2').val(),
             numerator_exp_1: $('#numerator_exp_1_b_2').val(),
@@ -43,14 +46,14 @@ export function doCentipedeCalculate()
         max_step: $('#max_step').val(),
         max_rc: $('#max_rc').val(),
     };
-    if ($('input#simulate_union_mode').prop('checked')) {
-        let union_player_1 = {
-            a: $('input:radio[name="union_player_1_a"]:checked').val(),
+    if ($('input#simulate_combination').prop('checked')) {
+        let combination_player_1 = {
+            a: $('input:radio[name="combination_player_1_a"]:checked').val(),
         };
         if ($('input#enable_pattern_b').prop('checked')) {
-            union_player_1['b'] = $('input:radio[name="union_player_1_b"]:checked').val();
+            combination_player_1['b'] = $('input:radio[name="combination_player_1_b"]:checked').val();
         }
-        data['union_player_1'] = union_player_1;
+        data['combination_player_1'] = combination_player_1;
     }
     $.ajax({
         type: 'POST',
@@ -58,11 +61,11 @@ export function doCentipedeCalculate()
         data: data,
         format: 'json',
         success: function (data) {
-            renderCentipedeReportArea(data.pattern_data, data.union_data);
+            renderCentipedeReportArea(data.pattern_data, data.combination_data);
             renderCentipedeSimulationChart(
                 data.render_params,
                 data.pattern_data,
-                data.union_data
+                data.combination_data
             );
 
             $('button.calculate').removeClass('disabled');
@@ -82,7 +85,7 @@ export function doCentipedeCalculate()
  * レポートエリアの描画を行う
  * @param data
  */
-function renderCentipedeReportArea(pattern_data, union_data)
+function renderCentipedeReportArea(pattern_data, combination_data)
 {
     // レポートデータの生成
     $('#centipede_result').html('');
@@ -97,9 +100,9 @@ function renderCentipedeReportArea(pattern_data, union_data)
         });
         $('#centipede_result').append(tmpl);
     });
-    if (union_data) {
-        $.each(union_data, function(index,val) {
-            let tmpl = $('#centipedeUnionResultTemplate').render({
+    if (combination_data) {
+        $.each(combination_data, function(index,val) {
+            let tmpl = $('#centipedeCombinationResultTemplate').render({
                 pattern: index,
                 table_data: val.data,
                 cognitive_unit_value_1: val.cognitive_unit_value_1,
@@ -115,7 +118,7 @@ function renderCentipedeReportArea(pattern_data, union_data)
     // 切り替えタブの生成
     let tmpl = $('#centipedeTabTemplate').render({
         pattern_data: pattern_data,
-        union_data: union_data,
+        combination_data: combination_data,
     });
     $('#centipede_tab').html(tmpl);
     // レポートのタブ切り替えをバインド
@@ -155,9 +158,9 @@ function renderCentipedeReportArea(pattern_data, union_data)
  * チャートの出力を行う
  * @param render_params
  * @param pattern_data
- * @param union_data
+ * @param combination_data
  */
-function renderCentipedeSimulationChart(render_params, pattern_data, union_data)
+function renderCentipedeSimulationChart(render_params, pattern_data, combination_data)
 {
     let ctx_simulation = document.getElementById('chart_centipede_simulation');
     if(myChartCentipedeSimulation) {
@@ -169,7 +172,7 @@ function renderCentipedeSimulationChart(render_params, pattern_data, union_data)
         getCentipedeSimulationOption(
             render_params,
             pattern_data,
-            union_data
+            combination_data
         )
     );
 }
@@ -178,9 +181,9 @@ function renderCentipedeSimulationChart(render_params, pattern_data, union_data)
  * チャートのパラメータ生成を行う
  * @param render_params
  * @param pattern_data
- * @param chart_data
+ * @param combination_data
  */
-function getCentipedeSimulationOption(render_params, pattern_data, union_data)
+function getCentipedeSimulationOption(render_params, pattern_data, combination_data)
 {
     let base_key = 'a_1';
     let chart_data = pattern_data[base_key].chart_data;
@@ -194,6 +197,7 @@ function getCentipedeSimulationOption(render_params, pattern_data, union_data)
         '#DC3545',
         '#6F42C1'
     ];
+    let border_color = '';
 
     $.each(pattern_data, function(pattern, val) {
         chart_data = val.chart_data;
@@ -204,12 +208,14 @@ function getCentipedeSimulationOption(render_params, pattern_data, union_data)
                 y: val2.y,
             });
         });
+        border_color = border_color_list.shift();
 
         let dataset = {
             type: 'line',
             label: 'Pattern ' + pattern.toUpperCase(),
             data: data_array,
-            borderColor: border_color_list.shift(),
+            borderColor: border_color,
+            backgroundColor: border_color,
             borderWidth: 2,
             lineTension: 0,
             pointRadius: 0,
@@ -221,8 +227,8 @@ function getCentipedeSimulationOption(render_params, pattern_data, union_data)
         label_array.push(val.x);
     });
 
-    if (union_data) {
-        $.each(union_data, function(union_pattern, val) {
+    if (combination_data) {
+        $.each(combination_data, function(combination_pattern, val) {
             chart_data = val.chart_data;
             let data_array = [];
             $.each(chart_data, function(index, val) {
@@ -232,11 +238,14 @@ function getCentipedeSimulationOption(render_params, pattern_data, union_data)
                 });
             });
 
+            border_color = border_color_list.shift();
+
             let dataset = {
                 type: 'line',
-                label: 'Union Mode ' + union_pattern.toUpperCase(),
+                label: 'Combination ' + combination_pattern.toUpperCase(),
                 data: data_array,
-                borderColor: border_color_list.shift(),
+                borderColor: border_color,
+                backgroundColor: border_color,
                 borderWidth: 2,
                 lineTension: 0,
                 pointRadius: 0,
@@ -260,58 +269,74 @@ function getCentipedeSimulationOption(render_params, pattern_data, union_data)
         options: {
             responsive: true,
             animation: false,
-            legend: {
-                display: true,
-                labels: {
-                    display: true
-                }
-            },
             scales: {
-                yAxes: [{
+                y: {
                     type: "linear",
                     position: "left",
-                    ticks: {
-                        beginAtZero: true,
-                        min: 0,
-                        max: max_y_axes,
-                        fontSize: 10,
-                    },
-                    scaleLabel: {
+                    beginAtZero: true,
+                    min: 0,
+                    max: max_y_axes,
+                    fontSize: 10,
+                    title: {
                         display: true,
-                        fontSize: 15,
-                        labelString: '#RC'
+                        text: '#RC',
+                        font: {
+                            size: 15
+                        }
                     }
-                }],
-                xAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        fontSize: 11,
-                    },
-                    scaleLabel: {
+                },
+                x: {
+                    beginAtZero: true,
+                    fontSize: 11,
+                    title: {
                         labelString: 'k',
                         display: false,
                     }
-                }]
-            },
-            tooltips: {
-                mode: 'index',
-                displayColors: false,
-                intersect: false,
-                callbacks: {
-                    title: function(tooltipItems) {
-                        return 'k: ' + tooltipItems[0].xLabel;
-                    },
-                    label: function(tooltipItem, data) {
-                        let label = data.datasets[tooltipItem.datasetIndex].label || '';
-
-                        if (label) {
-                            label += ': ';
-                        }
-                        label += data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].y;
-                        return label;
-                    }
                 }
             },
-        }
+            plugins: {
+                htmlLegend: {
+                    // ID of the container to put the legend in
+                    containerID: 'legend-container',
+                },
+                legend: {
+                    display: false,
+                },
+                tooltip: {
+                    mode: 'index',
+                    displayColors: false,
+                    intersect: false,
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            return 'k: ' + tooltipItems[0].label;
+                        },
+                        label: function(tooltipItem) {
+                            let label = tooltipItem.dataset.label || '';
+
+                            if (label) {
+                                label += ': ';
+                            }
+                            label += tooltipItem.dataset.data[tooltipItem.dataIndex].y;
+                            return label;
+                        }
+                    }
+                }
+            }
+        },
+        plugins: [
+            {
+                beforeDraw: drawBackground
+            },
+            htmlLegendPlugin
+        ]
     }
+}
+
+function drawBackground(target) { // 引数はmyChart自身とされる。
+    let cvs = document.getElementById(target.canvas.id); // もちろん'my_graph'で直接指定してもOK
+    let ctx = cvs.getContext('2d');
+
+    // プロット領域に重なるように、背景色の四角形を描画
+    ctx.fillStyle = "white";              // 背景色（今回は濃いグレー）
+    ctx.fillRect(0, 0, target.width, target.height);
 }

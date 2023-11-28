@@ -3,14 +3,6 @@ import {initializeExponentialForms} from "./functions/exponential";
 let parser = UAParser();
 initializeAll();
 
-Chart.plugins.register({
-    beforeDraw: function(c){
-        let ctx = c.chart.ctx;
-        ctx.fillStyle = 'rgba(255,255,255,1)';
-        ctx.fillRect(0, 0, c.chart.width, c.chart.height);
-    }
-});
-
 $('.alert .close').click(function () {
     $('.alert_block').hide();
 });

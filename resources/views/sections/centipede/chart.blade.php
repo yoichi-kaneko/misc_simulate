@@ -4,6 +4,7 @@
         <div class="col-xl-12">
             <div class="card pd-20 pd-sm-40">
                 <h6 class="card-body-title">Simulation Chart:</h6>
+                <div id="legend-container"></div>
                 <canvas id="chart_centipede_simulation" height="450"></canvas>
                 <div class="col-sm-6 col-md-3">
                     <button target="chart_centipede_simulation" class="btn btn-primary mg-b-10 chart_download">Download</button>
@@ -27,10 +28,10 @@
                 Pattern <span style="text-transform: uppercase;">@{{:key}}</span>
             </a></li>
         @{{/props}}
-        @{{if union_data}}
-            @{{props union_data}}
-            <li class="nav-item"><a class="nav-link switch_pattern" data-toggle="tab" href="#" pattern="union_@{{:key}}">
-                Union Mode(<span style="text-transform: uppercase;">@{{:key}}</span>)
+        @{{if combination_data}}
+            @{{props combination_data}}
+            <li class="nav-item"><a class="nav-link switch_pattern" data-toggle="tab" href="#" pattern="combination_@{{:key}}">
+                Combination(<span style="text-transform: uppercase;">@{{:key}}</span>)
             </a></li>
             @{{/props}}
         @{{/if}}
@@ -107,8 +108,8 @@
     </div><!-- card -->
 </script>
 
-<script id="centipedeUnionResultTemplate" type="text/x-jsrender">
-    <div class="card pd-20 report_block" id="report_pattern_union_@{{:pattern}}">
+<script id="centipedeCombinationResultTemplate" type="text/x-jsrender">
+    <div class="card pd-20 report_block" id="report_pattern_combination_@{{:pattern}}">
         <h6 class="tx-12 tx-uppercase tx-info tx-bold mg-b-15">Report</h6>
         <div class="d-flex mg-b-10">
             <div class="bd-r pd-l-12">
@@ -142,7 +143,7 @@
                 </p>
             </div>
         </div>
-        <div class="showmore_block" id="centipede_result_block_union">
+        <div class="showmore_block" id="centipede_result_block_combination">
             <table id="centipede_result_table" class="table mg-b-0">
                 <thead>
                     <tr class="centipede_result_body">
