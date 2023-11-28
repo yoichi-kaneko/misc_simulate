@@ -279,8 +279,10 @@ function getCentipedeSimulationOption(render_params, pattern_data, combination_d
                     fontSize: 10,
                     title: {
                         display: true,
-                        fontSize: 15,
-                        labelString: '#RC'
+                        text: '#RC',
+                        font: {
+                            size: 15
+                        }
                     }
                 },
                 x: {
