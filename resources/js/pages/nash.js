@@ -1,5 +1,5 @@
 const {beforeCalculate} = require("../functions/calculate");
-const {doCentipedeCalculate} = require("../functions/centipede");
+const {doNashCalculate} = require("../functions/nash");
 
 // let parser = UAParser();
 
@@ -7,7 +7,7 @@ $(function(){
     $('.simulate_player button.calculate').click(function () {
         if (!$(this).hasClass('disabled')) {
             beforeCalculate('nash_spinner');
-            // doCentipedeCalculate();
+            doNashCalculate();
         }
     });
 

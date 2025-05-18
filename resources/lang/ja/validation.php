@@ -117,6 +117,7 @@ return [
     'too_many_iterations' => '演算の試行回数が多すぎます。',
     'theta_function' => '数式が正しくありません。',
     'invalid_cognitive_unit' => 'Cognitive Unitが計算できません。',
+    'fraction_max' => ':attributeの値が:maxを超えています。',
 
     /*
     |--------------------------------------------------------------------------
@@ -176,6 +177,18 @@ return [
         'denominator_exp' => 'X4',
         'max_step' => 'k_max',
         'max_rc' => 'rc_max',
+        'alpha_1' => 'アルファ1',
+        'alpha_2' => 'アルファ2',
+        'beta_1' => 'ベータ1',
+        'beta_2' => 'ベータ2',
+        'alpha_1_numerator' => 'アルファ1分子',
+        'alpha_1_denominator' => 'アルファ1分母',
+        'alpha_2_numerator' => 'アルファ2分子',
+        'alpha_2_denominator' => 'アルファ2分母',
+        'beta_1_numerator' => 'ベータ1分子',
+        'beta_1_denominator' => 'ベータ1分母',
+        'beta_2_numerator' => 'ベータ2分子',
+        'beta_2_denominator' => 'ベータ2分母',
     ],
 
 ];

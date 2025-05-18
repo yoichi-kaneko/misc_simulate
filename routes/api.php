@@ -15,3 +15,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('centipede/calculate', 'CentipedeController@calculate');
+Route::post('nash/calculate', 'NashController@calculate');
