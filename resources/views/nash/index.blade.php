@@ -6,5 +6,6 @@
     <div class="kt-pagebody">
         @include('sections.tab', ['tab' => 'main'])
         @include('sections.nash.form')
+        @include('sections.nash.chart')
     </div><!-- kt-pagebody -->
 @endsection

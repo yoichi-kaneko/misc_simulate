@@ -1,5 +1,10 @@
 import {afterCalculateByError, setErrorMessage} from "./calculate";
 import {notifyComplete} from "./notify";
+import {Chart, registerables} from "chart.js";
+import {htmlLegendPlugin} from "../chartjs/plugins/html_legend.js";
+Chart.register(...registerables);
+
+let myChartNashSimulation;
 
 export function doNashCalculate()
 {
@@ -27,6 +32,7 @@ export function doNashCalculate()
         data: data,
         success: function (data) {
             $('button.calculate').removeClass('disabled');
+            renderNashSimulationChart(data.render_params);
             $('#nash_spinner').hide();
             notifyComplete();
         },
@@ -37,4 +43,124 @@ export function doNashCalculate()
             afterCalculateByError('nash_spinner');
         }
     });
+}
+
+/**
+ * チャートの出力を行う
+ * @param render_params
+ */
+function renderNashSimulationChart(render_params)
+{
+    $('#chart_area_nash').show();
+    let ctx_simulation = document.getElementById('chart_nash_simulation');
+    if(myChartNashSimulation) {
+        myChartNashSimulation.destroy();
+        $('#chart_nash_simulation').removeAttr('width');
+    }
+    myChartNashSimulation = new Chart(
+        ctx_simulation,
+        getNashSimulationOption(
+            render_params
+        )
+    );
+}
+
+/**
+ * チャートのパラメータ生成を行う
+ * @param render_params
+ */
+function getNashSimulationOption(render_params)
+{
+    const border_color = '#324463';
+
+    let data_array = [];
+    $.each(render_params, function(index, val) {
+        data_array.push({
+            title: val.title,
+            display_text: val.display_text,
+            x: val.x,
+            y: val.y,
+        });
+    });
+
+    const datasets = [
+        {
+            type: 'line',
+            label: 'Nash',
+            data: data_array,
+            borderColor: border_color,
+            backgroundColor: border_color,
+            borderWidth: 2,
+            lineTension: 0,
+            pointRadius: 2,
+            fill: false,
+            showLine: true
+        }
+    ];
+    return {
+        type: "scatter",
+        data: {
+            datasets: datasets,
+        },
+        options: {
+            responsive: true,
+            animation: false,
+            scales: {
+                y: {
+                    position: "left",
+                    beginAtZero: true,
+                    min: 0,
+                    // max: max_y_axes,
+                    fontSize: 10,
+                    title: {
+                        display: false,
+                    }
+                },
+                x: {
+                    beginAtZero: true,
+                    fontSize: 11,
+                    title: {
+                        display: false,
+                    }
+                }
+            },
+            plugins: {
+                htmlLegend: {
+                    // ID of the container to put the legend in
+                    containerID: 'legend-container',
+                },
+                legend: {
+                    display: false,
+                },
+                tooltip: {
+                    mode: 'index',
+                    displayColors: false,
+                    intersect: false,
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            return tooltipItems[0].raw.title + ':';
+                        },
+                        label: function(tooltipItem) {
+                            return tooltipItem.dataset.data[tooltipItem.dataIndex].display_text;
+                        }
+                    }
+                }
+            }
+        },
+        plugins: [
+            {
+                beforeDraw: drawBackground
+            },
+            htmlLegendPlugin
+        ]
+    }
+}
+
+function drawBackground(target) { // 引数はmyChart自身とされる。
+    let cvs = document.getElementById(target.canvas.id); // もちろん'my_graph'で直接指定してもOK
+    let ctx = cvs.getContext('2d');
+
+    // プロット領域に重なるように、背景色の四角形を描画
+    ctx.fillStyle = "white";              // 背景色（今回は濃いグレー）
+    ctx.fillRect(0, 0, target.width, target.height);
 }
