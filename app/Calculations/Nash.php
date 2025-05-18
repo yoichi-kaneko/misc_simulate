@@ -2,6 +2,7 @@
 
 namespace App\Calculations;
 
+use Illuminate\Support\Facades\Log;
 use Phospr\Fraction;
 
 class Nash
@@ -15,6 +16,7 @@ class Nash
      * @param array $beta_1
      * @param array $beta_2
      * @return array
+     * @throws \Exception
      */
     public function run(
         array $alpha_1,
@@ -26,6 +28,7 @@ class Nash
         $alpha_y = Fraction::fromString($alpha_2['numerator'] . '/' .  $alpha_2['denominator']);
         $beta_x = Fraction::fromString($beta_1['numerator'] . '/' .  $beta_1['denominator']);
         $beta_y = Fraction::fromString($beta_2['numerator'] . '/' .  $beta_2['denominator']);
+        $gamma1_x = $this->calcGamma1X($alpha_x, $alpha_y, $beta_x, $beta_y);
         return [
             'render_params' => [
                 [
@@ -40,7 +43,31 @@ class Nash
                     'x' => $alpha_x->toFloat(),
                     'y' => $alpha_y->toFloat(),
                 ],
+                [
+                    'title' => 'gamma1',
+                    'display_text' => sprintf(self::DISPLAY_FORMAT, $gamma1_x->__toString(), '0'),
+                    'x' => $gamma1_x->toFloat(),
+                    'y' => 0,
+                ],
             ],
         ];
+    }
+
+    /**
+     * ガンマ1のX点を計算する
+     * @param Fraction $alpha_x
+     * @param Fraction $alpha_y
+     * @param Fraction $beta_x
+     * @param Fraction $beta_y
+     * @return Fraction
+     * @throws \Exception
+     */
+    private function calcGamma1X(Fraction $alpha_x, Fraction $alpha_y, Fraction $beta_x, Fraction $beta_y): Fraction
+    {
+        $denominator = $beta_y->subtract($alpha_y);
+        $numerator_1 = $alpha_x->multiply($beta_y);
+        $numerator_2 = $alpha_y->multiply($beta_x);
+        $numerator = $numerator_1->subtract($numerator_2);
+        return $numerator->divide($denominator);
     }
 }
