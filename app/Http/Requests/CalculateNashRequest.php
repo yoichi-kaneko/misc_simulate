@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\Coordinate;
 use App\Rules\FractionMax;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -36,7 +37,17 @@ class CalculateNashRequest extends FormRequest
             'alpha_1' => ['required', 'array', new FractionMax(1)],
             'alpha_2' => ['required', 'array', new FractionMax(1)],
             'beta_1' => ['required', 'array', new FractionMax(1)],
-            'beta_2' => ['required', 'array', new FractionMax(1)],
+            'beta_2' => [
+                'required',
+                'array',
+                new FractionMax(1),
+                new Coordinate(
+                    $this->input('alpha_1'),
+                    $this->input('alpha_2'),
+                    $this->input('beta_1'),
+                    $this->input('beta_2')
+                )
+            ],
         ];
     }
 

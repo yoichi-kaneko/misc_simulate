@@ -118,6 +118,7 @@ return [
     'theta_function' => '数式が正しくありません。',
     'invalid_cognitive_unit' => 'Cognitive Unitが計算できません。',
     'fraction_max' => ':attributeの値が:maxを超えています。',
+    'invalid_coordinate' => 'アルファとベータがシミュレーションできない数値となっています。',
 
     /*
     |--------------------------------------------------------------------------
