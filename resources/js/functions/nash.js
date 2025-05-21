@@ -1,7 +1,6 @@
 import {afterCalculateByError, setErrorMessage} from "./calculate";
 import {notifyComplete} from "./notify";
 import {Chart, registerables} from "chart.js";
-import {htmlLegendPlugin} from "../chartjs/plugins/html_legend.js";
 Chart.register(...registerables);
 
 let myChartNashSimulation;
@@ -90,6 +89,14 @@ function getNashSimulationOption(render_params)
             data: data_array,
             borderColor: border_color,
             backgroundColor: border_color,
+            segment: {
+                borderDash: function(context) {
+                    if (context.p1.raw.title === 'beta' || context.p0.raw.title === 'alpha') {
+                        return [5, 5];
+                    }
+                    return undefined;
+                }
+            },
             borderWidth: 2,
             lineTension: 0,
             pointRadius: 2,
@@ -125,10 +132,6 @@ function getNashSimulationOption(render_params)
                 }
             },
             plugins: {
-                htmlLegend: {
-                    // ID of the container to put the legend in
-                    containerID: 'legend-container',
-                },
                 legend: {
                     display: false,
                 },
@@ -151,7 +154,6 @@ function getNashSimulationOption(render_params)
             {
                 beforeDraw: drawBackground
             },
-            htmlLegendPlugin
         ]
     }
 }
