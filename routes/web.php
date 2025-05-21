@@ -12,3 +12,4 @@
 */
 
 Route::get('/centipede', 'CentipedeController@index');
+Route::get('/nash', 'NashController@index');
