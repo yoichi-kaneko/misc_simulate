@@ -228,7 +228,7 @@ class Centipede
     ): float {
         $numerator = pow($base_numerator, ($numerator_exp_1 / $numerator_exp_2));
 
-        if(is_nan($numerator) || is_infinite($numerator)) {
+        if (is_nan($numerator) || is_infinite($numerator)) {
             throw new \Exception(trans('validation.invalid_cognitive_unit'));
         }
 
@@ -249,7 +249,7 @@ class Centipede
         int $numerator_exp_1,
         int $numerator_exp_2,
         int $denominator_exp
-    ):string {
+    ): string {
         $format = '\dfrac{%d^{\frac{%d}{%d}}}{2^{%d}}';
 
         return sprintf(

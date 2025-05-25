@@ -14,7 +14,10 @@ use Illuminate\Queue\SerializesModels;
 
 class CalculateParticipantsSimulation implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
     public $_data;
     public $tries = 1;
     public $timeout = 90;

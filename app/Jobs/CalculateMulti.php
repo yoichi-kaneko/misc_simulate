@@ -13,7 +13,10 @@ use Illuminate\Queue\SerializesModels;
 
 class CalculateMulti implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
     public $_data;
     public $tries = 1;
     public $timeout = 90;

@@ -45,5 +45,4 @@ class CalculateCentipedeRequest extends FormRequest
             'patterns.*.denominator_exp' => trans('validation.attributes.denominator_exp'),
         ];
     }
-
 }

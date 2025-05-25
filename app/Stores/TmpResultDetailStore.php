@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Stores;
 
 use App\Models\SimulateTmpResultDetail;

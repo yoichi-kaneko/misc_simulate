@@ -92,7 +92,7 @@ class Nash
         Fraction $alpha_y,
         Fraction $beta_x,
         Fraction $beta_y
-    ): Fraction{
+    ): Fraction {
         $denominator = $beta_y->subtract($alpha_y);
         $numerator_1 = $alpha_x->multiply($beta_y);
         $numerator_2 = $alpha_y->multiply($beta_x);
