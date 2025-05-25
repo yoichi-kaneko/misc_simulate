@@ -42,39 +42,48 @@ class Nash
         $gamma1_x = $this->calcGamma1X($alpha_x, $alpha_y, $multipied_beta_x, $multipied_beta_y);
         $midpoint = $this->calcMidpoint($gamma1_x, $gamma2_y);
 
-        return [
-            'render_params' => [
-                [
-                    'title' => 'gamma2',
-                    'display_text' => $this->getDisplayText(null, $gamma2_y),
-                    'x' => 0,
-                    'y' => $gamma2_y->toFloat(),
-                ],
-                [
-                    'title' => 'beta',
-                    'display_text' => $this->getDisplayText($multipied_beta_x, $multipied_beta_y),
-                    'x' => $multipied_beta_x->toFloat(),
-                    'y' => $multipied_beta_y->toFloat(),
-                ],
-                [
-                    'title' => 'midpoint',
-                    'display_text' => $this->getDisplayText($midpoint['x'], $midpoint['y']),
-                    'x' => $midpoint['x']->toFloat(),
-                    'y' => $midpoint['y']->toFloat(),
-                ],
-                [
-                    'title' => 'alpha',
-                    'display_text' => $this->getDisplayText($alpha_x, $alpha_y),
-                    'x' => $alpha_x->toFloat(),
-                    'y' => $alpha_y->toFloat(),
-                ],
-                [
-                    'title' => 'gamma1',
-                    'display_text' => $this->getDisplayText($gamma1_x, null),
-                    'x' => $gamma1_x->toFloat(),
-                    'y' => 0,
-                ],
+        $render_params = [
+            [
+                'title' => 'alpha',
+                'display_text' => $this->getDisplayText($alpha_x, $alpha_y),
+                'x' => $alpha_x->toFloat(),
+                'y' => $alpha_y->toFloat(),
             ],
+            [
+                'title' => 'beta',
+                'display_text' => $this->getDisplayText($multipied_beta_x, $multipied_beta_y),
+                'x' => $multipied_beta_x->toFloat(),
+                'y' => $multipied_beta_y->toFloat(),
+            ],
+            [
+                'title' => 'gamma1',
+                'display_text' => $this->getDisplayText($gamma1_x, null),
+                'x' => $gamma1_x->toFloat(),
+                'y' => 0,
+            ],
+            [
+                'title' => 'gamma2',
+                'display_text' => $this->getDisplayText(null, $gamma2_y),
+                'x' => 0,
+                'y' => $gamma2_y->toFloat(),
+            ],
+            [
+                'title' => 'midpoint',
+                'display_text' => $this->getDisplayText($midpoint['x'], $midpoint['y']),
+                'x' => $midpoint['x']->toFloat(),
+                'y' => $midpoint['y']->toFloat(),
+            ],
+        ];
+
+        // X座標でソート
+        array_multisort(
+            array_column($render_params, 'x'),
+            SORT_ASC,
+            $render_params
+        );
+
+        return [
+            'render_params' => $render_params,
         ];
     }
 
