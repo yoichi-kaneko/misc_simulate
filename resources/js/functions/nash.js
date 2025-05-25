@@ -24,6 +24,10 @@ export function doNashCalculate()
             numerator: $('#beta_2_numerator').val(),
             denominator: $('#beta_2_denominator').val(),
         },
+        rho: {
+            numerator: $('#rho_numerator').val(),
+            denominator: $('#rho_denominator').val(),
+        },
     };
     $.ajax({
         type: 'POST',
