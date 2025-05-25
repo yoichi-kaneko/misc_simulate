@@ -24,7 +24,8 @@ class NashController extends Controller
                 $request->input('alpha_1'),
                 $request->input('alpha_2'),
                 $request->input('beta_1'),
-                $request->input('beta_2')
+                $request->input('beta_2'),
+                $request->input('rho')
             );
         } catch (\Exception $e) {
             return $this->responseException($e->getMessage());

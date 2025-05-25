@@ -24,6 +24,10 @@ export function doNashCalculate()
             numerator: $('#beta_2_numerator').val(),
             denominator: $('#beta_2_denominator').val(),
         },
+        rho: {
+            numerator: $('#rho_numerator').val(),
+            denominator: $('#rho_denominator').val(),
+        },
     };
     $.ajax({
         type: 'POST',
@@ -91,7 +95,12 @@ function getNashSimulationOption(render_params)
             backgroundColor: border_color,
             segment: {
                 borderDash: function(context) {
-                    if (context.p1.raw.title === 'beta' || context.p0.raw.title === 'alpha') {
+                    if (
+                        context.p0.raw.title === 'gamma2' ||
+                        context.p1.raw.title === 'beta' ||
+                        context.p0.raw.title === 'alpha' ||
+                        context.p1.raw.title === 'gamma1'
+                    ) {
                         return [5, 5];
                     }
                     return undefined;

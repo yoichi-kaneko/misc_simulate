@@ -34,6 +34,8 @@ class CalculateNashRequest extends FormRequest
             'beta_1.denominator' => 'required|integer|min:1|max:1000',
             'beta_2.numerator' => 'required|integer|min:1|max:1000',
             'beta_2.denominator' => 'required|integer|min:1|max:1000',
+            'rho.numerator' => 'required|integer|min:1|max:1000',
+            'rho.denominator' => 'required|integer|min:1|max:1000',
             'alpha_1' => ['required', 'array', new FractionMax(1)],
             'alpha_2' => ['required', 'array', new FractionMax(1)],
             'beta_1' => ['required', 'array', new FractionMax(1)],
@@ -48,6 +50,7 @@ class CalculateNashRequest extends FormRequest
                     $this->input('beta_2')
                 )
             ],
+            'rho' => ['required', 'array', new FractionMax(1)],
         ];
     }
 
@@ -62,6 +65,8 @@ class CalculateNashRequest extends FormRequest
             'beta_1.denominator' => trans('validation.attributes.beta_1_denominator'),
             'beta_2.numerator' => trans('validation.attributes.beta_2_numerator'),
             'beta_2.denominator' => trans('validation.attributes.beta_2_denominator'),
+            'rho.numerator' => trans('validation.attributes.rho_numerator'),
+            'rho.denominator' => trans('validation.attributes.rho_denominator'),
         ];
     }
 }

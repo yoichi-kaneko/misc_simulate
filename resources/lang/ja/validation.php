@@ -182,6 +182,7 @@ return [
         'alpha_2' => 'アルファ2',
         'beta_1' => 'ベータ1',
         'beta_2' => 'ベータ2',
+        'rho' => 'ロー',
         'alpha_1_numerator' => 'アルファ1分子',
         'alpha_1_denominator' => 'アルファ1分母',
         'alpha_2_numerator' => 'アルファ2分子',
@@ -190,6 +191,8 @@ return [
         'beta_1_denominator' => 'ベータ1分母',
         'beta_2_numerator' => 'ベータ2分子',
         'beta_2_denominator' => 'ベータ2分母',
+        'rho_numerator' => 'ロー分子',
+        'rho_denominator' => 'ロー分母',
     ],
 
 ];

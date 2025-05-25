@@ -144,6 +144,41 @@
                     </div>
                 </div>
             </div>
+            <div class="row mg-b-25">
+                <div class="col-lg-12">
+                    <div class="row row-xs">
+                        <label class="col-sm-2 form-control-label">
+                            <span class="tx-danger">*</span>
+                            <span class="katex_exp" expression="{\rho}"></span>
+                            :</label>
+                        <div class="col-sm-2 mg-t-10 mg-sm-t-0">
+                            <input
+                                    class="form-control"
+                                    id="rho_numerator"
+                                    type="text"
+                                    name="rho_numerator"
+                                    maxlength="4"
+                                    value="900"
+                                    default_val="900"
+                                    placeholder="Enter rho"
+                                    style="width: 90px; float: left;"
+                            >
+                            <span style="float: left; padding-left: 4px; padding-right: 4px; padding-top: 4px; font-size: 15pt;">/</span>
+                            <input
+                                    class="form-control"
+                                    id="rho_denominator"
+                                    type="text"
+                                    name="rho_denominator"
+                                    maxlength="4"
+                                    value="1000"
+                                    default_val="1000"
+                                    placeholder="Enter rho"
+                                    style="width: 90px; float: left;"
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-sm-6 col-md-3 simulate_player">
             <button class="btn btn-primary mg-b-10 calculate">Calculate</button>

@@ -22,8 +22,7 @@ class Coordinate implements Rule
         array $alpha_2,
         array $beta_1,
         array $beta_2
-    )
-    {
+    ) {
         $this->alpha_1 = $alpha_1;
         $this->alpha_2 = $alpha_2;
         $this->beta_1 = $beta_1;
