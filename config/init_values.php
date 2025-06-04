@@ -1,4 +1,5 @@
 <?php
+
 return [
     'player_number' => 512,
     'banker_prepared_change' => 262144,
