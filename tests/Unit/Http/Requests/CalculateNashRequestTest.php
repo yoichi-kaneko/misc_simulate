@@ -66,13 +66,22 @@ class CalculateNashRequestTest extends TestCase
         // FractionMaxルールがすべての分数フィールドに適用されていることを確認
         $this->assertContains('required', $rules['alpha_1']);
         $this->assertContains('array', $rules['alpha_1']);
-        $this->assertInstanceOf(FractionMax::class, $rules['alpha_1'][2]);
+        $this->assertTrue(
+            collect($rules['alpha_1'])->contains(fn ($r) => $r instanceof FractionMax),
+            'alpha_1 に FractionMax ルールが含まれていません'
+        );
 
         // Coordinateルールがbeta_2に適用されていることを確認
         $this->assertContains('required', $rules['beta_2']);
         $this->assertContains('array', $rules['beta_2']);
-        $this->assertInstanceOf(FractionMax::class, $rules['beta_2'][2]);
-        $this->assertInstanceOf(Coordinate::class, $rules['beta_2'][3]);
+        $this->assertTrue(
+            collect($rules['beta_2'])->contains(fn ($r) => $r instanceof FractionMax),
+            'beta_2 に FractionMax ルールが含まれていません'
+        );
+        $this->assertTrue(
+            collect($rules['beta_2'])->contains(fn ($r) => $r instanceof Coordinate),
+            'beta_2 に Coordinate ルールが含まれていません'
+        );
     }
 
     /**
