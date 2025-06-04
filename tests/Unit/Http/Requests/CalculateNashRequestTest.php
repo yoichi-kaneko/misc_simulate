@@ -8,6 +8,8 @@ use App\Rules\FractionMax;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
 
+use function PHPUnit\Framework\isInstanceOf;
+
 class CalculateNashRequestTest extends TestCase
 {
     /**
@@ -107,9 +109,7 @@ class CalculateNashRequestTest extends TestCase
         $request = new CalculateNashRequest();
         $request->merge($data);
 
-        $rules = $request->rules();
-
-        $rules = array_filter($rules, function ($attribute) {
+        $rules = array_filter($request->rules(), function ($attribute) {
             return str_contains($attribute, '.');
         }, ARRAY_FILTER_USE_KEY);
 
@@ -275,20 +275,72 @@ class CalculateNashRequestTest extends TestCase
     }
 
     /**
-     * 無効なデータでバリデーションが失敗することをテストします。
+     * 無効なデータで分数のバリデーションが失敗することをテストします。
      * @test
+     * @dataProvider validationFailsWithInvalidFractionDataProvider
      * @return void
      */
-    public function testValidationFailsWithInvalidData()
-    {
-        // 無効な分母（ゼロ）でテスト
-        // FractionMaxでのゼロ除算を避けるため、分母の特定のルールのみをテスト
-        $rules = ['alpha_1.denominator' => 'required|integer|min:1|max:1000'];
-        $data = ['alpha_1' => ['denominator' => 0]];
+    public function testValidationFailsWithInvalidFractionData(
+        array $data,
+        string $attribute
+    ) {
+        $request = new CalculateNashRequest();
+        $request->merge($data);
+
+        $rules = array_filter($request->rules(), function ($attributeKey) use ($attribute) {
+            return $attributeKey === $attribute;
+        }, ARRAY_FILTER_USE_KEY);
+
+        // Coordinateルールはここでは除外する
+        $rules[$attribute] = array_filter($rules[$attribute], function ($ruleValue) {
+            return !($ruleValue instanceof Coordinate);
+        });
 
         $validator = Validator::make($data, $rules);
         $this->assertFalse($validator->passes());
+    }
 
+    public static function validationFailsWithInvalidFractionDataProvider(): array
+    {
+        $base_data = [
+            'alpha_1' => ['numerator' => 1, 'denominator' => 2],
+            'alpha_2' => ['numerator' => 3, 'denominator' => 4],
+            'beta_1' => ['numerator' => 1, 'denominator' => 4],
+            'beta_2' => ['numerator' => 7, 'denominator' => 8],
+            'rho' => ['numerator' => 1, 'denominator' => 2],
+        ];
+
+        return [
+            'alpha_1が1以上' => [
+                'data' => array_merge($base_data, ['alpha_1' => ['numerator' => 15, 'denominator' => 10]]),
+                'attribute' => 'alpha_1',
+            ],
+            'alpha_2が1以上' => [
+                'data' => array_merge($base_data, ['alpha_2' => ['numerator' => 5, 'denominator' => 4]]),
+                'attribute' => 'alpha_2',
+            ],
+            'beta_1が1以上' => [
+                'data' => array_merge($base_data, ['beta_1' => ['numerator' => 5, 'denominator' => 4]]),
+                'attribute' => 'beta_1',
+            ],
+            'beta_2が1以上' => [
+                'data' => array_merge($base_data, ['beta_2' => ['numerator' => 9, 'denominator' => 8]]),
+                'attribute' => 'beta_2',
+            ],
+            'rhoが1以上' => [
+                'data' => array_merge($base_data, ['rho' => ['numerator' => 3, 'denominator' => 2]]),
+                'attribute' => 'rho',
+            ],
+        ];
+    }
+
+    /**
+     * 無効なデータでCoordinateのバリデーションが失敗することをテストします。
+     * @test
+     * @return void
+     */
+    public function testValidationFailsWithInvalidCoordinateData()
+    {
         // 無効な分数（最大値より大きい）でテスト
         $data = [
             'alpha_1' => ['numerator' => 2, 'denominator' => 1], // 2 > 1
