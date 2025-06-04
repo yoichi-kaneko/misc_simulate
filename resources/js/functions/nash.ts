@@ -39,24 +39,24 @@ export function doNashCalculate(): void
 {
     const data: NashData = {
         alpha_1: {
-            numerator: $('#alpha_1_numerator').val() as string,
-            denominator: $('#alpha_1_denominator').val() as string,
+            numerator: String($('#alpha_1_numerator').val() || ''),
+            denominator: String($('#alpha_1_denominator').val() || ''),
         },
         alpha_2: {
-            numerator: $('#alpha_2_numerator').val() as string,
-            denominator: $('#alpha_2_denominator').val() as string,
+            numerator: String($('#alpha_2_numerator').val() || ''),
+            denominator: String($('#alpha_2_denominator').val() || ''),
         },
         beta_1: {
-            numerator: $('#beta_1_numerator').val() as string,
-            denominator: $('#beta_1_denominator').val() as string,
+            numerator: String($('#beta_1_numerator').val() || ''),
+            denominator: String($('#beta_1_denominator').val() || ''),
         },
         beta_2: {
-            numerator: $('#beta_2_numerator').val() as string,
-            denominator: $('#beta_2_denominator').val() as string,
+            numerator: String($('#beta_2_numerator').val() || ''),
+            denominator: String($('#beta_2_denominator').val() || ''),
         },
         rho: {
-            numerator: $('#rho_numerator').val() as string,
-            denominator: $('#rho_denominator').val() as string,
+            numerator: String($('#rho_numerator').val() || ''),
+            denominator: String($('#rho_denominator').val() || ''),
         },
     };
     $.ajax({

@@ -10,6 +10,7 @@
     },
     "devDependencies": {
         "@types/jquery": "^3.5.32",
+        "@types/katex": "^0.16.7",
         "axios": "^1.8.2",
         "cross-env": "^7.0.3",
         "laravel-mix": "^6.0.49",

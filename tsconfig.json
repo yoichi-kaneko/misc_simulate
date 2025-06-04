@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
-    "strict": false,
+    "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -18,7 +18,6 @@
   "include": [
     "resources/js/**/*",
     "node_modules/@types/jquery/JQuery.d.ts",
-    "node_modules/@types/jquery/JQuery.d.ts"
   ],
   "exclude": [
     "node_modules",

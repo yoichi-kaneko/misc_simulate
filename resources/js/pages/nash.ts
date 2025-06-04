@@ -27,7 +27,8 @@ $(function(){
 function reset(): void {
     $('#nash_block input.form-control').each(function () {
         if (!$(this).attr('readonly')) {
-            $(this).val($(this).attr('default_val'));
+            const default_val = $(this).attr('default_val') || '';
+            $(this).val(default_val);
         }
     });
 }
