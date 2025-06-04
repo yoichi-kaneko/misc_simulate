@@ -25,11 +25,4 @@ jobs:
           openai_light_model: gpt-4o-mini
           openai_heavy_model: gpt-4o-mini
           language: ja-JP
-          summarize: |
-            次のmarkdownフォーマット形式を使用して、本PRの要約を出力します。
-
-            [出力形式]
-            ## 要約
-            <!-- 特定のファイルではなく、全体の変更に関する高レベルの要約を80語以内で。 -->
-            ## 変更点
-            <!-- ファイルとその要約のテーブル。スペースを節約するために、同様の変更を持つファイルを1行にまとめることができます。 -->
+          poem: false
