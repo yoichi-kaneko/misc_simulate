@@ -27,6 +27,9 @@ class FractionMax implements Rule
      */
     public function passes($attribute, $value)
     {
+        if (!is_numeric($value['numerator']) || !is_numeric($value['denominator'])) {
+            return false;
+        }
         return $value['numerator'] / $value['denominator'] <= $this->max;
     }
 

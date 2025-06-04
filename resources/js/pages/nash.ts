@@ -1,5 +1,6 @@
-const {beforeCalculate} = require("../functions/calculate");
-const {doNashCalculate} = require("../functions/nash");
+import { beforeCalculate } from "../functions/calculate";
+import { doNashCalculate } from "../functions/nash";
+import katex from "katex";
 
 // let parser = UAParser();
 
@@ -17,17 +18,17 @@ $(function(){
 
     $('.form-layout .katex_exp').each(function () {
         let element = $(this)[0];
-        katex.render($(this).attr('expression'), element, {
+        katex.render($(this).attr('expression') || '', element, {
             throwOnError: false
         });
     });
 });
 
-function reset()
-{
+function reset(): void {
     $('#nash_block input.form-control').each(function () {
         if (!$(this).attr('readonly')) {
-            $(this).val($(this).attr('default_val'));
+            const default_val = $(this).attr('default_val') || '';
+            $(this).val(default_val);
         }
     });
 }
