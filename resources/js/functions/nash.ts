@@ -1,47 +1,77 @@
 import {afterCalculateByError, setErrorMessage} from "./calculate";
 import {notifyComplete} from "./notify";
-import {Chart, registerables} from "chart.js";
+import {Chart, registerables, ChartConfiguration, ChartDataset} from "chart.js";
 Chart.register(...registerables);
 
-let myChartNashSimulation;
+let myChartNashSimulation: Chart | undefined;
 
-export function doNashCalculate()
+interface NashData {
+    alpha_1: {
+        numerator: string;
+        denominator: string;
+    };
+    alpha_2: {
+        numerator: string;
+        denominator: string;
+    };
+    beta_1: {
+        numerator: string;
+        denominator: string;
+    };
+    beta_2: {
+        numerator: string;
+        denominator: string;
+    };
+    rho: {
+        numerator: string;
+        denominator: string;
+    };
+}
+
+interface RenderParam {
+    title: string;
+    display_text: string;
+    x: number;
+    y: number;
+}
+
+export function doNashCalculate(): void
 {
-    const data = {
+    const data: NashData = {
         alpha_1: {
-            numerator: $('#alpha_1_numerator').val(),
-            denominator: $('#alpha_1_denominator').val(),
+            numerator: $('#alpha_1_numerator').val() as string,
+            denominator: $('#alpha_1_denominator').val() as string,
         },
         alpha_2: {
-            numerator: $('#alpha_2_numerator').val(),
-            denominator: $('#alpha_2_denominator').val(),
+            numerator: $('#alpha_2_numerator').val() as string,
+            denominator: $('#alpha_2_denominator').val() as string,
         },
         beta_1: {
-            numerator: $('#beta_1_numerator').val(),
-            denominator: $('#beta_1_denominator').val(),
+            numerator: $('#beta_1_numerator').val() as string,
+            denominator: $('#beta_1_denominator').val() as string,
         },
         beta_2: {
-            numerator: $('#beta_2_numerator').val(),
-            denominator: $('#beta_2_denominator').val(),
+            numerator: $('#beta_2_numerator').val() as string,
+            denominator: $('#beta_2_denominator').val() as string,
         },
         rho: {
-            numerator: $('#rho_numerator').val(),
-            denominator: $('#rho_denominator').val(),
+            numerator: $('#rho_numerator').val() as string,
+            denominator: $('#rho_denominator').val() as string,
         },
     };
     $.ajax({
         type: 'POST',
         url: '/api/nash/calculate',
         data: data,
-        success: function (data) {
+        success: function (data: { render_params: RenderParam[] }) {
             $('button.calculate').removeClass('disabled');
             renderNashSimulationChart(data.render_params);
             $('#nash_spinner').hide();
             notifyComplete();
         },
-        error: function (data) {
+        error: function (data: JQuery.jqXHR) {
             setErrorMessage($.parseJSON(data.responseText));
-            let offset =  $('#alert_danger').offset().top - $('.kt-pagetitle').offset().top -20;
+            let offset = $('#alert_danger').offset()!.top - $('.kt-pagetitle').offset()!.top - 20;
             $("html,body").animate({scrollTop: offset});
             afterCalculateByError('nash_spinner');
         }
@@ -52,10 +82,10 @@ export function doNashCalculate()
  * チャートの出力を行う
  * @param render_params
  */
-function renderNashSimulationChart(render_params)
+function renderNashSimulationChart(render_params: RenderParam[]): void
 {
     $('#chart_area_nash').show();
-    let ctx_simulation = document.getElementById('chart_nash_simulation');
+    let ctx_simulation = document.getElementById('chart_nash_simulation') as HTMLCanvasElement;
     if(myChartNashSimulation) {
         myChartNashSimulation.destroy();
         $('#chart_nash_simulation').removeAttr('width');
@@ -72,12 +102,12 @@ function renderNashSimulationChart(render_params)
  * チャートのパラメータ生成を行う
  * @param render_params
  */
-function getNashSimulationOption(render_params)
+function getNashSimulationOption(render_params: RenderParam[]): ChartConfiguration
 {
     const border_color = '#324463';
 
-    let data_array = [];
-    $.each(render_params, function(index, val) {
+    let data_array: RenderParam[] = [];
+    $.each(render_params, function(index: number, val: RenderParam) {
         data_array.push({
             title: val.title,
             display_text: val.display_text,
@@ -86,7 +116,7 @@ function getNashSimulationOption(render_params)
         });
     });
 
-    const datasets = [
+    const datasets: ChartDataset[] = [
         {
             type: 'line',
             label: 'Nash',
@@ -94,7 +124,7 @@ function getNashSimulationOption(render_params)
             borderColor: border_color,
             backgroundColor: border_color,
             segment: {
-                borderDash: function(context) {
+                borderDash: function(context: any) {
                     if (
                         context.p0.raw.title === 'gamma2' ||
                         context.p1.raw.title === 'beta' ||
@@ -107,7 +137,7 @@ function getNashSimulationOption(render_params)
                 }
             },
             borderWidth: 2,
-            lineTension: 0,
+            tension: 0, // lineTension is deprecated, using tension instead
             pointRadius: 2,
             fill: false,
             showLine: true
@@ -127,14 +157,12 @@ function getNashSimulationOption(render_params)
                     beginAtZero: true,
                     min: 0,
                     // max: max_y_axes,
-                    fontSize: 10,
                     title: {
                         display: false,
                     }
                 },
                 x: {
                     beginAtZero: true,
-                    fontSize: 11,
                     title: {
                         display: false,
                     }
@@ -150,10 +178,10 @@ function getNashSimulationOption(render_params)
                     intersect: false,
                     callbacks: {
                         title: function(tooltipItems) {
-                            return tooltipItems[0].raw.title + ':';
+                            return (tooltipItems[0].raw as RenderParam).title + ':';
                         },
                         label: function(tooltipItem) {
-                            return tooltipItem.dataset.data[tooltipItem.dataIndex].display_text;
+                            return (tooltipItem.dataset.data[tooltipItem.dataIndex] as RenderParam).display_text;
                         }
                     }
                 }
@@ -161,15 +189,16 @@ function getNashSimulationOption(render_params)
         },
         plugins: [
             {
+                id: 'backgroundPlugin',
                 beforeDraw: drawBackground
             },
         ]
     }
 }
 
-function drawBackground(target) { // 引数はmyChart自身とされる。
-    let cvs = document.getElementById(target.canvas.id); // もちろん'my_graph'で直接指定してもOK
-    let ctx = cvs.getContext('2d');
+function drawBackground(target: Chart): void {
+    let cvs = document.getElementById(target.canvas.id) as HTMLCanvasElement;
+    let ctx = cvs.getContext('2d')!;
 
     // プロット領域に重なるように、背景色の四角形を描画
     ctx.fillStyle = "white";              // 背景色（今回は濃いグレー）
