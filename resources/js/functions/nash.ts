@@ -71,8 +71,12 @@ export function doNashCalculate(): void
         },
         error: function (data: JQuery.jqXHR) {
             setErrorMessage($.parseJSON(data.responseText));
-            let offset = $('#alert_danger').offset()!.top - $('.kt-pagetitle').offset()!.top - 20;
-            $("html,body").animate({scrollTop: offset});
+            let alertOffset = $('#alert_danger').offset();
+            let titleOffset = $('.kt-pagetitle').offset();
+            if (alertOffset && titleOffset) {
+                let offset = alertOffset.top - titleOffset.top - 20;
+                $("html,body").animate({scrollTop: offset});
+            }
             afterCalculateByError('nash_spinner');
         }
     });
