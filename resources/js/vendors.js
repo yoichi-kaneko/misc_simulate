@@ -17,20 +17,4 @@ import 'chart.js';
 import 'select2';
 import 'datatables';
 import 'datatables-responsive';
-import 'jquery-goup';
 import 'jsrender';
-import 'show-more';
-
-/*
-vite移行前のコード
-require('bootstrap/dist/js/bootstrap');
-require('bootstrap-notify');
-require('popper.js/dist/popper');
-require('chart.js');
-require('select2');
-require('datatables');
-require('datatables-responsive');
-require('jquery-goup');
-require('jsrender');
-require('show-more');
-*/

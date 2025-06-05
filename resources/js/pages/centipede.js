@@ -1,5 +1,5 @@
-const {beforeCalculate} = require("../functions/calculate");
-const {doCentipedeCalculate} = require("../functions/centipede");
+import {beforeCalculate} from "../functions/calculate";
+import {doCentipedeCalculate} from "../functions/centipede";
 
 let parser = UAParser();
 

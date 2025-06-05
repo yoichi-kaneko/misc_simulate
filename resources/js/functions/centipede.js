@@ -2,6 +2,8 @@ import {afterCalculateByError, setErrorMessage} from "./calculate";
 import {notifyComplete} from "./notify";
 import {Chart, registerables} from "chart.js";
 import {htmlLegendPlugin} from "../chartjs/plugins/html_legend.js";
+import showMore from '../plugins/show-more-wrapper.js';
+
 Chart.register(...registerables);
 
 let myChartCentipedeSimulation;
@@ -145,9 +147,7 @@ function renderCentipedeReportArea(pattern_data, combination_data)
     $('.showmore_block').each(function() {
         let id = $(this).attr('id');
         if ($('#showmore-' + id).length == 0) {
-            $('#' + id).showMore({
-                minheight: 300
-            });
+            showMore.init('#' + id, {minheight: 300});
         }
     });
     $('#centipede_tab .switch_pattern:first').addClass('active');
