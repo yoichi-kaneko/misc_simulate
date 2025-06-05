@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Feature\Controllers;
+namespace Tests\Feature\Controllers;
 
 use Tests\TestCase;
 
