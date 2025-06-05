@@ -9,6 +9,6 @@ class NashController extends Controller
     public function index()
     {
         return view('nash/index')
-            ->with('js_file', 'js/pages/nash.js');
+            ->with('js_file', 'resources/js/pages/nash.ts');
     }
 }
