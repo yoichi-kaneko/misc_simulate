@@ -37,7 +37,7 @@ interface RenderParam {
 }
 
 interface ReportParam {
-    a_rho: number;
+    a_rho: string;
 }
 
 export function doNashCalculate(): void
