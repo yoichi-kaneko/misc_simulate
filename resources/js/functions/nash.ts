@@ -1,9 +1,10 @@
 import {afterCalculateByError, setErrorMessage} from "./calculate";
 import {notifyComplete} from "./notify";
 import {Chart, registerables, ChartConfiguration, ChartDataset} from "chart.js";
+import katex from "katex";
 Chart.register(...registerables);
 
-let myChartNashSimulation: Chart | undefined;
+let myChartNashSocialWelfare: Chart | undefined;
 
 interface NashData {
     alpha_1: {
@@ -35,6 +36,10 @@ interface RenderParam {
     y: number;
 }
 
+interface ReportParam {
+    a_rho: string;
+}
+
 export function doNashCalculate(): void
 {
     const data: NashData = {
@@ -63,9 +68,13 @@ export function doNashCalculate(): void
         type: 'POST',
         url: '/api/nash/calculate',
         data: data,
-        success: function (data: { render_params: RenderParam[] }) {
+        success: function (data: {
+            render_params: RenderParam[],
+            report_params: ReportParam
+        }) {
             $('button.calculate').removeClass('disabled');
             renderNashSimulationChart(data.render_params);
+            renderNashReportArea(data.report_params);
             $('#nash_spinner').hide();
             notifyComplete();
         },
@@ -83,18 +92,36 @@ export function doNashCalculate(): void
 }
 
 /**
+ * レポートエリアの出力を行う
+ * @param report_params
+ */
+function renderNashReportArea(report_params: ReportParam): void
+{
+    const tmpl  = $('#nashResultTemplate').render({
+        a_rho: report_params.a_rho,
+    });
+    $('#nash_result').html(tmpl);
+    $('#nash_result .katex_exp').each(function () {
+        let element = $(this)[0];
+        katex.render(<string>$(this).attr('expression'), element, {
+            throwOnError: false
+        });
+    });
+}
+
+/**
  * チャートの出力を行う
  * @param render_params
  */
 function renderNashSimulationChart(render_params: RenderParam[]): void
 {
     $('#chart_area_nash').show();
-    let ctx_simulation = document.getElementById('chart_nash_simulation') as HTMLCanvasElement;
-    if(myChartNashSimulation) {
-        myChartNashSimulation.destroy();
-        $('#chart_nash_simulation').removeAttr('width');
+    let ctx_simulation = document.getElementById('chart_nash_social_welfare') as HTMLCanvasElement;
+    if(myChartNashSocialWelfare) {
+        myChartNashSocialWelfare.destroy();
+        $('#chart_nash_social_welfare').removeAttr('width');
     }
-    myChartNashSimulation = new Chart(
+    myChartNashSocialWelfare = new Chart(
         ctx_simulation,
         getNashSimulationOption(
             render_params
