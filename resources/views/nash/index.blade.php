@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('use_ajax_post', true)
-@section('page_header', 'Nash Simulator')
+@section('page_header', 'Nash Social Welfare')
 
 @section('content')
     <div class="kt-pagebody">

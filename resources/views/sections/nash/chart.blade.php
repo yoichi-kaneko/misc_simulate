@@ -5,7 +5,7 @@
             <div class="card pd-20 pd-sm-40">
                 <h6 class="card-body-title">Simulation Chart:</h6>
                 <div id="legend-container"></div>
-                <canvas id="chart_nash_simulation" height="450"></canvas>
+                <canvas id="chart_nash_social_welfare" height="450"></canvas>
             </div><!-- card -->
         </div>
     </div>

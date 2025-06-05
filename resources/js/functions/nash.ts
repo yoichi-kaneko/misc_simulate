@@ -3,7 +3,7 @@ import {notifyComplete} from "./notify";
 import {Chart, registerables, ChartConfiguration, ChartDataset} from "chart.js";
 Chart.register(...registerables);
 
-let myChartNashSimulation: Chart | undefined;
+let myChartNashSocialWelfare: Chart | undefined;
 
 interface NashData {
     alpha_1: {
@@ -89,12 +89,12 @@ export function doNashCalculate(): void
 function renderNashSimulationChart(render_params: RenderParam[]): void
 {
     $('#chart_area_nash').show();
-    let ctx_simulation = document.getElementById('chart_nash_simulation') as HTMLCanvasElement;
-    if(myChartNashSimulation) {
-        myChartNashSimulation.destroy();
-        $('#chart_nash_simulation').removeAttr('width');
+    let ctx_simulation = document.getElementById('chart_nash_social_welfare') as HTMLCanvasElement;
+    if(myChartNashSocialWelfare) {
+        myChartNashSocialWelfare.destroy();
+        $('#chart_nash_social_welfare').removeAttr('width');
     }
-    myChartNashSimulation = new Chart(
+    myChartNashSocialWelfare = new Chart(
         ctx_simulation,
         getNashSimulationOption(
             render_params

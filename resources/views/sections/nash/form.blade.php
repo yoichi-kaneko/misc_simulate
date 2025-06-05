@@ -1,5 +1,5 @@
 <div id="nash_block" class="tab_form card pd-20 mg-t-20">
-    <h6 class="card-body-title">Calculation of Nash</h6>
+    <h6 class="card-body-title">Calculation of Nash Social Welfare</h6>
     <div class="card pd-20">
         <div class="form-layout form-layout-4">
             <h6 class="tx-inverse">Program Parameters</h6>

@@ -33,15 +33,15 @@ class Nash
         $beta_x = Fraction::fromString($beta_1['numerator'] . '/' .  $beta_1['denominator']);
         $beta_y = Fraction::fromString($beta_2['numerator'] . '/' .  $beta_2['denominator']);
         $rho_rate = Fraction::fromString($rho['numerator'] . '/' . $rho['denominator']);
-        $multipied_beta_x = $beta_x->multiply($rho_rate);
-        $multipied_beta_y = $beta_y->multiply($rho_rate);
+        $rho_beta_x = $beta_x->multiply($rho_rate);
+        $rho_beta_y = $beta_y->multiply($rho_rate);
 
-        if ($multipied_beta_y->toFloat() <= $alpha_y->toFloat()) {
+        if ($rho_beta_y->toFloat() <= $alpha_y->toFloat()) {
             throw new \Exception('ガンマの値が求められませんでした。');
         }
 
-        $gamma2_y = $this->calcGamma2Y($alpha_x, $alpha_y, $multipied_beta_x, $multipied_beta_y);
-        $gamma1_x = $this->calcGamma1X($alpha_x, $alpha_y, $multipied_beta_x, $multipied_beta_y);
+        $gamma2_y = $this->calcGamma2Y($alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y);
+        $gamma1_x = $this->calcGamma1X($alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y);
         $midpoint = $this->calcMidpoint($gamma1_x, $gamma2_y);
 
         $render_params = [
@@ -52,10 +52,10 @@ class Nash
                 'y' => $alpha_y->toFloat(),
             ],
             [
-                'title' => 'beta',
-                'display_text' => $this->getDisplayText($multipied_beta_x, $multipied_beta_y),
-                'x' => $multipied_beta_x->toFloat(),
-                'y' => $multipied_beta_y->toFloat(),
+                'title' => 'rho beta',
+                'display_text' => $this->getDisplayText($rho_beta_x, $rho_beta_y),
+                'x' => $rho_beta_x->toFloat(),
+                'y' => $rho_beta_y->toFloat(),
             ],
             [
                 'title' => 'gamma1',
@@ -93,20 +93,20 @@ class Nash
      * ガンマ1のX点を計算する
      * @param Fraction $alpha_x
      * @param Fraction $alpha_y
-     * @param Fraction $beta_x
-     * @param Fraction $beta_y
+     * @param Fraction $rho_beta_x
+     * @param Fraction $rho_beta_y
      * @return Fraction
      * @throws \Exception
      */
     private function calcGamma1X(
         Fraction $alpha_x,
         Fraction $alpha_y,
-        Fraction $beta_x,
-        Fraction $beta_y
+        Fraction $rho_beta_x,
+        Fraction $rho_beta_y
     ): Fraction {
-        $denominator = $beta_y->subtract($alpha_y);
-        $numerator_1 = $alpha_x->multiply($beta_y);
-        $numerator_2 = $alpha_y->multiply($beta_x);
+        $denominator = $rho_beta_y->subtract($alpha_y);
+        $numerator_1 = $alpha_x->multiply($rho_beta_y);
+        $numerator_2 = $alpha_y->multiply($rho_beta_x);
         $numerator = $numerator_1->subtract($numerator_2);
 
         return $numerator->divide($denominator);
@@ -116,20 +116,20 @@ class Nash
      * ガンマ2のY点を計算する
      * @param Fraction $alpha_x
      * @param Fraction $alpha_y
-     * @param Fraction $beta_x
-     * @param Fraction $beta_y
+     * @param Fraction $rho_beta_x
+     * @param Fraction $rho_beta_y
      * @return Fraction
      * @throws \Exception
      */
     private function calcGamma2Y(
         Fraction $alpha_x,
         Fraction $alpha_y,
-        Fraction $beta_x,
-        Fraction $beta_y
+        Fraction $rho_beta_x,
+        Fraction $rho_beta_y
     ): Fraction {
-        $denominator = $alpha_x->subtract($beta_x);
-        $numerator_1 = $alpha_x->multiply($beta_y);
-        $numerator_2 = $alpha_y->multiply($beta_x);
+        $denominator = $alpha_x->subtract($rho_beta_x);
+        $numerator_1 = $alpha_x->multiply($rho_beta_y);
+        $numerator_2 = $alpha_y->multiply($rho_beta_x);
         $numerator = $numerator_1->subtract($numerator_2);
 
         return $numerator->divide($denominator);
