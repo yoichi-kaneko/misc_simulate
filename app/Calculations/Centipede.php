@@ -130,7 +130,7 @@ class Centipede
                     $max_nu_value
                 )
             );
-            $data[] =[
+            $data[] = [
                 't' => $i,
                 'max_nu_value' => $max_nu_value,
                 'left_side_value' => $left_side_value,
@@ -187,8 +187,8 @@ class Centipede
             for ($i = 0; $i < $max_count; $i++) {
                 // Player1が1で$iが偶数（0から始まるため）、Player1が2で$iが奇数の場合にAをセット
                 if (
-                    $player_1_is_1 && $i %2 === 0 ||
-                    !$player_1_is_1 && $i %2 > 0
+                    $player_1_is_1 && $i % 2 === 0 ||
+                    !$player_1_is_1 && $i % 2 > 0
                 ) {
                     $data[] = $pattern_data_1[$i];
                 } else {
@@ -285,7 +285,7 @@ class Centipede
             // スキップしたtが一度も出ていない間は、yはt - 1に等しい。
             if ($last_skipped_t === 0) {
                 $y = $value['t'] - 1 + $y_offset;
-            // スキップしたtが出た場合、スキップした点を起点(0)として、そこから1ずつインクリメントしていく。
+                // スキップしたtが出た場合、スキップした点を起点(0)として、そこから1ずつインクリメントしていく。
             } else {
                 $y = $value['t'] - $last_skipped_t + $y_offset;
             }

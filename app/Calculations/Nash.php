@@ -84,9 +84,11 @@ class Nash
             $render_params
         );
 
+        $a_rho = $this->calcARho($alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y);
+
         return [
             'report_params' => [
-                'a_rho' => 0.23,
+                'a_rho' => sprintf('%.3f', $a_rho->toFloat()),
             ],
             'render_params' => $render_params,
         ];
@@ -156,6 +158,28 @@ class Nash
             'x' => $mid_x,
             'y' => $mid_y,
         ];
+    }
+
+    /**
+     * a_rhoの値を計算する
+     * @param Fraction $alpha_x
+     * @param Fraction $alpha_y
+     * @param Fraction $rho_beta_x
+     * @param Fraction $rho_beta_y
+     * @return Fraction
+     */
+    private function calcARho(
+        Fraction $alpha_x,
+        Fraction $alpha_y,
+        Fraction $rho_beta_x,
+        Fraction $rho_beta_y
+    ): Fraction {
+        $denominator = $rho_beta_y->subtract($alpha_y);
+        $numerator_1 = $alpha_x->multiply($rho_beta_y);
+        $numerator_2 = $alpha_y->multiply($rho_beta_x);
+        $numerator = $numerator_1->subtract($numerator_2);
+
+        return $numerator->divide($denominator)->divide(new Fraction(2, 1));
     }
 
     /**
