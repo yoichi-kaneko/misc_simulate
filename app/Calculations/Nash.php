@@ -85,6 +85,9 @@ class Nash
         );
 
         return [
+            'report_params' => [
+                'a_rho' => 0.23,
+            ],
             'render_params' => $render_params,
         ];
     }

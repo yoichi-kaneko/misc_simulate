@@ -1,6 +1,7 @@
 import {afterCalculateByError, setErrorMessage} from "./calculate";
 import {notifyComplete} from "./notify";
 import {Chart, registerables, ChartConfiguration, ChartDataset} from "chart.js";
+import katex from "katex";
 Chart.register(...registerables);
 
 let myChartNashSocialWelfare: Chart | undefined;
@@ -35,6 +36,10 @@ interface RenderParam {
     y: number;
 }
 
+interface ReportParam {
+    a_rho: number;
+}
+
 export function doNashCalculate(): void
 {
     const data: NashData = {
@@ -63,9 +68,13 @@ export function doNashCalculate(): void
         type: 'POST',
         url: '/api/nash/calculate',
         data: data,
-        success: function (data: { render_params: RenderParam[] }) {
+        success: function (data: {
+            render_params: RenderParam[],
+            report_params: ReportParam
+        }) {
             $('button.calculate').removeClass('disabled');
             renderNashSimulationChart(data.render_params);
+            renderNashReportArea(data.report_params);
             $('#nash_spinner').hide();
             notifyComplete();
         },
@@ -79,6 +88,24 @@ export function doNashCalculate(): void
             }
             afterCalculateByError('nash_spinner');
         }
+    });
+}
+
+/**
+ * レポートエリアの出力を行う
+ * @param report_params
+ */
+function renderNashReportArea(report_params: ReportParam): void
+{
+    const tmpl  = $('#nashResultTemplate').render({
+        a_rho: report_params.a_rho,
+    });
+    $('#nash_result').html(tmpl);
+    $('#nash_result .katex_exp').each(function () {
+        let element = $(this)[0];
+        katex.render(<string>$(this).attr('expression'), element, {
+            throwOnError: false
+        });
     });
 }
 
