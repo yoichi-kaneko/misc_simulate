@@ -3,6 +3,7 @@ import {notifyComplete} from "./notify";
 import {Chart, registerables} from "chart.js";
 import {htmlLegendPlugin} from "../chartjs/plugins/html_legend.js";
 import showMore from '../plugins/show-more-wrapper.js';
+import jsrenderWrapper from '../plugins/jsrender-wrapper.js';
 
 Chart.register(...registerables);
 
@@ -93,7 +94,7 @@ function renderCentipedeReportArea(pattern_data, combination_data)
     $('#centipede_result').html('');
 
     $.each(pattern_data, function(index,val) {
-        let tmpl = $('#centipedeResultTemplate').render({
+        let tmpl = jsrenderWrapper.render('#centipedeResultTemplate', {
             pattern: index,
             table_data: val.data,
             cognitive_unit_value: val.cognitive_unit_value,
@@ -104,7 +105,7 @@ function renderCentipedeReportArea(pattern_data, combination_data)
     });
     if (combination_data) {
         $.each(combination_data, function(index,val) {
-            let tmpl = $('#centipedeCombinationResultTemplate').render({
+            let tmpl = jsrenderWrapper.render('#centipedeCombinationResultTemplate', {
                 pattern: index,
                 table_data: val.data,
                 cognitive_unit_value_1: val.cognitive_unit_value_1,
@@ -118,7 +119,7 @@ function renderCentipedeReportArea(pattern_data, combination_data)
     }
 
     // 切り替えタブの生成
-    let tmpl = $('#centipedeTabTemplate').render({
+    let tmpl = jsrenderWrapper.render('#centipedeTabTemplate', {
         pattern_data: pattern_data,
         combination_data: combination_data,
     });

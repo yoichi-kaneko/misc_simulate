@@ -1,4 +1,5 @@
 import goupWrapper from './plugins/jquery-goup-wrapper';
+import popoverWrapper from './plugins/popover-wrapper';
 
 let parser = UAParser();
 initializeAll();
@@ -10,11 +11,12 @@ $('.alert .close').click(function () {
 
 function initializeAll() {
     // $('[data-toggle="tooltip"]').tooltip();
-    $('span[data-popover-color="default"]').popover();
+    popoverWrapper.init('span[data-popover-color="default"]');
     goupWrapper.init();
+    /*
     $('.select2').select2({
         minimumResultsForSearch: Infinity
-    });
+    });*/
 
     $('.katex').each(function () {
         let element = $(this)[0];

@@ -2,6 +2,7 @@ import {afterCalculateByError, setErrorMessage} from "./calculate";
 import {notifyComplete} from "./notify";
 import {Chart, registerables, ChartConfiguration, ChartDataset} from "chart.js";
 import katex from "katex";
+import jsrenderWrapper from '../plugins/jsrender-wrapper.js';
 Chart.register(...registerables);
 
 let myChartNashSocialWelfare: Chart | undefined;
@@ -97,7 +98,7 @@ export function doNashCalculate(): void
  */
 function renderNashReportArea(report_params: ReportParam): void
 {
-    const tmpl  = $('#nashResultTemplate').render({
+    const tmpl  = jsrenderWrapper.render('#nashResultTemplate', {
         a_rho: report_params.a_rho,
     });
     $('#nash_result').html(tmpl);

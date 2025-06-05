@@ -12,9 +12,9 @@ window.katex = katex;
 // vite移行後のコード
 import 'bootstrap/dist/js/bootstrap';
 import 'bootstrap-notify';
-import 'popper.js/dist/popper';
+// popper.js is imported through the wrapper in resources/js/plugins/popover-wrapper.js
 import 'chart.js';
-import 'select2';
+// import 'select2';
 import 'datatables';
 import 'datatables-responsive';
-import 'jsrender';
+// jsrender is imported through the wrapper in resources/js/plugins/jsrender-wrapper.js
