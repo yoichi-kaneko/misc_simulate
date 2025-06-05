@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Calculations;
 
-use Illuminate\Support\Facades\Log;
 use Phospr\Fraction;
 
 class Nash
