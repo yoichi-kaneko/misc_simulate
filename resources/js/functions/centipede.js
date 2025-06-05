@@ -127,6 +127,14 @@ function renderCentipedeReportArea(pattern_data, combination_data)
     // レポートのタブ切り替えをバインド
     $('#centipede_tab .switch_pattern').click(function () {
         let pattern = $(this).attr('pattern');
+        $('#centipede_tab .switch_pattern').each(function () {
+            if ($(this).attr('pattern') === pattern) {
+                $(this).addClass('active');
+            } else {
+                $(this).removeClass('active');
+            }
+        });
+
         $('#centipede_result .report_block').each(function () {
             let id = 'report_pattern_' + pattern;
             if ($(this).attr('id') == id) {
@@ -135,6 +143,7 @@ function renderCentipedeReportArea(pattern_data, combination_data)
                 $(this).hide();
             }
         });
+        return false;
     });
 
     $('#centipede_result .katex_exp').each(function () {
