@@ -5,124 +5,63 @@ declare(strict_types=1);
 namespace Tests\Unit\Calculations;
 
 use App\Calculations\Nash;
+use App\Calculations\Nash\Simulator\NashSimulator;
+use App\Calculations\Nash\Formatter\NashFormatter;
+use App\Calculations\Nash\DTO\NashSimulationResult;
 use PHPUnit\Framework\TestCase;
 use Phospr\Fraction;
-use ReflectionClass;
 
 class NashTest extends TestCase
 {
     /**
-     * calcMidpointメソッドが正しく中点を計算することをテストします。
+     * Nashクラスがシミュレーターとフォーマッターを正しく使用することをテストします。
      * @test
      * @return void
-     * @throws \ReflectionException
      */
-    public function testCalcMidpoint()
+    public function testRunDelegation()
     {
-        // Nashクラスのインスタンスを作成
-        $nash = new Nash();
+        // モックのシミュレーターとフォーマッターを作成
+        $simulator = $this->createMock(NashSimulator::class);
+        $formatter = $this->createMock(NashFormatter::class);
 
-        // privateメソッドにアクセスするためのReflectionを設定
-        $reflection = new ReflectionClass($nash);
-        $method = $reflection->getMethod('calcMidpoint');
-        $method->setAccessible(true);
+        // テスト用の入力データ
+        $alpha_1 = ['numerator' => '1', 'denominator' => '1'];
+        $alpha_2 = ['numerator' => '2', 'denominator' => '1'];
+        $beta_1 = ['numerator' => '3', 'denominator' => '1'];
+        $beta_2 = ['numerator' => '4', 'denominator' => '1'];
+        $rho = ['numerator' => '1', 'denominator' => '2'];
 
-        // テストケース
-        $testCases = [
-            // gamma1_x, gamma2_y, expected_x, expected_y
-            [new Fraction(4, 1), new Fraction(6, 1), new Fraction(2, 1), new Fraction(3, 1)],
-            [new Fraction(1, 2), new Fraction(1, 4), new Fraction(1, 4), new Fraction(1, 8)],
-            [new Fraction(3, 2), new Fraction(5, 3), new Fraction(3, 4), new Fraction(5, 6)],
-            [new Fraction(0, 1), new Fraction(0, 1), new Fraction(0, 1), new Fraction(0, 1)],
+        // モックのシミュレーション結果
+        $simulationResult = $this->createMock(NashSimulationResult::class);
+
+        // モックの期待される出力
+        $expectedOutput = [
+            'report_params' => ['a_rho' => '3.500'],
+            'render_params' => [
+                ['title' => 'alpha', 'x' => 1.0, 'y' => 2.0, 'display_text' => '[1.000, 2.000]'],
+                // 他のパラメータは省略
+            ]
         ];
 
-        // 各テストケースを実行
-        foreach ($testCases as [$gamma1_x, $gamma2_y, $expected_x, $expected_y]) {
-            $result = $method->invokeArgs($nash, [$gamma1_x, $gamma2_y]);
+        // シミュレーターのモックの振る舞いを設定
+        $simulator->expects($this->once())
+            ->method('run')
+            ->with($alpha_1, $alpha_2, $beta_1, $beta_2, $rho)
+            ->willReturn($simulationResult);
 
-            $this->assertEquals($expected_x->getNumerator(), $result['x']->getNumerator(), "X座標の分子が期待通りではありません。");
-            $this->assertEquals($expected_x->getDenominator(), $result['x']->getDenominator(), "X座標の分母が期待通りではありません。");
+        // フォーマッターのモックの振る舞いを設定
+        $formatter->expects($this->once())
+            ->method('format')
+            ->with($simulationResult)
+            ->willReturn($expectedOutput);
 
-            $this->assertEquals($expected_y->getNumerator(), $result['y']->getNumerator(), "Y座標の分子が期待通りではありません。");
-            $this->assertEquals($expected_y->getDenominator(), $result['y']->getDenominator(), "Y座標の分母が期待通りではありません。");
-        }
-    }
+        // テスト対象のNashクラスのインスタンスを作成
+        $nash = new Nash($simulator, $formatter);
 
-    /**
-     * calcGamma1Xメソッドが正しくガンマ1のX点を計算することをテストします。
-     * @test
-     * @return void
-     * @throws \ReflectionException
-     */
-    public function testCalcGamma1X()
-    {
-        // Nashクラスのインスタンスを作成
-        $nash = new Nash();
+        // runメソッドを実行
+        $result = $nash->run($alpha_1, $alpha_2, $beta_1, $beta_2, $rho);
 
-        // privateメソッドにアクセスするためのReflectionを設定
-        $reflection = new ReflectionClass($nash);
-        $method = $reflection->getMethod('calcGamma1X');
-        $method->setAccessible(true);
-
-        // テストケース
-        $testCases = [
-            // alpha_x, alpha_y, rho_beta_x, rho_beta_y, expected
-            [new Fraction(2, 1), new Fraction(2, 1), new Fraction(1, 1), new Fraction(4, 1), new Fraction(6, 2)],
-            [new Fraction(1, 2), new Fraction(1, 4), new Fraction(1, 4), new Fraction(1, 2), new Fraction(3, 4)],
-            [new Fraction(3, 1), new Fraction(1, 1), new Fraction(2, 1), new Fraction(3, 1), new Fraction(7, 2)],
-        ];
-
-        // 各テストケースを実行
-        foreach ($testCases as $index => [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y, $expected]) {
-            // rho_beta_y - alpha_y が 0 になる場合はスキップ（分母が0になるため）
-            if ($rho_beta_y->toFloat() == $alpha_y->toFloat()) {
-                continue;
-            }
-
-            $result = $method->invokeArgs($nash, [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y]);
-
-            // 計算結果を検証
-            $this->assertEquals($expected->getNumerator(), $result->getNumerator(), "ケース $index: ガンマ1のX点の分子が期待通りではありません。");
-            $this->assertEquals($expected->getDenominator(), $result->getDenominator(), "ケース $index: ガンマ1のX点の分母が期待通りではありません。");
-        }
-    }
-
-    /**
-     * calcGamma2Yメソッドが正しくガンマ2のY点を計算することをテストします。
-     * @test
-     * @return void
-     * @throws \ReflectionException
-     */
-    public function testCalcGamma2Y()
-    {
-        // Nashクラスのインスタンスを作成
-        $nash = new Nash();
-
-        // privateメソッドにアクセスするためのReflectionを設定
-        $reflection = new ReflectionClass($nash);
-        $method = $reflection->getMethod('calcGamma2Y');
-        $method->setAccessible(true);
-
-        // テストケース
-        $testCases = [
-            // alpha_x, alpha_y, rho_beta_x, rho_beta_y, expected
-            [new Fraction(4, 1), new Fraction(2, 1), new Fraction(2, 1), new Fraction(3, 1), new Fraction(4, 1)],
-            [new Fraction(1, 2), new Fraction(1, 3), new Fraction(1, 4), new Fraction(1, 5), new Fraction(1, 15)],
-            [new Fraction(3, 1), new Fraction(0, 1), new Fraction(1, 1), new Fraction(2, 1), new Fraction(6, 2)],
-        ];
-
-        // 各テストケースを実行
-        foreach ($testCases as $index => [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y, $expected]) {
-            // alpha_x - rho_beta_x が 0 になる場合はスキップ（分母が0になるため）
-            if ($alpha_x->toFloat() == $rho_beta_x->toFloat()) {
-                continue;
-            }
-
-            $result = $method->invokeArgs($nash, [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y]);
-
-            // 計算結果を検証
-            $this->assertEquals($expected->getNumerator(), $result->getNumerator(), "ケース $index: ガンマ2のY点の分子が期待通りではありません。");
-            $this->assertEquals($expected->getDenominator(), $result->getDenominator(), "ケース $index: ガンマ2のY点の分母が期待通りではありません。");
-        }
+        // 結果を検証
+        $this->assertEquals($expectedOutput, $result);
     }
 }

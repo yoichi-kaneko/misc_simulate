@@ -4,11 +4,19 @@ declare(strict_types=1);
 
 namespace App\Calculations;
 
-use Phospr\Fraction;
+use App\Calculations\Nash\Simulator\NashSimulator;
+use App\Calculations\Nash\Formatter\NashFormatter;
 
 class Nash
 {
-    private const DISPLAY_FORMAT = '[%s, %s]';
+    private NashSimulator $simulator;
+    private NashFormatter $formatter;
+
+    public function __construct(NashSimulator $simulator = null, NashFormatter $formatter = null)
+    {
+        $this->simulator = $simulator ?? new NashSimulator();
+        $this->formatter = $formatter ?? new NashFormatter();
+    }
 
     /**
      * 計算を実行する
@@ -27,179 +35,16 @@ class Nash
         array $beta_2,
         array $rho
     ): array {
-        $alpha_x = Fraction::fromString($alpha_1['numerator'] . '/' . $alpha_1['denominator']);
-        $alpha_y = Fraction::fromString($alpha_2['numerator'] . '/' .  $alpha_2['denominator']);
-        $beta_x = Fraction::fromString($beta_1['numerator'] . '/' .  $beta_1['denominator']);
-        $beta_y = Fraction::fromString($beta_2['numerator'] . '/' .  $beta_2['denominator']);
-        $rho_rate = Fraction::fromString($rho['numerator'] . '/' . $rho['denominator']);
-        $rho_beta_x = $beta_x->multiply($rho_rate);
-        $rho_beta_y = $beta_y->multiply($rho_rate);
-
-        if ($rho_beta_y->toFloat() <= $alpha_y->toFloat()) {
-            throw new \Exception('ガンマの値が求められませんでした。');
-        }
-
-        $gamma2_y = $this->calcGamma2Y($alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y);
-        $gamma1_x = $this->calcGamma1X($alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y);
-        $midpoint = $this->calcMidpoint($gamma1_x, $gamma2_y);
-
-        $render_params = [
-            [
-                'title' => 'alpha',
-                'display_text' => $this->getDisplayText($alpha_x, $alpha_y),
-                'x' => $alpha_x->toFloat(),
-                'y' => $alpha_y->toFloat(),
-            ],
-            [
-                'title' => 'rho beta',
-                'display_text' => $this->getDisplayText($rho_beta_x, $rho_beta_y),
-                'x' => $rho_beta_x->toFloat(),
-                'y' => $rho_beta_y->toFloat(),
-            ],
-            [
-                'title' => 'gamma1',
-                'display_text' => $this->getDisplayText($gamma1_x, null),
-                'x' => $gamma1_x->toFloat(),
-                'y' => 0,
-            ],
-            [
-                'title' => 'gamma2',
-                'display_text' => $this->getDisplayText(null, $gamma2_y),
-                'x' => 0,
-                'y' => $gamma2_y->toFloat(),
-            ],
-            [
-                'title' => 'midpoint',
-                'display_text' => $this->getDisplayText($midpoint['x'], $midpoint['y']),
-                'x' => $midpoint['x']->toFloat(),
-                'y' => $midpoint['y']->toFloat(),
-            ],
-        ];
-
-        // X座標でソート
-        array_multisort(
-            array_column($render_params, 'x'),
-            SORT_ASC,
-            $render_params
+        // シミュレーションを実行
+        $result = $this->simulator->run(
+            $alpha_1,
+            $alpha_2,
+            $beta_1,
+            $beta_2,
+            $rho
         );
 
-        $a_rho = $this->calcARho($alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y);
-
-        return [
-            'report_params' => [
-                'a_rho' => sprintf('%.3f', $a_rho->toFloat()),
-            ],
-            'render_params' => $render_params,
-        ];
-    }
-
-    /**
-     * ガンマ1のX点を計算する
-     * @param Fraction $alpha_x
-     * @param Fraction $alpha_y
-     * @param Fraction $rho_beta_x
-     * @param Fraction $rho_beta_y
-     * @return Fraction
-     * @throws \Exception
-     */
-    private function calcGamma1X(
-        Fraction $alpha_x,
-        Fraction $alpha_y,
-        Fraction $rho_beta_x,
-        Fraction $rho_beta_y
-    ): Fraction {
-        $denominator = $rho_beta_y->subtract($alpha_y);
-        $numerator_1 = $alpha_x->multiply($rho_beta_y);
-        $numerator_2 = $alpha_y->multiply($rho_beta_x);
-        $numerator = $numerator_1->subtract($numerator_2);
-
-        return $numerator->divide($denominator);
-    }
-
-    /**
-     * ガンマ2のY点を計算する
-     * @param Fraction $alpha_x
-     * @param Fraction $alpha_y
-     * @param Fraction $rho_beta_x
-     * @param Fraction $rho_beta_y
-     * @return Fraction
-     * @throws \Exception
-     */
-    private function calcGamma2Y(
-        Fraction $alpha_x,
-        Fraction $alpha_y,
-        Fraction $rho_beta_x,
-        Fraction $rho_beta_y
-    ): Fraction {
-        $denominator = $alpha_x->subtract($rho_beta_x);
-        $numerator_1 = $alpha_x->multiply($rho_beta_y);
-        $numerator_2 = $alpha_y->multiply($rho_beta_x);
-        $numerator = $numerator_1->subtract($numerator_2);
-
-        return $numerator->divide($denominator);
-    }
-
-    /**
-     * 中点を計算する
-     * @param Fraction $gamma1_x
-     * @param Fraction $gamma2_y
-     * @return array{
-     *     x: Fraction,
-     *     y: Fraction,
-     * }
-     */
-    private function calcMidpoint(Fraction $gamma1_x, Fraction $gamma2_y): array
-    {
-        $mid_x = $gamma1_x->divide(new Fraction(2, 1));
-        $mid_y = $gamma2_y->divide(new Fraction(2, 1));
-
-        return [
-            'x' => $mid_x,
-            'y' => $mid_y,
-        ];
-    }
-
-    /**
-     * a_rhoの値を計算する
-     * @param Fraction $alpha_x
-     * @param Fraction $alpha_y
-     * @param Fraction $rho_beta_x
-     * @param Fraction $rho_beta_y
-     * @return Fraction
-     */
-    private function calcARho(
-        Fraction $alpha_x,
-        Fraction $alpha_y,
-        Fraction $rho_beta_x,
-        Fraction $rho_beta_y
-    ): Fraction {
-        $denominator = $rho_beta_y->subtract($alpha_y);
-        $numerator_1 = $alpha_x->multiply($rho_beta_y);
-        $numerator_2 = $alpha_y->multiply($rho_beta_x);
-        $numerator = $numerator_1->subtract($numerator_2);
-
-        return $numerator->divide($denominator)->divide(new Fraction(2, 1));
-    }
-
-    /**
-     * 画面上の表示テキストを取得する
-     * @param Fraction|null $x
-     * @param Fraction|null $y
-     * @return string
-     */
-    public function getDisplayText(?Fraction $x, ?Fraction $y): string
-    {
-        if (is_null($x)) {
-            $x_text = '0';
-        } else {
-            $x_text = sprintf('%.3f', $x->toFloat());
-        }
-        if (is_null($y)) {
-            $y_text = '0';
-        } else {
-            $y_text = sprintf('%.3f', $y->toFloat());
-        }
-
-        return sprintf(self::DISPLAY_FORMAT, $x_text, $y_text);
+        // 結果をフォーマット
+        return $this->formatter->format($result);
     }
 }
