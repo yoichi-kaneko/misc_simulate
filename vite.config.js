@@ -38,9 +38,6 @@ export default defineConfig({
     resolve: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
     },
-    define: {
-        global: {},
-    },
     build: {
         rollupOptions: {
             output: {

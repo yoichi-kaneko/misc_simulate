@@ -1,6 +1,6 @@
 // jsrender-wrapper.js
 // This is a wrapper for the jsrender library to handle its import properly
-
+import $ from 'jquery';
 import 'jsrender';
 
 // Create a wrapper object to expose jsrender functionality
