@@ -2,6 +2,9 @@ import {afterCalculateByError, setErrorMessage} from "./calculate";
 import {notifyComplete} from "./notify";
 import {Chart, registerables} from "chart.js";
 import {htmlLegendPlugin} from "../chartjs/plugins/html_legend.js";
+import showMore from '../plugins/show-more-wrapper.js';
+import jsrenderWrapper from '../plugins/jsrender-wrapper.js';
+
 Chart.register(...registerables);
 
 let myChartCentipedeSimulation;
@@ -91,7 +94,7 @@ function renderCentipedeReportArea(pattern_data, combination_data)
     $('#centipede_result').html('');
 
     $.each(pattern_data, function(index,val) {
-        let tmpl = $('#centipedeResultTemplate').render({
+        let tmpl = jsrenderWrapper.render('#centipedeResultTemplate', {
             pattern: index,
             table_data: val.data,
             cognitive_unit_value: val.cognitive_unit_value,
@@ -102,7 +105,7 @@ function renderCentipedeReportArea(pattern_data, combination_data)
     });
     if (combination_data) {
         $.each(combination_data, function(index,val) {
-            let tmpl = $('#centipedeCombinationResultTemplate').render({
+            let tmpl = jsrenderWrapper.render('#centipedeCombinationResultTemplate', {
                 pattern: index,
                 table_data: val.data,
                 cognitive_unit_value_1: val.cognitive_unit_value_1,
@@ -116,7 +119,7 @@ function renderCentipedeReportArea(pattern_data, combination_data)
     }
 
     // 切り替えタブの生成
-    let tmpl = $('#centipedeTabTemplate').render({
+    let tmpl = jsrenderWrapper.render('#centipedeTabTemplate', {
         pattern_data: pattern_data,
         combination_data: combination_data,
     });
@@ -124,6 +127,14 @@ function renderCentipedeReportArea(pattern_data, combination_data)
     // レポートのタブ切り替えをバインド
     $('#centipede_tab .switch_pattern').click(function () {
         let pattern = $(this).attr('pattern');
+        $('#centipede_tab .switch_pattern').each(function () {
+            if ($(this).attr('pattern') === pattern) {
+                $(this).addClass('active');
+            } else {
+                $(this).removeClass('active');
+            }
+        });
+
         $('#centipede_result .report_block').each(function () {
             let id = 'report_pattern_' + pattern;
             if ($(this).attr('id') == id) {
@@ -132,6 +143,7 @@ function renderCentipedeReportArea(pattern_data, combination_data)
                 $(this).hide();
             }
         });
+        return false;
     });
 
     $('#centipede_result .katex_exp').each(function () {
@@ -145,9 +157,7 @@ function renderCentipedeReportArea(pattern_data, combination_data)
     $('.showmore_block').each(function() {
         let id = $(this).attr('id');
         if ($('#showmore-' + id).length == 0) {
-            $('#' + id).showMore({
-                minheight: 300
-            });
+            showMore.init('#' + id, {minheight: 300});
         }
     });
     $('#centipede_tab .switch_pattern:first').addClass('active');

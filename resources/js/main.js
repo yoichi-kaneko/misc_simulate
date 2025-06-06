@@ -1,19 +1,22 @@
-import {initializeExponentialForms} from "./functions/exponential";
+import goupWrapper from './plugins/jquery-goup-wrapper';
+import popoverWrapper from './plugins/popover-wrapper';
 
 let parser = UAParser();
 initializeAll();
+
 
 $('.alert .close').click(function () {
     $('.alert_block').hide();
 });
 
 function initializeAll() {
-    $('[data-toggle="tooltip"]').tooltip();
-    $('span[data-popover-color="default"]').popover();
-    $.goup();
+    // $('[data-toggle="tooltip"]').tooltip();
+    popoverWrapper.init('span[data-popover-color="default"]');
+    goupWrapper.init();
+    /*
     $('.select2').select2({
         minimumResultsForSearch: Infinity
-    });
+    });*/
 
     $('.katex').each(function () {
         let element = $(this)[0];
@@ -46,6 +49,4 @@ function initializeAll() {
     if ($('#participants_block').length > 0) {
         $('#coin_tossing_block').hide();
     }
-
-    initializeExponentialForms();
 }

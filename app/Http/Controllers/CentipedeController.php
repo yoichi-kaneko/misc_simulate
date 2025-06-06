@@ -9,7 +9,7 @@ class CentipedeController extends Controller
     public function index()
     {
         return view('centipede/index')
-            ->with('js_file', 'js/pages/centipede.js')
+            ->with('js_file', 'resources/js/pages/centipede.js')
             ->with('case_list', $this->get_case_list());
     }
 

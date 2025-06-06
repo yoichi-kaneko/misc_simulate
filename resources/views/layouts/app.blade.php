@@ -13,9 +13,8 @@
 
     <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/icon-192x192.png') }}" sizes="192x192">
-    <!-- Katniss CSS -->
-    <link rel="stylesheet" href="{{ mix('css/vendors.css') }}">
-    <link rel="stylesheet" href="{{ mix('css/katniss.css') }}">
+    <!-- Vite Assets -->
+    @vite(['resources/sass/vendors.scss', 'resources/sass/katniss.scss', 'resources/sass/app.scss'])
 </head>
 
 <body class="hide-left">
@@ -40,11 +39,10 @@
 </div><!-- kt-mainpanel -->
 
 @include('sections.exponential_form')
-<script src="{{ mix('js/vendors.js') }}"></script>
-<script src="{{ mix('js/katniss.js') }}"></script>
-<script src="{{ mix('js/ResizeSensor.js') }}"></script>
-<script src="{{ mix('js/main.js') }}"></script>
-@isset($js_file)<script src="{{ mix($js_file) }}"></script>@endisset
+@vite(['resources/js/vendors.js', 'resources/js/katniss.js', 'resources/js/ResizeSensor.js', 'resources/js/main.js'])
+@isset($js_file)
+    @vite([$js_file])
+@endisset
 
 <script id="downloadTemplate" type="text/x-jsrender">
     <a id='image-file' class='hidden' type='application/octet-stream' href='@{{:href}}' download='Chart.png'>

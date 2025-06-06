@@ -1,5 +1,6 @@
-const {beforeCalculate} = require("../functions/calculate");
-const {doCentipedeCalculate} = require("../functions/centipede");
+import {beforeCalculate} from "../functions/calculate";
+import {doCentipedeCalculate} from "../functions/centipede";
+import jsrenderWrapper from '../plugins/jsrender-wrapper.js';
 
 let parser = UAParser();
 
@@ -40,7 +41,7 @@ $(function(){
         let target = '#' + $(this).attr('target');
         let canvas = $(target)[0];
 
-        let tmpl = $('#downloadTemplate').render({href: canvas.toDataURL('image/png')});
+        let tmpl = jsrenderWrapper.render('#downloadTemplate', {href: canvas.toDataURL('image/png')});
         $('body').append(tmpl);
         $('#image-file')[0].click();
         $('#image-file').remove();
