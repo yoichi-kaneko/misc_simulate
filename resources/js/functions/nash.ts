@@ -30,6 +30,11 @@ interface NashData {
     };
 }
 
+interface RenderParams {
+    line: RenderParam[];
+    dot: RenderParam[];
+}
+
 interface RenderParam {
     title: string;
     display_text: string;
@@ -70,7 +75,7 @@ export function doNashCalculate(): void
         url: '/api/nash/calculate',
         data: data,
         success: function (data: {
-            render_params: RenderParam[],
+            render_params: RenderParams,
             report_params: ReportParam
         }) {
             $('button.calculate').removeClass('disabled');
@@ -114,7 +119,7 @@ function renderNashReportArea(report_params: ReportParam): void
  * チャートの出力を行う
  * @param render_params
  */
-function renderNashSimulationChart(render_params: RenderParam[]): void
+function renderNashSimulationChart(render_params: RenderParams): void
 {
     $('#chart_area_nash').show();
     let ctx_simulation = document.getElementById('chart_nash_social_welfare') as HTMLCanvasElement;
@@ -134,13 +139,22 @@ function renderNashSimulationChart(render_params: RenderParam[]): void
  * チャートのパラメータ生成を行う
  * @param render_params
  */
-function getNashSimulationOption(render_params: RenderParam[]): ChartConfiguration
+function getNashSimulationOption(render_params: RenderParams): ChartConfiguration
 {
     const border_color = '#324463';
 
-    let data_array: RenderParam[] = [];
-    $.each(render_params, function(index: number, val: RenderParam) {
-        data_array.push({
+    let line_data_array: RenderParam[] = [];
+    let dot_data_array: RenderParam[] = [];
+    $.each(render_params.line, function(index: number, val: RenderParam)  {
+        line_data_array.push({
+            title: val.title,
+            display_text: val.display_text,
+            x: val.x,
+            y: val.y,
+        });
+    });
+    $.each(render_params.dot, function (index: number, val: RenderParam) {
+        dot_data_array.push({
             title: val.title,
             display_text: val.display_text,
             x: val.x,
@@ -151,15 +165,15 @@ function getNashSimulationOption(render_params: RenderParam[]): ChartConfigurati
     const datasets: ChartDataset[] = [
         {
             type: 'line',
-            label: 'Nash',
-            data: data_array,
+            label: 'Nash Line',
+            data: line_data_array,
             borderColor: border_color,
             backgroundColor: border_color,
             segment: {
                 borderDash: function(context: any) {
                     if (
                         context.p0.raw.title === 'gamma2' ||
-                        context.p1.raw.title === 'beta' ||
+                        context.p1.raw.title === 'rho beta' ||
                         context.p0.raw.title === 'alpha' ||
                         context.p1.raw.title === 'gamma1'
                     ) {
@@ -173,7 +187,19 @@ function getNashSimulationOption(render_params: RenderParam[]): ChartConfigurati
             pointRadius: 2,
             fill: false,
             showLine: true
-        }
+        },
+        {
+            type: 'scatter',
+            label: 'Nash Dot',
+            data: dot_data_array,
+            borderColor: border_color,
+            backgroundColor: border_color,
+            borderWidth: 2,
+            tension: 0, // lineTension is deprecated, using tension instead
+            pointRadius: 2,
+            fill: false,
+            showLine: true
+        },
     ];
     return {
         type: "scatter",
@@ -205,7 +231,7 @@ function getNashSimulationOption(render_params: RenderParam[]): ChartConfigurati
                     display: false,
                 },
                 tooltip: {
-                    mode: 'index',
+                    mode: 'nearest',
                     displayColors: false,
                     intersect: false,
                     callbacks: {
