@@ -135,10 +135,14 @@ class NashSimulator
         Fraction $rho_beta_x,
         Fraction $rho_beta_y
     ): Fraction {
-        $denominator = $rho_beta_y->subtract($alpha_y);
+        $denominator_1 = $alpha_x->subtract($rho_beta_x);
+        $denominator_2 = $rho_beta_y->subtract($alpha_y);
+        $denominator = $denominator_1->multiply($denominator_2);
+
         $numerator_1 = $alpha_x->multiply($rho_beta_y);
         $numerator_2 = $alpha_y->multiply($rho_beta_x);
-        $numerator = $numerator_1->subtract($numerator_2);
+        $numerator_3 = $rho_beta_x->multiply($rho_beta_y)->multiply(new Fraction(2, 1));
+        $numerator = $numerator_1->add($numerator_2)->subtract($numerator_3);
 
         return $numerator->divide($denominator)->divide(new Fraction(2, 1));
     }
