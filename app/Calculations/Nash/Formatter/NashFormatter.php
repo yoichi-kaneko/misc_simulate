@@ -18,7 +18,8 @@ class NashFormatter
      */
     public function format(NashSimulationResult $result): array
     {
-        $render_params = [
+        // ライン状のパラメータを整形
+        $line_render_params = [
             [
                 'title' => 'alpha',
                 'display_text' => $this->getDisplayText($result->getAlphaX(), $result->getAlphaY()),
@@ -50,19 +51,30 @@ class NashFormatter
                 'y' => $result->getMidpoint()['y']->toFloat(),
             ],
         ];
+        $dot_render_params = [
+            [
+                'title' => 'beta',
+                'display_text' => $this->getDisplayText($result->getBetaX(), $result->getBetaY()),
+                'x' => $result->getBetaX()->toFloat(),
+                'y' => $result->getBetaY()->toFloat(),
+            ],
+        ];
 
         // X座標でソート
         array_multisort(
-            array_column($render_params, 'x'),
+            array_column($line_render_params, 'x'),
             SORT_ASC,
-            $render_params
+            $line_render_params
         );
 
         return [
             'report_params' => [
                 'a_rho' => sprintf('%.3f', $result->getARho()->toFloat()),
             ],
-            'render_params' => $render_params,
+            'render_params' => [
+                'line' => $line_render_params,
+                'dot' => $dot_render_params,
+            ],
         ];
     }
 

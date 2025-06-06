@@ -48,10 +48,12 @@ class NashFormatterTest extends TestCase
     {
         // モックのNashSimulationResultを作成
         $simulationResult = $this->createMock(\App\Calculations\Nash\DTO\NashSimulationResult::class);
-        
+
         // モックの振る舞いを設定
         $simulationResult->method('getAlphaX')->willReturn(new Fraction(1, 1));
         $simulationResult->method('getAlphaY')->willReturn(new Fraction(2, 1));
+        $simulationResult->method('getBetaX')->willReturn(new Fraction(2, 1));
+        $simulationResult->method('getBetaY')->willReturn(new Fraction(3, 1));
         $simulationResult->method('getRhoBetaX')->willReturn(new Fraction(3, 1));
         $simulationResult->method('getRhoBetaY')->willReturn(new Fraction(4, 1));
         $simulationResult->method('getGamma1X')->willReturn(new Fraction(5, 1));
@@ -74,20 +76,28 @@ class NashFormatterTest extends TestCase
         $this->assertArrayHasKey('render_params', $result);
         $this->assertArrayHasKey('a_rho', $result['report_params']);
         $this->assertEquals('3.500', $result['report_params']['a_rho']);
-        
+
         // render_paramsの検証
-        $this->assertCount(5, $result['render_params']);
-        
-        // 各ポイントの存在を確認
-        $titles = array_column($result['render_params'], 'title');
-        $this->assertContains('alpha', $titles);
-        $this->assertContains('rho beta', $titles);
-        $this->assertContains('gamma1', $titles);
-        $this->assertContains('gamma2', $titles);
-        $this->assertContains('midpoint', $titles);
-        
-        // X座標でソートされていることを確認
-        $x_values = array_column($result['render_params'], 'x');
+        $this->assertArrayHasKey('line', $result['render_params']);
+        $this->assertArrayHasKey('dot', $result['render_params']);
+
+        // lineの検証
+        $this->assertCount(5, $result['render_params']['line']);
+
+        // lineの各ポイントの存在を確認
+        $line_titles = array_column($result['render_params']['line'], 'title');
+        $this->assertContains('alpha', $line_titles);
+        $this->assertContains('rho beta', $line_titles);
+        $this->assertContains('gamma1', $line_titles);
+        $this->assertContains('gamma2', $line_titles);
+        $this->assertContains('midpoint', $line_titles);
+
+        // dotの検証
+        $this->assertCount(1, $result['render_params']['dot']);
+        $this->assertEquals('beta', $result['render_params']['dot'][0]['title']);
+
+        // lineのX座標でソートされていることを確認
+        $x_values = array_column($result['render_params']['line'], 'x');
         $sorted_x_values = $x_values;
         sort($sorted_x_values);
         $this->assertEquals($sorted_x_values, $x_values);

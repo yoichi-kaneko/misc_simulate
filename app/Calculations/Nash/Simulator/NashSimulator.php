@@ -11,11 +11,11 @@ class NashSimulator
 {
     /**
      * シミュレーションを実行する
-     * @param array $alpha_1
-     * @param array $alpha_2
-     * @param array $beta_1
-     * @param array $beta_2
-     * @param array $rho
+     * @param array{numerator: string, denominator: string} $alpha_1
+     * @param array{numerator: string, denominator: string} $alpha_2
+     * @param array{numerator: string, denominator: string} $beta_1
+     * @param array{numerator: string, denominator: string} $beta_2
+     * @param array{numerator: string, denominator: string} $rho
      * @return NashSimulationResult
      * @throws \Exception
      */
@@ -26,11 +26,12 @@ class NashSimulator
         array $beta_2,
         array $rho
     ): NashSimulationResult {
-        $alpha_x = Fraction::fromString($alpha_1['numerator'] . '/' . $alpha_1['denominator']);
-        $alpha_y = Fraction::fromString($alpha_2['numerator'] . '/' .  $alpha_2['denominator']);
-        $beta_x = Fraction::fromString($beta_1['numerator'] . '/' .  $beta_1['denominator']);
-        $beta_y = Fraction::fromString($beta_2['numerator'] . '/' .  $beta_2['denominator']);
-        $rho_rate = Fraction::fromString($rho['numerator'] . '/' . $rho['denominator']);
+        // HTTPリクエストからの値のためstring型で受け取っている。中身は整数であることは前処理で保証されている。
+        $alpha_x = new Fraction((int)$alpha_1['numerator'], (int)$alpha_1['denominator']);
+        $alpha_y = new Fraction((int)$alpha_2['numerator'], (int)$alpha_2['denominator']);
+        $beta_x = new Fraction((int)$beta_1['numerator'], (int)$beta_1['denominator']);
+        $beta_y = new Fraction((int)$beta_2['numerator'], (int)$beta_2['denominator']);
+        $rho_rate = new Fraction((int)$rho['numerator'], (int)$rho['denominator']);
         $rho_beta_x = $beta_x->multiply($rho_rate);
         $rho_beta_y = $beta_y->multiply($rho_rate);
 
@@ -46,6 +47,8 @@ class NashSimulator
         return new NashSimulationResult(
             $alpha_x,
             $alpha_y,
+            $beta_x,
+            $beta_y,
             $rho_beta_x,
             $rho_beta_y,
             $gamma1_x,
