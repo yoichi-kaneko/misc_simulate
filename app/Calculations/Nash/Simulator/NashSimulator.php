@@ -46,6 +46,8 @@ class NashSimulator
         return new NashSimulationResult(
             $alpha_x,
             $alpha_y,
+            $beta_x,
+            $beta_y,
             $rho_beta_x,
             $rho_beta_y,
             $gamma1_x,

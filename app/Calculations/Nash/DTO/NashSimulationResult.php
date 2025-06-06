@@ -10,6 +10,8 @@ class NashSimulationResult
 {
     private Fraction $alpha_x;
     private Fraction $alpha_y;
+    private Fraction $beta_x;
+    private Fraction $beta_y;
     private Fraction $rho_beta_x;
     private Fraction $rho_beta_y;
     private Fraction $gamma1_x;
@@ -20,6 +22,8 @@ class NashSimulationResult
     public function __construct(
         Fraction $alpha_x,
         Fraction $alpha_y,
+        Fraction $beta_x,
+        Fraction $beta_y,
         Fraction $rho_beta_x,
         Fraction $rho_beta_y,
         Fraction $gamma1_x,
@@ -29,6 +33,8 @@ class NashSimulationResult
     ) {
         $this->alpha_x = $alpha_x;
         $this->alpha_y = $alpha_y;
+        $this->beta_x = $beta_x;
+        $this->beta_y = $beta_y;
         $this->rho_beta_x = $rho_beta_x;
         $this->rho_beta_y = $rho_beta_y;
         $this->gamma1_x = $gamma1_x;
@@ -37,41 +43,91 @@ class NashSimulationResult
         $this->a_rho = $a_rho;
     }
 
+    /**
+     * alpha_xを取得する
+     * @return Fraction
+     */
     public function getAlphaX(): Fraction
     {
         return $this->alpha_x;
     }
 
+    /**
+     * alpha_yを取得する
+     * @return Fraction
+     */
     public function getAlphaY(): Fraction
     {
         return $this->alpha_y;
     }
 
+    /**
+     * beta_xを取得する
+     * @return Fraction
+     */
+    public function getBetaX(): Fraction
+    {
+        return $this->beta_x;
+    }
+
+    /**
+     * beta_yを取得する
+     * @return Fraction
+     */
+    public function getBetaY(): Fraction
+    {
+        return $this->beta_y;
+    }
+
+    /**
+     * rho_beta_xを取得する
+     * @return Fraction
+     */
     public function getRhoBetaX(): Fraction
     {
         return $this->rho_beta_x;
     }
 
+    /**
+     * rho_beta_yを取得する
+     * @return Fraction
+     */
     public function getRhoBetaY(): Fraction
     {
         return $this->rho_beta_y;
     }
 
+    /**
+     * gamma1_xを取得する
+     * @return Fraction
+     */
     public function getGamma1X(): Fraction
     {
         return $this->gamma1_x;
     }
 
+    /**
+     * gamma2_yを取得する
+     * @return Fraction
+     */
     public function getGamma2Y(): Fraction
     {
         return $this->gamma2_y;
     }
 
+    /**
+     * midpointを取得する
+     * @return array
+     */
     public function getMidpoint(): array
     {
         return $this->midpoint;
     }
 
+    /**
+     * a_rhoを取得する
+     * @return Fraction
+     */
     public function getARho(): Fraction
     {
         return $this->a_rho;
