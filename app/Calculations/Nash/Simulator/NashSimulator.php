@@ -26,6 +26,7 @@ class NashSimulator
         array $beta_2,
         array $rho
     ): NashSimulationResult {
+        // HTTPリクエストからの値のためstring型で受け取っている。中身は整数であることは前処理で保証されている。
         $alpha_x = new Fraction((int)$alpha_1['numerator'], (int)$alpha_1['denominator']);
         $alpha_y = new Fraction((int)$alpha_2['numerator'], (int)$alpha_2['denominator']);
         $beta_x = new Fraction((int)$beta_1['numerator'], (int)$beta_1['denominator']);

@@ -195,10 +195,8 @@ function getNashSimulationOption(render_params: RenderParams): ChartConfiguratio
             borderColor: border_color,
             backgroundColor: border_color,
             borderWidth: 2,
-            tension: 0, // lineTension is deprecated, using tension instead
             pointRadius: 2,
             fill: false,
-            showLine: true
         },
     ];
     return {
