@@ -88,6 +88,11 @@ class NashSimulatorTest extends TestCase
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
 
+        // privateメソッドにアクセスするためのReflectionを設定
+        $reflection = new ReflectionClass($simulator);
+        $method = $reflection->getMethod('calcMidpoint');
+        $method->setAccessible(true);
+
         // テストケース
         $testCases = [
             // gamma1_x, gamma2_y, expected_x, expected_y
@@ -99,7 +104,7 @@ class NashSimulatorTest extends TestCase
 
         // 各テストケースを実行
         foreach ($testCases as [$gamma1_x, $gamma2_y, $expected_x, $expected_y]) {
-            $result = $simulator->calcMidpoint($gamma1_x, $gamma2_y);
+            $result = $method->invokeArgs($simulator, [$gamma1_x, $gamma2_y]);
 
             $this->assertEquals($expected_x->getNumerator(), $result['x']->getNumerator(), "X座標の分子が期待通りではありません。");
             $this->assertEquals($expected_x->getDenominator(), $result['x']->getDenominator(), "X座標の分母が期待通りではありません。");
@@ -120,6 +125,11 @@ class NashSimulatorTest extends TestCase
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
 
+        // privateメソッドにアクセスするためのReflectionを設定
+        $reflection = new ReflectionClass($simulator);
+        $method = $reflection->getMethod('calcGamma1X');
+        $method->setAccessible(true);
+
         // テストケース
         $testCases = [
             // alpha_x, alpha_y, rho_beta_x, rho_beta_y, expected
@@ -135,7 +145,7 @@ class NashSimulatorTest extends TestCase
                 continue;
             }
 
-            $result = $simulator->calcGamma1X($alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y);
+            $result = $method->invokeArgs($simulator, [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y]);
 
             // 計算結果を検証
             $this->assertEquals($expected->getNumerator(), $result->getNumerator(), "ケース $index: ガンマ1のX点の分子が期待通りではありません。");
@@ -154,6 +164,11 @@ class NashSimulatorTest extends TestCase
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
 
+        // privateメソッドにアクセスするためのReflectionを設定
+        $reflection = new ReflectionClass($simulator);
+        $method = $reflection->getMethod('calcGamma2Y');
+        $method->setAccessible(true);
+
         // テストケース
         $testCases = [
             // alpha_x, alpha_y, rho_beta_x, rho_beta_y, expected
@@ -169,11 +184,270 @@ class NashSimulatorTest extends TestCase
                 continue;
             }
 
-            $result = $simulator->calcGamma2Y($alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y);
+            $result = $method->invokeArgs($simulator, [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y]);
 
             // 計算結果を検証
             $this->assertEquals($expected->getNumerator(), $result->getNumerator(), "ケース $index: ガンマ2のY点の分子が期待通りではありません。");
             $this->assertEquals($expected->getDenominator(), $result->getDenominator(), "ケース $index: ガンマ2のY点の分母が期待通りではありません。");
         }
+    }
+
+    /**
+     * calcARhoメソッドが正しくa_rhoの値を計算することをテストします。
+     * @test
+     * @return void
+     * @throws \ReflectionException
+     */
+    public function testCalcARho()
+    {
+        // NashSimulatorクラスのインスタンスを作成
+        $simulator = new NashSimulator();
+
+        // privateメソッドにアクセスするためのReflectionを設定
+        $reflection = new ReflectionClass($simulator);
+        $method = $reflection->getMethod('calcARho');
+        $method->setAccessible(true);
+
+        // テストケース
+        $testCases = [
+            // alpha_x, alpha_y, rho_beta_x, rho_beta_y, expected
+            [new Fraction(4, 1), new Fraction(2, 1), new Fraction(2, 1), new Fraction(3, 1), new Fraction(1, 1)],
+            [new Fraction(1, 2), new Fraction(1, 3), new Fraction(1, 4), new Fraction(1, 2), new Fraction(1, 1)],
+            [new Fraction(3, 1), new Fraction(1, 1), new Fraction(1, 1), new Fraction(2, 1), new Fraction(3, 4)],
+        ];
+
+        // 各テストケースを実行
+        foreach ($testCases as $index => [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y, $expected]) {
+            // (alpha_x - rho_beta_x) * (rho_beta_y - alpha_y) が 0 になる場合はスキップ（分母が0になるため）
+            if (($alpha_x->toFloat() == $rho_beta_x->toFloat()) || ($rho_beta_y->toFloat() == $alpha_y->toFloat())) {
+                continue;
+            }
+
+            $result = $method->invokeArgs($simulator, [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y]);
+
+            // 計算結果を検証
+            $this->assertEquals($expected->getNumerator(), $result->getNumerator(), "ケース $index: a_rhoの値の分子が期待通りではありません。");
+            $this->assertEquals($expected->getDenominator(), $result->getDenominator(), "ケース $index: a_rhoの値の分母が期待通りではありません。");
+        }
+    }
+
+    /**
+     * calcGamma1Xメソッドが分母が0の時に例外をスローすることをテストします。
+     * @test
+     * @return void
+     * @throws \ReflectionException
+     */
+    public function testCalcGamma1XWithZeroDenominator()
+    {
+        // NashSimulatorクラスのインスタンスを作成
+        $simulator = new NashSimulator();
+
+        // privateメソッドにアクセスするためのReflectionを設定
+        $reflection = new ReflectionClass($simulator);
+        $method = $reflection->getMethod('calcGamma1X');
+        $method->setAccessible(true);
+
+        // 分母が0になるケース（rho_beta_y == alpha_y）
+        $alpha_x = new Fraction(2, 1);
+        $alpha_y = new Fraction(3, 1);
+        $rho_beta_x = new Fraction(1, 1);
+        $rho_beta_y = new Fraction(3, 1); // alpha_yと同じ値
+
+        // 例外が発生することを期待
+        $this->expectException(\Exception::class);
+        $method->invokeArgs($simulator, [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y]);
+    }
+
+    /**
+     * calcGamma1Xメソッドが分母が負の値の時に例外をスローすることをテストします。
+     * @test
+     * @return void
+     * @throws \ReflectionException
+     */
+    public function testCalcGamma1XWithNegativeDenominator()
+    {
+        // NashSimulatorクラスのインスタンスを作成
+        $simulator = new NashSimulator();
+
+        // privateメソッドにアクセスするためのReflectionを設定
+        $reflection = new ReflectionClass($simulator);
+        $method = $reflection->getMethod('calcGamma1X');
+        $method->setAccessible(true);
+
+        // 分母が負になるケース（alpha_y > rho_beta_y）
+        $alpha_x = new Fraction(2, 1);
+        $alpha_y = new Fraction(4, 1);
+        $rho_beta_x = new Fraction(1, 1);
+        $rho_beta_y = new Fraction(3, 1); // alpha_yより小さい値
+
+        // 例外が発生することを期待
+        $this->expectException(\Exception::class);
+        $method->invokeArgs($simulator, [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y]);
+    }
+
+    /**
+     * calcGamma2Yメソッドが分母が0の時に例外をスローすることをテストします。
+     * @test
+     * @return void
+     * @throws \ReflectionException
+     */
+    public function testCalcGamma2YWithZeroDenominator()
+    {
+        // NashSimulatorクラスのインスタンスを作成
+        $simulator = new NashSimulator();
+
+        // privateメソッドにアクセスするためのReflectionを設定
+        $reflection = new ReflectionClass($simulator);
+        $method = $reflection->getMethod('calcGamma2Y');
+        $method->setAccessible(true);
+
+        // 分母が0になるケース（alpha_x == rho_beta_x）
+        $alpha_x = new Fraction(2, 1);
+        $alpha_y = new Fraction(1, 1);
+        $rho_beta_x = new Fraction(2, 1); // alpha_xと同じ値
+        $rho_beta_y = new Fraction(3, 1);
+
+        // 例外が発生することを期待
+        $this->expectException(\Exception::class);
+        $method->invokeArgs($simulator, [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y]);
+    }
+
+    /**
+     * calcGamma2Yメソッドが分母が負の値の時に例外をスローすることをテストします。
+     * @test
+     * @return void
+     * @throws \ReflectionException
+     */
+    public function testCalcGamma2YWithNegativeDenominator()
+    {
+        // NashSimulatorクラスのインスタンスを作成
+        $simulator = new NashSimulator();
+
+        // privateメソッドにアクセスするためのReflectionを設定
+        $reflection = new ReflectionClass($simulator);
+        $method = $reflection->getMethod('calcGamma2Y');
+        $method->setAccessible(true);
+
+        // 分母が負になるケース（alpha_x < rho_beta_x）
+        $alpha_x = new Fraction(1, 1);
+        $alpha_y = new Fraction(1, 1);
+        $rho_beta_x = new Fraction(2, 1); // alpha_xより大きい値
+        $rho_beta_y = new Fraction(3, 1);
+
+        // 例外が発生することを期待
+        $this->expectException(\Exception::class);
+        $method->invokeArgs($simulator, [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y]);
+    }
+
+    /**
+     * calcMidpointメソッドが分母が0の時に例外をスローすることをテストします。
+     * @test
+     * @return void
+     * @throws \ReflectionException
+     */
+    public function testCalcMidpointWithZeroDenominator()
+    {
+        // NashSimulatorクラスのインスタンスを作成
+        $simulator = new NashSimulator();
+
+        // privateメソッドにアクセスするためのReflectionを設定
+        $reflection = new ReflectionClass($simulator);
+        $method = $reflection->getMethod('calcMidpoint');
+        $method->setAccessible(true);
+
+        // 分母が0になるケース（分母が0のFractionを作成）
+        $gamma1_x = new Fraction(1, 1);
+        $gamma2_y = new Fraction(1, 1);
+
+        // createFractionメソッドを使って分母が0のFractionを作成しようとする
+        $createFractionMethod = $reflection->getMethod('createFraction');
+        $createFractionMethod->setAccessible(true);
+
+        // 例外が発生することを期待
+        $this->expectException(\Exception::class);
+        $createFractionMethod->invokeArgs($simulator, [1, 0]);
+    }
+
+    /**
+     * calcMidpointメソッドが分母が負の値の時に例外をスローすることをテストします。
+     * @test
+     * @return void
+     * @throws \ReflectionException
+     */
+    public function testCalcMidpointWithNegativeDenominator()
+    {
+        // NashSimulatorクラスのインスタンスを作成
+        $simulator = new NashSimulator();
+
+        // privateメソッドにアクセスするためのReflectionを設定
+        $reflection = new ReflectionClass($simulator);
+        $method = $reflection->getMethod('calcMidpoint');
+        $method->setAccessible(true);
+
+        // 分母が負になるケース（分母が負のFractionを作成）
+        $gamma1_x = new Fraction(1, 1);
+        $gamma2_y = new Fraction(1, 1);
+
+        // createFractionメソッドを使って分母が負のFractionを作成しようとする
+        $createFractionMethod = $reflection->getMethod('createFraction');
+        $createFractionMethod->setAccessible(true);
+
+        // 例外が発生することを期待
+        $this->expectException(\Exception::class);
+        $createFractionMethod->invokeArgs($simulator, [1, -1]);
+    }
+
+    /**
+     * calcARhoメソッドが分母が0の時に例外をスローすることをテストします。
+     * @test
+     * @return void
+     * @throws \ReflectionException
+     */
+    public function testCalcARhoWithZeroDenominator()
+    {
+        // NashSimulatorクラスのインスタンスを作成
+        $simulator = new NashSimulator();
+
+        // privateメソッドにアクセスするためのReflectionを設定
+        $reflection = new ReflectionClass($simulator);
+        $method = $reflection->getMethod('calcARho');
+        $method->setAccessible(true);
+
+        // 分母が0になるケース（alpha_x == rho_beta_x または rho_beta_y == alpha_y）
+        $alpha_x = new Fraction(2, 1);
+        $alpha_y = new Fraction(3, 1);
+        $rho_beta_x = new Fraction(2, 1); // alpha_xと同じ値
+        $rho_beta_y = new Fraction(4, 1);
+
+        // 例外が発生することを期待
+        $this->expectException(\Exception::class);
+        $method->invokeArgs($simulator, [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y]);
+    }
+
+    /**
+     * calcARhoメソッドが分母が負の値の時に例外をスローすることをテストします。
+     * @test
+     * @return void
+     * @throws \ReflectionException
+     */
+    public function testCalcARhoWithNegativeDenominator()
+    {
+        // NashSimulatorクラスのインスタンスを作成
+        $simulator = new NashSimulator();
+
+        // privateメソッドにアクセスするためのReflectionを設定
+        $reflection = new ReflectionClass($simulator);
+        $method = $reflection->getMethod('calcARho');
+        $method->setAccessible(true);
+
+        // 分母が負になるケース（alpha_x < rho_beta_x または alpha_y > rho_beta_y）
+        $alpha_x = new Fraction(1, 1);
+        $alpha_y = new Fraction(1, 1);
+        $rho_beta_x = new Fraction(2, 1); // alpha_xより大きい値
+        $rho_beta_y = new Fraction(3, 1);
+
+        // 例外が発生することを期待
+        $this->expectException(\Exception::class);
+        $method->invokeArgs($simulator, [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y]);
     }
 }

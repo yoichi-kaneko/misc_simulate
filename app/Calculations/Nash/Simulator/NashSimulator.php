@@ -78,7 +78,7 @@ class NashSimulator
      * @return Fraction
      * @throws \Exception
      */
-    public function calcGamma1X(
+    private function calcGamma1X(
         Fraction $alpha_x,
         Fraction $alpha_y,
         Fraction $rho_beta_x,
@@ -101,7 +101,7 @@ class NashSimulator
      * @return Fraction
      * @throws \Exception
      */
-    public function calcGamma2Y(
+    private function calcGamma2Y(
         Fraction $alpha_x,
         Fraction $alpha_y,
         Fraction $rho_beta_x,
@@ -124,7 +124,7 @@ class NashSimulator
      *     y: Fraction,
      * }
      */
-    public function calcMidpoint(Fraction $gamma1_x, Fraction $gamma2_y): array
+    private function calcMidpoint(Fraction $gamma1_x, Fraction $gamma2_y): array
     {
         $mid_x = $gamma1_x->divide($this->createFraction(2, 1));
         $mid_y = $gamma2_y->divide($this->createFraction(2, 1));
@@ -143,7 +143,7 @@ class NashSimulator
      * @param Fraction $rho_beta_y
      * @return Fraction
      */
-    public function calcARho(
+    private function calcARho(
         Fraction $alpha_x,
         Fraction $alpha_y,
         Fraction $rho_beta_x,
