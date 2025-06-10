@@ -182,7 +182,7 @@
         </div>
         <div class="col-sm-6 col-md-3 simulate_player">
             <button class="btn btn-primary mg-b-10 calculate">Calculate</button>
-            <button id="reset" class="btn btn-secondary mg-b-10">Reset</button>
+            <div id="reset-button-container"></div>
         </div>
         <div id="nash_spinner" class="d-flex ht-40 pos-relative align-items-center" style="display: none;">
             <div class="sk-chasing-dots">

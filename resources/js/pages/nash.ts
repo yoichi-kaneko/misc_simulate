@@ -1,8 +1,24 @@
 import { beforeCalculate } from "../functions/calculate";
 import { doNashCalculate } from "../functions/nash";
 import katex from "katex";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
-// let parser = UAParser();
+// React component without JSX
+const ResetButton = React.createElement('button', {
+    id: 'reset',
+    className: 'btn btn-secondary mg-b-10',
+    onClick: function() {
+        // Same logic as the original reset function
+        document.querySelectorAll('#nash_block input.form-control').forEach((input) => {
+            const element = input as HTMLInputElement;
+            if (!element.readOnly) {
+                const defaultVal = element.getAttribute('default_val') || '';
+                element.value = defaultVal;
+            }
+        });
+    }
+}, 'Reset');
 
 $(function(){
     $('.simulate_player button.calculate').click(function () {
@@ -12,9 +28,7 @@ $(function(){
         }
     });
 
-    $('button#reset').click(function () {
-        reset();
-    });
+    // Reset button jQuery code is removed
 
     $('.form-layout .katex_exp').each(function () {
         let element = $(this)[0];
@@ -22,13 +36,11 @@ $(function(){
             throwOnError: false
         });
     });
-});
 
-function reset(): void {
-    $('#nash_block input.form-control').each(function () {
-        if (!$(this).attr('readonly')) {
-            const default_val = $(this).attr('default_val') || '';
-            $(this).val(default_val);
-        }
-    });
-}
+    // Render React component using modern API
+    const resetButtonContainer = document.getElementById('reset-button-container');
+    if (resetButtonContainer) {
+        const root = ReactDOM.createRoot(resetButtonContainer);
+        root.render(ResetButton);
+    }
+});
