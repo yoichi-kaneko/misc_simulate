@@ -211,7 +211,8 @@ $(function(){
     // Reset ボタンを React でレンダリング
     const resetButtonContainer = document.getElementById('reset-button-container');
     if (resetButtonContainer) {
-        ReactDOM.render(<ResetButton />, resetButtonContainer);
+        const root = ReactDOM.createRoot(resetButtonContainer);
+        root.render(<ResetButton />);
     }
 });
 
