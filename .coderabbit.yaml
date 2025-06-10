@@ -1,0 +1,76 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+# レビュー言語設定
+language: ja
+
+# ガイドラインファイルの参照
+reviews:
+  # パス別の指示
+  path_instructions:
+    - path: "**"
+      instructions: |
+        このプロジェクトは`.junie/guidelines.md`にある開発ガイドラインに従って開発されています。
+        レビュー時は必ずこのガイドラインを参照してください。
+
+    - path: "app/Calculations/**/*.php"
+      instructions: |
+        計算クラスは以下の点を重視してレビューしてください：
+        - 分数計算にはPhospr\Fractionライブラリを使用
+        - DTOクラスのゲッターメソッドには適切なPHPDocが記載されているか
+        - 配列型のPHPDocは構造を明示（array{key: type}形式）
+        - 例外処理はRequestクラスのバリデーションに依存
+
+    - path: "tests/Unit/**/*.php"
+      instructions: |
+        ユニットテストは以下の方針に従ってレビューしてください：
+        - 正常系と異常系のテストは別のメソッドで実装
+        - 1つのメソッドに対して1つ以上のテストを作成
+        - privateメソッドのテストはReflectionClassを使用
+        - 分数計算結果は分子と分母の両方を検証
+
+    - path: "**/*.ts"
+      instructions: |
+        TypeScriptファイルは以下の点をレビューしてください：
+        - JavaScriptからの移行進行中のため、段階的な型定義を推奨
+        - ES6モジュール構文の使用を確認
+        - 型安全性の向上を重視
+
+    - path: "**/*.js"
+      instructions: |
+        JavaScriptファイルはTypeScriptへの移行対象です：
+        - 新規実装はTypeScriptで行うことを推奨
+        - 既存コードの修正時はTypeScript移行を検討
+        - jQueryの使用は最小限に抑制
+
+  # 自動レビューの設定
+  auto_review:
+    enabled: true
+    drafts: false
+
+  # 高レベル要約の生成
+  high_level_summary: true
+
+  # 詩の生成（プロジェクトの文化に合わせて）
+  poem: true
+
+  # レビューのトーン
+  tone_instructions: |
+    日本語で丁寧かつ建設的なレビューを行ってください。
+    ガイドラインに沿った開発を促進し、コードの品質向上を支援してください。
+
+# 除外パス設定
+path_filters:
+  # 自動生成ファイルは除外
+  - "!**/vendor/**"
+  - "!**/node_modules/**"
+  - "!**/storage/logs/**"
+  - "!**/bootstrap/cache/**"
+
+# 知識ベース（学習）機能
+knowledge_base:
+  learnings:
+    opt_out: false
+
+# チャット機能
+chat:
+  auto_reply: true

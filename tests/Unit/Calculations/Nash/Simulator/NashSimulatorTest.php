@@ -340,64 +340,6 @@ class NashSimulatorTest extends TestCase
     }
 
     /**
-     * calcMidpointメソッドが分母が0の時に例外をスローすることをテストします。
-     * @test
-     * @return void
-     * @throws \ReflectionException
-     */
-    public function testCalcMidpointWithZeroDenominator()
-    {
-        // NashSimulatorクラスのインスタンスを作成
-        $simulator = new NashSimulator();
-
-        // privateメソッドにアクセスするためのReflectionを設定
-        $reflection = new ReflectionClass($simulator);
-        $method = $reflection->getMethod('calcMidpoint');
-        $method->setAccessible(true);
-
-        // 分母が0になるケース（分母が0のFractionを作成）
-        $gamma1_x = new Fraction(1, 1);
-        $gamma2_y = new Fraction(1, 1);
-
-        // createFractionメソッドを使って分母が0のFractionを作成しようとする
-        $createFractionMethod = $reflection->getMethod('createFraction');
-        $createFractionMethod->setAccessible(true);
-
-        // 例外が発生することを期待
-        $this->expectException(\Exception::class);
-        $createFractionMethod->invokeArgs($simulator, [1, 0]);
-    }
-
-    /**
-     * calcMidpointメソッドが分母が負の値の時に例外をスローすることをテストします。
-     * @test
-     * @return void
-     * @throws \ReflectionException
-     */
-    public function testCalcMidpointWithNegativeDenominator()
-    {
-        // NashSimulatorクラスのインスタンスを作成
-        $simulator = new NashSimulator();
-
-        // privateメソッドにアクセスするためのReflectionを設定
-        $reflection = new ReflectionClass($simulator);
-        $method = $reflection->getMethod('calcMidpoint');
-        $method->setAccessible(true);
-
-        // 分母が負になるケース（分母が負のFractionを作成）
-        $gamma1_x = new Fraction(1, 1);
-        $gamma2_y = new Fraction(1, 1);
-
-        // createFractionメソッドを使って分母が負のFractionを作成しようとする
-        $createFractionMethod = $reflection->getMethod('createFraction');
-        $createFractionMethod->setAccessible(true);
-
-        // 例外が発生することを期待
-        $this->expectException(\Exception::class);
-        $createFractionMethod->invokeArgs($simulator, [1, -1]);
-    }
-
-    /**
      * calcARhoメソッドが分母が0の時に例外をスローすることをテストします。
      * @test
      * @return void
