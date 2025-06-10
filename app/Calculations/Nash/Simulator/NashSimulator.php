@@ -27,11 +27,11 @@ class NashSimulator
         array $rho
     ): NashSimulationResult {
         // HTTPリクエストからの値のためstring型で受け取っている。中身は整数であることは前処理で保証されている。
-        $alpha_x = new Fraction((int)$alpha_1['numerator'], (int)$alpha_1['denominator']);
-        $alpha_y = new Fraction((int)$alpha_2['numerator'], (int)$alpha_2['denominator']);
-        $beta_x = new Fraction((int)$beta_1['numerator'], (int)$beta_1['denominator']);
-        $beta_y = new Fraction((int)$beta_2['numerator'], (int)$beta_2['denominator']);
-        $rho_rate = new Fraction((int)$rho['numerator'], (int)$rho['denominator']);
+        $alpha_x = $this->createFraction((int) $alpha_1['numerator'], (int) $alpha_1['denominator']);
+        $alpha_y = $this->createFraction((int) $alpha_2['numerator'], (int) $alpha_2['denominator']);
+        $beta_x = $this->createFraction((int) $beta_1['numerator'], (int) $beta_1['denominator']);
+        $beta_y = $this->createFraction((int) $beta_2['numerator'], (int) $beta_2['denominator']);
+        $rho_rate = $this->createFraction((int) $rho['numerator'], (int) $rho['denominator']);
         $rho_beta_x = $beta_x->multiply($rho_rate);
         $rho_beta_y = $beta_y->multiply($rho_rate);
 
@@ -56,6 +56,17 @@ class NashSimulator
             $midpoint,
             $a_rho
         );
+    }
+
+    /**
+     * 分数オブジェクトを生成する
+     * @param int $numerator 分子
+     * @param int $denominator 分母
+     * @return Fraction
+     */
+    private function createFraction(int $numerator, int $denominator): Fraction
+    {
+        return new Fraction($numerator, $denominator);
     }
 
     /**
@@ -115,8 +126,8 @@ class NashSimulator
      */
     public function calcMidpoint(Fraction $gamma1_x, Fraction $gamma2_y): array
     {
-        $mid_x = $gamma1_x->divide(new Fraction(2, 1));
-        $mid_y = $gamma2_y->divide(new Fraction(2, 1));
+        $mid_x = $gamma1_x->divide($this->createFraction(2, 1));
+        $mid_y = $gamma2_y->divide($this->createFraction(2, 1));
 
         return [
             'x' => $mid_x,
@@ -144,9 +155,9 @@ class NashSimulator
 
         $numerator_1 = $alpha_x->multiply($rho_beta_y);
         $numerator_2 = $alpha_y->multiply($rho_beta_x);
-        $numerator_3 = $rho_beta_x->multiply($rho_beta_y)->multiply(new Fraction(2, 1));
+        $numerator_3 = $rho_beta_x->multiply($rho_beta_y)->multiply($this->createFraction(2, 1));
         $numerator = $numerator_1->add($numerator_2)->subtract($numerator_3);
 
-        return $numerator->divide($denominator)->divide(new Fraction(2, 1));
+        return $numerator->divide($denominator)->divide($this->createFraction(2, 1));
     }
 }

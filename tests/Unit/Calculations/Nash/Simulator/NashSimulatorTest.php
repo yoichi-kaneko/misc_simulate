@@ -12,6 +12,72 @@ use ReflectionClass;
 class NashSimulatorTest extends TestCase
 {
     /**
+     * createFractionメソッドが正しく分数オブジェクトを生成することをテストします。
+     * @test
+     * @return void
+     * @throws \ReflectionException
+     */
+    public function testCreateFraction()
+    {
+        // NashSimulatorクラスのインスタンスを作成
+        $simulator = new NashSimulator();
+
+        // privateメソッドにアクセスするためのReflectionを設定
+        $reflection = new ReflectionClass($simulator);
+        $method = $reflection->getMethod('createFraction');
+        $method->setAccessible(true);
+
+        // ケース1: 分母が正の整数の時、正常にFractionインスタンスを返す
+        $result = $method->invokeArgs($simulator, [1, 2]);
+        $this->assertInstanceOf(Fraction::class, $result);
+        $this->assertEquals(1, $result->getNumerator());
+        $this->assertEquals(2, $result->getDenominator());
+    }
+
+    /**
+     * createFractionメソッドが分母が0の時に例外をスローすることをテストします。
+     * @test
+     * @return void
+     * @throws \ReflectionException
+     */
+    public function testCreateFractionWithZeroDenominator()
+    {
+        // NashSimulatorクラスのインスタンスを作成
+        $simulator = new NashSimulator();
+
+        // privateメソッドにアクセスするためのReflectionを設定
+        $reflection = new ReflectionClass($simulator);
+        $method = $reflection->getMethod('createFraction');
+        $method->setAccessible(true);
+
+        // ケース2: 分母が0の時、例外をスローする
+        $this->expectException(\Phospr\Exception\Fraction\InvalidDenominatorException::class);
+        $this->expectExceptionMessage('Denominator must be an integer greater than zero');
+        $method->invokeArgs($simulator, [1, 0]);
+    }
+
+    /**
+     * createFractionメソッドが分母が負の整数の時に例外をスローすることをテストします。
+     * @test
+     * @return void
+     * @throws \ReflectionException
+     */
+    public function testCreateFractionWithNegativeDenominator()
+    {
+        // NashSimulatorクラスのインスタンスを作成
+        $simulator = new NashSimulator();
+
+        // privateメソッドにアクセスするためのReflectionを設定
+        $reflection = new ReflectionClass($simulator);
+        $method = $reflection->getMethod('createFraction');
+        $method->setAccessible(true);
+
+        // ケース3: 分母が負の整数の時、例外をスローする
+        $this->expectException(\Phospr\Exception\Fraction\InvalidDenominatorException::class);
+        $this->expectExceptionMessage('Denominator must be an integer greater than zero');
+        $method->invokeArgs($simulator, [1, -1]);
+    }
+    /**
      * calcMidpointメソッドが正しく中点を計算することをテストします。
      * @test
      * @return void

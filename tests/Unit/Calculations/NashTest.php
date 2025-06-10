@@ -8,6 +8,7 @@ use App\Calculations\Nash;
 use App\Calculations\Nash\Simulator\NashSimulator;
 use App\Calculations\Nash\Formatter\NashFormatter;
 use App\Calculations\Nash\DTO\NashSimulationResult;
+use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 use Phospr\Fraction;
 
@@ -17,6 +18,7 @@ class NashTest extends TestCase
      * Nashクラスがシミュレーターとフォーマッターを正しく使用することをテストします。
      * @test
      * @return void
+     * @throws Exception
      */
     public function testRunDelegation()
     {
