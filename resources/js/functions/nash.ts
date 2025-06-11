@@ -1,8 +1,9 @@
 import {afterCalculateByError, setErrorMessage} from "./calculate";
 import {notifyComplete} from "./notify";
 import {Chart, registerables, ChartConfiguration, ChartDataset} from "chart.js";
-import katex from "katex";
-import jsrenderWrapper from '../plugins/jsrender-wrapper.js';
+import * as React from 'react';
+import { createRoot } from 'react-dom/client';
+import NashReport from '../components/nash/NashReport';
 Chart.register(...registerables);
 
 let myChartNashSocialWelfare: Chart | undefined;
@@ -103,16 +104,15 @@ export function doNashCalculate(): void
  */
 function renderNashReportArea(report_params: ReportParam): void
 {
-    const tmpl  = jsrenderWrapper.render('#nashResultTemplate', {
-        a_rho: report_params.a_rho,
-    });
-    $('#nash_result').html(tmpl);
-    $('#nash_result .katex_exp').each(function () {
-        let element = $(this)[0];
-        katex.render(<string>$(this).attr('expression'), element, {
-            throwOnError: false
-        });
-    });
+    const nashResultElement = document.getElementById('nash_result');
+    if (nashResultElement) {
+        const root = createRoot(nashResultElement);
+        root.render(
+            React.createElement(NashReport, {
+                a_rho: report_params.a_rho
+            })
+        );
+    }
 }
 
 /**
@@ -257,6 +257,6 @@ function drawBackground(target: Chart): void {
     let ctx = cvs.getContext('2d')!;
 
     // プロット領域に重なるように、背景色の四角形を描画
-    ctx.fillStyle = "white";              // 背景色（今回は濃いグレー）
+    ctx.fillStyle = "white";
     ctx.fillRect(0, 0, target.width, target.height);
 }
