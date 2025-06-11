@@ -206,8 +206,8 @@
         if (elem.contains(elem.resizeSensor)) {
           elem.removeChild(elem.resizeSensor);
         }
-        delete elem.resizeSensor;
-        delete elem.resizedAttached;
+        elem.resizeSensor = undefined;
+        elem.resizedAttached = undefined;
       }
     });
   };
