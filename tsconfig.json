@@ -9,6 +9,7 @@
     "lib": ["dom", "es2015", "es2016", "es2017"],
     "allowJs": true,
     "sourceMap": true,
+    "jsx": "react-jsx",
     "outDir": "./public/js",
     "baseUrl": ".",
     "paths": {

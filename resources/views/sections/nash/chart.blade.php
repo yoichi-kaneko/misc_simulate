@@ -15,18 +15,4 @@
     </div>
 </div>
 
-<script id="nashResultTemplate" type="text/x-jsrender">
-    <div class="card pd-20 report_block">
-        <h6 class="tx-12 tx-uppercase tx-info tx-bold mg-b-15">Report</h6>
-        <div class="d-flex mg-b-10">
-            <div class="bd-r pd-l-12">
-                <label class="tx-12">
-                    <span class="katex_exp" expression="a({\rho})"></span>
-                </label>
-                <p class="tx-lato tx-inverse tx-bold">
-                    <span>@{{:a_rho}}</span>
-                </p>
-            </div>
-        </div>
-    </div><!-- card -->
-</script>
+<!-- JSRender template removed - now using React component -->
