@@ -5,8 +5,8 @@
         "dev": "vite",
         "build": "vite build",
         "preview": "vite preview",
-        "lint": "eslint resources",
-        "lint:fix": "eslint resources --fix"
+        "lint": "eslint resources  --ext .js,.jsx,.ts,.tsx",
+        "lint:fix": "eslint resources --ext .js,.jsx,.ts,.tsx --fix"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3.3.1",
@@ -16,10 +16,13 @@
         "@types/react": "^19.1.7",
         "@types/react-dom": "^19.1.6",
         "@types/react-katex": "^3.0.4",
+        "@typescript-eslint/eslint-plugin": "^8.34.0",
+        "@typescript-eslint/parser": "^8.34.0",
         "@vitejs/plugin-react": "^4.5.2",
         "axios": "^1.8.2",
         "cross-env": "^7.0.3",
         "eslint": "^9.28.0",
+        "eslint-plugin-react": "^7.37.5",
         "globals": "^16.2.0",
         "laravel-vite-plugin": "^1.3.0",
         "lodash": "^4.17.20",
