@@ -17,7 +17,4 @@ import 'bootstrap/dist/js/bootstrap';
 import 'bootstrap-notify';
 // popper.js is imported through the wrapper in resources/js/plugins/popover-wrapper.js
 import 'chart.js';
-// import 'select2';
-import 'datatables';
-import 'datatables-responsive';
 // jsrender is imported through the wrapper in resources/js/plugins/jsrender-wrapper.js
