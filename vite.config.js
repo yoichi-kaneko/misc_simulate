@@ -17,7 +17,6 @@ export default defineConfig({
                 'resources/sass/katniss.scss',
                 'resources/sass/app.scss',
 
-                'resources/js/katniss.js',
                 'resources/js/ResizeSensor.js',
                 'resources/js/main.js',
                 'resources/js/pages/centipede.js',

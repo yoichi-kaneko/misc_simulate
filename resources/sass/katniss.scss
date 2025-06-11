@@ -14919,7 +14919,7 @@ input.parsley-error:focus, textarea.parsley-error:focus, input.parsley-success:f
 
 /***** HIDING LEFT SIDEBAR *****/
 @media (min-width: 992px) {
-    .hide-left {
+    .body {
         .kt-sideleft-header, .kt-sideleft {
             left: -250px;
         }

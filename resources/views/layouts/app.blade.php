@@ -17,7 +17,7 @@
     @vite(['resources/sass/vendors.scss', 'resources/sass/katniss.scss', 'resources/sass/app.scss'])
 </head>
 
-<body class="hide-left">
+<body class="body">
 
 <!-- ##### HEAD PANEL ##### -->
 <div class="kt-headpanel">
@@ -39,7 +39,7 @@
 </div><!-- kt-mainpanel -->
 
 @include('sections.exponential_form')
-@vite(['resources/js/vendors.js', 'resources/js/katniss.js', 'resources/js/ResizeSensor.js', 'resources/js/main.js'])
+@vite(['resources/js/vendors.js', 'resources/js/ResizeSensor.js', 'resources/js/main.js'])
 @isset($js_file)
     @vite([$js_file])
 @endisset
