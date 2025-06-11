@@ -3,6 +3,7 @@ import { doNashCalculate } from "../functions/nash";
 import katex from "katex";
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 // React component without JSX
 const ResetButton = React.createElement('button', {
@@ -40,7 +41,7 @@ $(function(){
     // Render React component using modern API
     const resetButtonContainer = document.getElementById('reset-button-container');
     if (resetButtonContainer) {
-        const root = ReactDOM.createRoot(resetButtonContainer);
+        const root = createRoot(resetButtonContainer);
         root.render(ResetButton);
     }
 });

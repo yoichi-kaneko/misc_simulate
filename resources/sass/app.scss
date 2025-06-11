@@ -6,3 +6,9 @@
 div#legend-container {
   margin: auto;
 }
+
+.simulate_player {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* ボタン間の間隔 */
+}

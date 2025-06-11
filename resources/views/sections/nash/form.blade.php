@@ -11,7 +11,7 @@
                             <span class="tx-danger">*</span>
                             <span class="katex_exp" expression="{\alpha}_1"></span>
                             :</label>
-                        <div class="col-sm-2 mg-t-10 mg-sm-t-0">
+                        <div class="col-sm-6 mg-t-10 mg-sm-t-0">
                             <input
                                     class="form-control"
                                     id="alpha_1_numerator"
@@ -21,7 +21,7 @@
                                     value="800"
                                     default_val="800"
                                     placeholder="Enter alpha1"
-                                    style="width: 90px; float: left;"
+                                    style="width: 60px; float: left;"
                             >
                             <span style="float: left; padding-left: 4px; padding-right: 4px; padding-top: 4px; font-size: 15pt;">/</span>
                             <input
@@ -33,7 +33,7 @@
                                     value="1000"
                                     default_val="1000"
                                     placeholder="Enter alpha1"
-                                    style="width: 90px; float: left;"
+                                    style="width: 60px; float: left;"
                             >
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                             <span class="tx-danger">*</span>
                             <span class="katex_exp" expression="{\alpha}_2"></span>
                             :</label>
-                        <div class="col-sm-2 mg-t-10 mg-sm-t-0">
+                        <div class="col-sm-6 mg-t-10 mg-sm-t-0">
                             <input
                                     class="form-control"
                                     id="alpha_2_numerator"
@@ -56,7 +56,7 @@
                                     value="200"
                                     default_val="200"
                                     placeholder="Enter alpha2"
-                                    style="width: 90px; float: left;"
+                                    style="width: 60px; float: left;"
                             >
                             <span style="float: left; padding-left: 4px; padding-right: 4px; padding-top: 4px; font-size: 15pt;">/</span>
                             <input
@@ -68,7 +68,7 @@
                                     value="1000"
                                     default_val="1000"
                                     placeholder="Enter alpha2"
-                                    style="width: 90px; float: left;"
+                                    style="width: 60px; float: left;"
                             >
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                             <span class="tx-danger">*</span>
                             <span class="katex_exp" expression="{\beta}_1"></span>
                             :</label>
-                        <div class="col-sm-2 mg-t-10 mg-sm-t-0">
+                        <div class="col-sm-6 mg-t-10 mg-sm-t-0">
                             <input
                                     class="form-control"
                                     id="beta_1_numerator"
@@ -91,7 +91,7 @@
                                     value="200"
                                     default_val="200"
                                     placeholder="Enter beta1"
-                                    style="width: 90px; float: left;"
+                                    style="width: 60px; float: left;"
                             >
                             <span style="float: left; padding-left: 4px; padding-right: 4px; padding-top: 4px; font-size: 15pt;">/</span>
                             <input
@@ -103,7 +103,7 @@
                                     value="1000"
                                     default_val="1000"
                                     placeholder="Enter beta1"
-                                    style="width: 90px; float: left;"
+                                    style="width: 60px; float: left;"
                             >
                         </div>
                     </div>
@@ -116,7 +116,7 @@
                             <span class="tx-danger">*</span>
                             <span class="katex_exp" expression="{\beta}_2"></span>
                             :</label>
-                        <div class="col-sm-2 mg-t-10 mg-sm-t-0">
+                        <div class="col-sm-6 mg-t-10 mg-sm-t-0">
                             <input
                                     class="form-control"
                                     id="beta_2_numerator"
@@ -126,7 +126,7 @@
                                     value="800"
                                     default_val="800"
                                     placeholder="Enter beta2"
-                                    style="width: 90px; float: left;"
+                                    style="width: 60px; float: left;"
                             >
                             <span style="float: left; padding-left: 4px; padding-right: 4px; padding-top: 4px; font-size: 15pt;">/</span>
                             <input
@@ -138,7 +138,7 @@
                                     value="1000"
                                     default_val="1000"
                                     placeholder="Enter beta2"
-                                    style="width: 90px; float: left;"
+                                    style="width: 60px; float: left;"
                             >
                         </div>
                     </div>
@@ -151,7 +151,7 @@
                             <span class="tx-danger">*</span>
                             <span class="katex_exp" expression="{\rho}"></span>
                             :</label>
-                        <div class="col-sm-2 mg-t-10 mg-sm-t-0">
+                        <div class="col-sm-6 mg-t-10 mg-sm-t-0">
                             <input
                                     class="form-control"
                                     id="rho_numerator"
@@ -161,7 +161,7 @@
                                     value="900"
                                     default_val="900"
                                     placeholder="Enter rho"
-                                    style="width: 90px; float: left;"
+                                    style="width: 60px; float: left;"
                             >
                             <span style="float: left; padding-left: 4px; padding-right: 4px; padding-top: 4px; font-size: 15pt;">/</span>
                             <input
@@ -173,7 +173,7 @@
                                     value="1000"
                                     default_val="1000"
                                     placeholder="Enter rho"
-                                    style="width: 90px; float: left;"
+                                    style="width: 60px; float: left;"
                             >
                         </div>
                     </div>
