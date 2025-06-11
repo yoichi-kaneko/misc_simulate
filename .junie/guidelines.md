@@ -18,17 +18,17 @@ Nash 関連クラスは、ナッシュの社会厚生の計算を行います。
 
 Nash クラスは、計算とフォーマットの橋渡しを行うファサードクラスです。主な特徴：
 
-- `NashSimulator` と `NashFormatter` を内部で使用
+- `App\Calculations\Nash\Simulator\NashSimulator` と `App\Calculations\Nash\Formatter\NashFormatter` を内部で使用
 - 主要メソッド：
   - `run()`: 計算のエントリーポイント（シミュレーションの実行とフォーマットを委譲）
 
 ##### 2.1.1.2 NashSimulator クラス
 
-NashSimulator クラスは、ナッシュの社会厚生の計算ロジックを担当します。主な特徴：
+NashSimulator クラス (`App\Calculations\Nash\Simulator\NashSimulator`) は、ナッシュの社会厚生の計算ロジックを担当します。主な特徴：
 
 - 分数計算に `Phospr\Fraction` ライブラリを使用
 - 主要メソッド：
-  - `run()`: シミュレーションを実行し、`NashSimulationResult` を返す
+  - `run()`: シミュレーションを実行し、`App\Calculations\Nash\DTO\NashSimulationResult` を返す
   - `calcGamma1X()`: ガンマ1のX座標を計算
   - `calcGamma2Y()`: ガンマ2のY座標を計算
   - `calcMidpoint()`: 中点を計算
@@ -36,15 +36,15 @@ NashSimulator クラスは、ナッシュの社会厚生の計算ロジックを
 
 ##### 2.1.1.3 NashFormatter クラス
 
-NashFormatter クラスは、計算結果をフロントエンド用に整形します。主な特徴：
+NashFormatter クラス (`App\Calculations\Nash\Formatter\NashFormatter`) は、計算結果をフロントエンド用に整形します。主な特徴：
 
 - 主要メソッド：
-  - `format()`: `NashSimulationResult` をフロントエンド用の配列に変換
+  - `format()`: `App\Calculations\Nash\DTO\NashSimulationResult` をフロントエンド用の配列に変換
   - `getDisplayText()`: 表示用テキストを生成
 
 ##### 2.1.1.4 NashSimulationResult クラス
 
-NashSimulationResult クラスは、シミュレーション結果を保持するDTOです。主な特徴：
+NashSimulationResult クラス (`App\Calculations\Nash\DTO\NashSimulationResult`) は、シミュレーション結果を保持するDTOです。主な特徴：
 
 - シミュレーション結果のすべての値を保持
 - ゲッターメソッドを提供
@@ -120,6 +120,8 @@ DTOクラスのメソッドには、以下の方針でPHPDocを記載します�
 - 連想配列でない場合は、`array<int, string>` のように記載する
 - これにより、コードの可読性が向上し、型の不一致によるエラーを防止できる
 
+**注意**: 既存コードの一部にはまだ詳細な配列型の記述が適用されていない箇所があります。例えば、`NashSimulationResult`クラスの`getMidpoint()`メソッドのPHPDocでは、戻り値の型が単に`array`と記載されています。今後のコード修正時に、ガイドラインに沿った形式に更新していく予定です。
+
 ## 3. フロントエンド開発ガイドライン
 
 ### 3.1 TypeScriptへの移行
@@ -130,6 +132,12 @@ DTOクラスのメソッドには、以下の方針でPHPDocを記載します�
 - 既存のJavaScriptコードは段階的にTypeScriptに移行中
 - `tsconfig.json` で型チェックの設定を管理
 
+TypeScript化の進捗状況：
+- Reactコンポーネントの実装にTypeScriptを使用
+- 主要な計算ロジックのTypeScript化が完了
+- 残りのユーティリティ関数やヘルパー関数のTypeScript化を進行中
+- 今後6ヶ月以内に全てのJavaScriptコードをTypeScriptに移行する予定
+
 #### 3.1.1 TypeScript実装例（nash.ts）
 
 - 型定義を使用した関数宣言（例：`function reset(): void`）
@@ -138,7 +146,7 @@ DTOクラスのメソッドには、以下の方針でPHPDocを記載します�
 
 #### 3.1.2 JavaScript実装例（centipede.js）
 
-- CommonJSスタイルの `require()` を使用したモジュールインポート
+- ES6モジュールインポート構文の使用（例：`import {beforeCalculate} from "../functions/calculate"`）
 - jQueryを使用したDOM操作とイベントハンドリング
 - ブラウザ検出とチャートダウンロード機能
 
@@ -150,12 +158,25 @@ DTOクラスのメソッドには、以下の方針でPHPDocを記載します�
 - jQueryで書かれたコードは、段階的にReactのライフサイクルメソッドに置き換え
 - 例えば、nash.tsではリセットボタンの機能をjQueryからReactに移行しました
 
+React導入の進捗状況：
+- ナッシュシミュレーション画面のコンポーネント化が完了
+- ムカデゲーム画面のReactコンポーネント化を進行中
+- 共通UIコンポーネントのライブラリ化を検討中
+- 今後1年以内に全てのフロントエンドコードをReactベースに移行する予定
+
 ### 3.3 フロントエンド共通ガイドライン
 
 - KaTeXライブラリを使用して数式を表示
 - チャート表示には適切なライブラリを使用
 - フォーム入力値のリセット機能を実装
 - 計算中はスピナーを表示
+
+### 3.4 コード品質管理
+
+- ESLintを導入して、コードの品質と一貫性を確保
+- ESLintを導入したが、設定が未完了で、ESLintチェックを行なってもエラーが発生します。順次原因の調査、修正を行なっていきます。
+- `eslint.config.mjs`ファイルでプロジェクト固有のルールを定義
+- `package.json`のスクリプトセクションにESLint関連のコマンドを追加
 
 ## 4. 開発プロセス
 
