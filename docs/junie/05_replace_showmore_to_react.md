@@ -87,6 +87,16 @@ const ShowMore: React.FC<ShowMoreProps> = ({
 export default ShowMore;
 ```
 
+```
+## 確認事項メモ
+
+上記のコード実装後、以下の点を確認してください：
+
+- 実コード側（resources/js/components/ShowMore.tsx など）も同じ修正になっているか
+- buttonClassName に対して cursor: pointer が CSS で指定されているか
+- aria-controls で対象要素の ID を指定しておくと、スクリーンリーダー利用者にはさらに親切です
+```
+
 ### 2. ラッパーの更新
 
 `show-more-wrapper.ts` を更新して React コンポーネントを使用するようにします：
