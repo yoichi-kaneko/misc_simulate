@@ -96,6 +96,7 @@ export default ShowMore;
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ShowMore from '../components/ShowMore';
+import { createRoot } from 'react-dom/client';
 
 interface ShowMoreOptions {
   minheight?: number;
@@ -117,12 +118,13 @@ export default {
       }
       
       // React コンポーネントをレンダリング
+      const html = element.innerHTML;
       const container = document.createElement('div');
       container.id = `showmore-${id}`;
-      element.parentNode?.insertBefore(container, element);
-      container.appendChild(element);
-      
-      ReactDOM.render(
+      element.parentNode?.replaceChild(container, element);
+      const root = createRoot(container);
+
+      root.render(
         <ShowMore
           minHeight={options.minheight || 300}
           buttonTextMore={options.buttontxtmore || 'show more'}
@@ -132,8 +134,7 @@ export default {
         >
            {/* 既存 HTML を文字列で渡す */}
            <div dangerouslySetInnerHTML={{ __html: element.innerHTML }} />
-        </ShowMore>,
-        container
+        </ShowMore>
       );
     });
     
