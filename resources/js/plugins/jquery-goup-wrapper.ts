@@ -5,8 +5,8 @@ import type { GoupOptions } from 'jquery-goup';
 
 // TODO: jQueryのgoupプラグインからreactで類似する挙動をするコンポーネントに移行する
 export default {
-  init: function(options: GoupOptions) {
+  init: function(options?: GoupOptions): void {
     // @ts-ignore
-    return jQuery.goup(options);
+    jQuery.goup(options);
   }
 };
