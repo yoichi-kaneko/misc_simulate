@@ -14,11 +14,13 @@
     "baseUrl": ".",
     "paths": {
       "*": ["node_modules/*"]
-    }
+    },
+    "typeRoots": ["./node_modules/@types", "./types"]
   },
   "include": [
     "resources/js/**/*",
     "node_modules/@types/jquery/JQuery.d.ts",
+    "types/**/*.d.ts"
   ],
   "exclude": [
     "node_modules",

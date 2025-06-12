@@ -9,8 +9,8 @@ use App\Calculations\Nash\Simulator\NashSimulator;
 use App\Calculations\Nash\Formatter\NashFormatter;
 use App\Calculations\Nash\DTO\NashSimulationResult;
 use PHPUnit\Framework\MockObject\Exception;
-use PHPUnit\Framework\TestCase;
 use Phospr\Fraction;
+use Tests\TestCase;
 
 class NashTest extends TestCase
 {

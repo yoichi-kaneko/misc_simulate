@@ -29,7 +29,7 @@ export function afterCalculateByError(spinner_id: string): void {
  * @param {object} data - The error data from API response
  */
 export function setErrorMessage(data: { errors: Record<string, string[]> }): void {
-  let key_list = Object.keys(data.errors);
+  const key_list = Object.keys(data.errors);
   $('#alert_danger_message').html(data.errors[key_list[0]].shift() || '');
   $('#alert_danger').show();
 }
