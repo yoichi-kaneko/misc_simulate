@@ -1,5 +1,9 @@
 import 'jquery';
 
+interface ShowMoreOptions {
+  [key: string]: any;
+}
+
 declare module 'jquery' {
   interface JQuery {
     /**

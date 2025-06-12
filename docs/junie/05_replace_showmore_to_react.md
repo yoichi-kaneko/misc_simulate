@@ -128,7 +128,8 @@ export default {
           buttonClassName={options.buttoncss || 'showmore-button'}
           animationSpeed={options.animationspeed || 300}
         >
-          {Array.from(element.childNodes)}
+           {/* 既存 HTML を文字列で渡す */}
+           <div dangerouslySetInnerHTML={{ __html: element.innerHTML }} />
         </ShowMore>,
         container
       );
