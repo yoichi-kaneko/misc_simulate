@@ -71,12 +71,14 @@ const ShowMore: React.FC<ShowMoreProps> = ({
       </div>
       
       {showButton && (
-        <div 
-          className={buttonClassName} 
+        <button
+          type="button"
+          className={buttonClassName}
+          aria-expanded={expanded}
           onClick={toggleExpand}
         >
           {expanded ? buttonTextLess : buttonTextMore}
-        </div>
+        </button>
       )}
     </div>
   );
@@ -170,7 +172,6 @@ export default {
 
 1. **フェーズ 1: 並行実装**
     - 新しい React コンポーネントを実装しつつ、既存の jQuery プラグインも維持
-    - ラッパーを更新して、環境変数や設定に基づいて React または jQuery 実装を選択できるようにする
 
 2. **フェーズ 2: テストと検証**
     - 新しい React 実装をテスト環境でテスト
@@ -209,3 +210,8 @@ jQuery 実装では直接 DOM を操作していますが、React 実装では�
 4. パフォーマンスの向上（特にアニメーションにおいて）
 
 また、段階的な移行アプローチにより、リスクを最小限に抑えながら安全に移行を進めることができます。
+
+## 注意事項
+
+- この計画は、junieに生成を依頼しましたが、その後細かい箇所の調整を行いました。
+- この計画に基づいて置き換え作業を行う際は、記載内容に不備がないか再度の確認を行なって下さい。
