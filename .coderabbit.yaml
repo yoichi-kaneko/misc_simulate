@@ -42,6 +42,12 @@ reviews:
         - 既存コードの修正時はTypeScript移行を検討
         - jQueryの使用は最小限に抑制
 
+    - path: "docs/junie/*.md"
+      instructions: |
+        AIエージェント「junie」の作成した提案書です。これらは以下の方針に従ってレビューしてください：
+        - この提案に従って開発を進めた場合、好ましくない結果が生じる見込みがあるか
+        - 細かい文言、表現の誤りは無視して下さい
+
   # 自動レビューの設定
   auto_review:
     enabled: true

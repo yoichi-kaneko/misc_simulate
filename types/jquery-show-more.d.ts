@@ -1,5 +1,11 @@
-/// <reference types="jquery" />
+import 'jquery';
 
-interface JQueryStatic {
-  showMore(options?: ShowMoreOptions): void;
+declare module 'jquery' {
+  interface JQuery {
+    /**
+     * Initialise show-more plugin on a jQuery collection.
+     * @param options Plugin options
+     */
+    showMore(options?: Record<string, any>): this;
+  }
 }
