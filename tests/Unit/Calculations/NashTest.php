@@ -8,6 +8,7 @@ use App\Calculations\Nash;
 use App\Calculations\Nash\Simulator\NashSimulator;
 use App\Calculations\Nash\Formatter\NashFormatter;
 use App\Calculations\Nash\DTO\NashSimulationResult;
+use App\Factories\DTO\Nash\NashSimulationResultFactory;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -21,6 +22,9 @@ class NashTest extends TestCase
     /** @var NashFormatter&MockObject $formatter */
     private NashFormatter $formatter;
 
+    /** @var NashSimulationResultFactory $factory */
+    private NashSimulationResultFactory $factory;
+
     /**
      * @return void
      * @throws Exception
@@ -32,6 +36,8 @@ class NashTest extends TestCase
         // シミュレーターとフォーマッターのインスタンスを作成
         $this->simulator = $this->createMock(NashSimulator::class);
         $this->formatter = $this->createMock(NashFormatter::class);
+        // シミュレーション結果のファクトリーを作成
+        $this->factory = new NashSimulationResultFactory();
     }
 
     /**
@@ -65,8 +71,8 @@ class NashTest extends TestCase
         $beta_2 = ['numerator' => '4', 'denominator' => '1'];
         $rho = ['numerator' => '1', 'denominator' => '2'];
 
-        // モックのシミュレーション結果
-        $simulationResult = $this->createMock(NashSimulationResult::class);
+        // シミュレーション結果
+        $simulationResult = $this->factory->create();
 
         // モックの期待される出力
         $expectedOutput = [
