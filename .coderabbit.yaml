@@ -9,7 +9,7 @@ reviews:
   path_instructions:
     - path: "**"
       instructions: |
-        このプロジェクトは`.junie/guidelines.md`にある開発ガイドラインに従って開発されています。
+        このプロジェクトは`guidelines/*`にある開発ガイドラインに従って開発されています。
         レビュー時は必ずこのガイドラインを参照してください。
 
     - path: "app/Calculations/**/*.php"
