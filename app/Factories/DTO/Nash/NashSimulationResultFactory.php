@@ -58,6 +58,15 @@ class NashSimulationResultFactory extends AbstractDTOFactory
 
         $attributes = array_merge($defaults, $attributes);
 
+        if (
+            !isset($attributes['midpoint']['x']) ||
+            !isset($attributes['midpoint']['y']) ||
+            $attributes['midpoint']['x'] instanceof Fraction === false ||
+            $attributes['midpoint']['y'] instanceof Fraction === false
+        ) {
+            throw new \InvalidArgumentException('Midpoint must contain both x and y values.');
+        }
+
         return new NashSimulationResult(
             $attributes['alpha_x'],
             $attributes['alpha_y'],
