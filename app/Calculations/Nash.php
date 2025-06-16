@@ -14,8 +14,8 @@ class Nash
 
     public function __construct(NashSimulator $simulator = null, NashFormatter $formatter = null)
     {
-        $this->simulator = $simulator ?? new NashSimulator();
-        $this->formatter = $formatter ?? new NashFormatter();
+        $this->simulator = $simulator;
+        $this->formatter = $formatter;
     }
 
     /**
