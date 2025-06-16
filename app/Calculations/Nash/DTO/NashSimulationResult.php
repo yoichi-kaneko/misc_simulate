@@ -6,18 +6,18 @@ namespace App\Calculations\Nash\DTO;
 
 use Phospr\Fraction;
 
-class NashSimulationResult
+final class NashSimulationResult implements NashSimulationResultInterface
 {
-    private Fraction $alpha_x;
-    private Fraction $alpha_y;
-    private Fraction $beta_x;
-    private Fraction $beta_y;
-    private Fraction $rho_beta_x;
-    private Fraction $rho_beta_y;
-    private Fraction $gamma1_x;
-    private Fraction $gamma2_y;
-    private array $midpoint;
-    private Fraction $a_rho;
+    private readonly Fraction $alpha_x;
+    private readonly Fraction $alpha_y;
+    private readonly Fraction $beta_x;
+    private readonly Fraction $beta_y;
+    private readonly Fraction $rho_beta_x;
+    private readonly Fraction $rho_beta_y;
+    private readonly Fraction $gamma1_x;
+    private readonly Fraction $gamma2_y;
+    private readonly array $midpoint;
+    private readonly Fraction $a_rho;
 
     /**
      * @param Fraction $alpha_x

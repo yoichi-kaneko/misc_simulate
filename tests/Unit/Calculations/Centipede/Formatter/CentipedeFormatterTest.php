@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Calculations\Centipede\Formatter;
 
 use App\Calculations\Centipede\Formatter\CentipedeFormatter;
-use App\Calculations\Centipede\DTO\CentipedeSimulationResult;
+use App\Calculations\Centipede\DTO\CentipedeSimulationResultInterface;
 use PHPUnit\Framework\TestCase;
 
 class CentipedeFormatterTest extends TestCase
@@ -17,8 +17,8 @@ class CentipedeFormatterTest extends TestCase
      */
     public function testFormat()
     {
-        // モックのCentipedeSimulationResultを作成
-        $simulationResult = $this->createMock(CentipedeSimulationResult::class);
+        // モックのCentipedeSimulationResultInterfaceを作成
+        $simulationResult = $this->createMock(CentipedeSimulationResultInterface::class);
 
         // モックの振る舞いを設定
         $simulationResult->method('getCognitiveUnitLatexText')->willReturn('\dfrac{3^{\frac{1}{2}}}{2^{3}}');

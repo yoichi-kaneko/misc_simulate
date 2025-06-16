@@ -7,13 +7,13 @@ namespace App\Calculations\Centipede\DTO;
 /**
  * Centipedeシミュレーション結果を保持するDTO
  */
-class CentipedeSimulationResult
+final class CentipedeSimulationResult implements CentipedeSimulationResultInterface
 {
-    private float $cognitiveUnitValue;
-    private string $cognitiveUnitLatexText;
-    private float $averageOfReversedCausality;
-    private array $data;
-    private array $chartData;
+    private readonly float $cognitiveUnitValue;
+    private readonly string $cognitiveUnitLatexText;
+    private readonly float $averageOfReversedCausality;
+    private readonly array $data;
+    private readonly array $chartData;
 
     /**
      * @param float $cognitiveUnitValue Cognitive Unitの値

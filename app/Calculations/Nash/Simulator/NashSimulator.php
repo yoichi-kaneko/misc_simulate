@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Calculations\Nash\Simulator;
 
 use App\Calculations\Nash\DTO\NashSimulationResult;
+use App\Calculations\Nash\DTO\NashSimulationResultInterface;
 use Phospr\Fraction;
 
 class NashSimulator
@@ -16,7 +17,7 @@ class NashSimulator
      * @param array{numerator: string, denominator: string} $beta_1
      * @param array{numerator: string, denominator: string} $beta_2
      * @param array{numerator: string, denominator: string} $rho
-     * @return NashSimulationResult
+     * @return NashSimulationResultInterface
      * @throws \Exception
      */
     public function run(
@@ -25,7 +26,7 @@ class NashSimulator
         array $beta_1,
         array $beta_2,
         array $rho
-    ): NashSimulationResult {
+    ): NashSimulationResultInterface {
         // HTTPリクエストからの値のためstring型で受け取っている。中身は整数であることは前処理で保証されている。
         $alpha_x = $this->createFraction((int) $alpha_1['numerator'], (int) $alpha_1['denominator']);
         $alpha_y = $this->createFraction((int) $alpha_2['numerator'], (int) $alpha_2['denominator']);

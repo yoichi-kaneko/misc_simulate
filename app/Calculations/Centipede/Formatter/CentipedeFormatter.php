@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Calculations\Centipede\Formatter;
 
-use App\Calculations\Centipede\DTO\CentipedeSimulationResult;
+use App\Calculations\Centipede\DTO\CentipedeSimulationResultInterface;
 use Illuminate\Support\Arr;
 
 /**
@@ -14,10 +14,10 @@ class CentipedeFormatter
 {
     /**
      * シミュレーション結果をフロントエンド用に整形する
-     * @param CentipedeSimulationResult $result
+     * @param CentipedeSimulationResultInterface $result
      * @return array
      */
-    public function format(CentipedeSimulationResult $result): array
+    public function format(CentipedeSimulationResultInterface $result): array
     {
         return [
             'cognitive_unit_latex_text' => $result->getCognitiveUnitLatexText(),

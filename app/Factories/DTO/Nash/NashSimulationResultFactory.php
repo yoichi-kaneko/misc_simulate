@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Factories\DTO\Nash;
 
 use App\Calculations\Nash\DTO\NashSimulationResult;
+use App\Calculations\Nash\DTO\NashSimulationResultInterface;
 use App\Factories\DTO\AbstractDTOFactory;
 use Phospr\Fraction;
 
@@ -12,9 +13,9 @@ class NashSimulationResultFactory extends AbstractDTOFactory
 {
     /**
      * デフォルト値でNashSimulationResultを作成
-     * @return NashSimulationResult
+     * @return NashSimulationResultInterface
      */
-    public function create(): NashSimulationResult
+    public function create(): NashSimulationResultInterface
     {
         return new NashSimulationResult(
             new Fraction(1, 2),  // alpha_x
@@ -36,9 +37,9 @@ class NashSimulationResultFactory extends AbstractDTOFactory
     /**
      * カスタム値でNashSimulationResultを作成
      * @param array $attributes
-     * @return NashSimulationResult
+     * @return NashSimulationResultInterface
      */
-    public function createWith(array $attributes): NashSimulationResult
+    public function createWith(array $attributes): NashSimulationResultInterface
     {
         $defaults = [
             'alpha_x' => new Fraction(1, 2),
