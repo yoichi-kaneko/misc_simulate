@@ -19,6 +19,21 @@ class NashSimulationResult
     private array $midpoint;
     private Fraction $a_rho;
 
+    /**
+     * @param Fraction $alpha_x
+     * @param Fraction $alpha_y
+     * @param Fraction $beta_x
+     * @param Fraction $beta_y
+     * @param Fraction $rho_beta_x
+     * @param Fraction $rho_beta_y
+     * @param Fraction $gamma1_x
+     * @param Fraction $gamma2_y
+     * @param array{
+     *     x: Fraction,
+     *     y: Fraction,
+     * } $midpoint
+     * @param Fraction $a_rho
+     */
     public function __construct(
         Fraction $alpha_x,
         Fraction $alpha_y,

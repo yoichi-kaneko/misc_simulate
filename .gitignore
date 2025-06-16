@@ -30,3 +30,4 @@ dump.rdb
 .idea
 _ide_helper.php
 /public/build/
+/coverage/
