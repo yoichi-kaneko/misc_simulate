@@ -46,8 +46,8 @@ class NashFormatterTest extends TestCase
      */
     public function testFormat()
     {
-        // モックのNashSimulationResultを作成
-        $simulationResult = $this->createMock(\App\Calculations\Nash\DTO\NashSimulationResult::class);
+        // モックのNashSimulationResultInterfaceを作成
+        $simulationResult = $this->createMock(\App\Calculations\Nash\DTO\NashSimulationResultInterface::class);
 
         // モックの振る舞いを設定
         $simulationResult->method('getAlphaX')->willReturn(new Fraction(1, 1));

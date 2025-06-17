@@ -10,16 +10,149 @@ DTOクラスのメソッドには、以下の方針でPHPDocを記載します�
   - 戻り値の型（例：「@return Fraction」）
 - 複雑なDTOの場合は、プロパティの意味や使用方法についても説明を追加
 
-## 配列型のPHPDoc
+## DTOクラスのインターフェース
 
-配列型をPHPDocに記載する際は、以下の方針に従います：
+DTOクラスには、以下の方針でインターフェースを実装します：
 
-- 単に `array` と記載するのではなく、最低でも `array{key: mixed}` の形式で配列の構造を明示する
-- 配列の要素の型が明確な場合は、`array{key: string, count: int}` のように具体的な型を指定する
-- 連想配列でない場合は、`array<int, string>` のように記載する
-- これにより、コードの可読性が向上し、型の不一致によるエラーを防止できる
+### インターフェースの必要性
 
-**注意**: 既存コードの一部にはまだ詳細な配列型の記述が適用されていない箇所があります。例えば、`NashSimulationResult`クラスの`getMidpoint()`メソッドのPHPDocでは、戻り値の型が単に`array`と記載されています。今後のコード修正時に、ガイドラインに沿った形式に更新していく予定です。
+- DTOクラスにインターフェースを実装することで、依存性の注入やモックの作成が容易になります
+- テストコードでは、具体的なDTOクラスではなくインターフェースに対してモックを作成することで、テストの柔軟性が向上します
+- 将来的な実装の変更に対して、インターフェースを通じた安定したAPIを提供できます
+- 型の安全性を確保しながら、コードの疎結合を実現できます
+
+### 命名規則
+
+- インターフェース名は、対応するDTOクラス名に `Interface` を付けた名前とします（例：`NashSimulationResult` → `NashSimulationResultInterface`）
+- インターフェースファイルは、対応するDTOクラスと同じディレクトリに配置します
+
+### 実装方法
+
+1. DTOクラスのすべての公開メソッド（主にゲッターメソッド）をインターフェースに定義します
+2. DTOクラスに `final` キーワードを付けて、継承を禁止します
+3. DTOクラスのプロパティには `readonly` キーワードを付けて、不変性を確保します
+4. DTOクラスに `implements` キーワードを使用して、対応するインターフェースを実装します
+
+### 実装例
+
+インターフェースの例（`NashSimulationResultInterface.php`）：
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Calculations\Nash\DTO;
+
+use Phospr\Fraction;
+
+/**
+ * Nashシミュレーション結果を保持するDTOのインターフェース
+ */
+interface NashSimulationResultInterface
+{
+    /**
+     * alpha_xを取得する
+     * @return Fraction
+     */
+    public function getAlphaX(): Fraction;
+
+    /**
+     * alpha_yを取得する
+     * @return Fraction
+     */
+    public function getAlphaY(): Fraction;
+
+    // 他のゲッターメソッド...
+}
+```
+
+DTOクラスの例（`NashSimulationResult.php`）：
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Calculations\Nash\DTO;
+
+use Phospr\Fraction;
+
+final class NashSimulationResult implements NashSimulationResultInterface
+{
+    private readonly Fraction $alpha_x;
+    private readonly Fraction $alpha_y;
+    // 他のプロパティ...
+
+    /**
+     * コンストラクタ
+     */
+    public function __construct(
+        Fraction $alpha_x,
+        Fraction $alpha_y,
+        // 他のパラメータ...
+    ) {
+        $this->alpha_x = $alpha_x;
+        $this->alpha_y = $alpha_y;
+        // 他のプロパティの初期化...
+    }
+
+    /**
+     * alpha_xを取得する
+     * @return Fraction
+     */
+    public function getAlphaX(): Fraction
+    {
+        return $this->alpha_x;
+    }
+
+    /**
+     * alpha_yを取得する
+     * @return Fraction
+     */
+    public function getAlphaY(): Fraction
+    {
+        return $this->alpha_y;
+    }
+
+    // 他のゲッターメソッド...
+}
+```
+
+### インターフェースの使用方法
+
+- ファクトリークラスでは、戻り値の型としてインターフェースを使用します：
+
+```php
+public function create(): NashSimulationResultInterface
+{
+    return new NashSimulationResult(/* パラメータ */);
+}
+```
+
+- フォーマッタークラスなど、DTOを利用するクラスでは、パラメータの型としてインターフェースを使用します：
+
+```php
+public function format(NashSimulationResultInterface $result): array
+{
+    // 処理...
+}
+```
+
+- テストコードでは、インターフェースに対してモックを作成します：
+
+```php
+$simulationResult = $this->createMock(NashSimulationResultInterface::class);
+```
+
+### ベストプラクティス
+
+- すべてのDTOクラスにはインターフェースを実装する
+- DTOクラスは `final` として宣言し、継承を禁止する
+- DTOクラスのプロパティは `readonly` として宣言し、不変性を確保する
+- インターフェースには、すべての公開メソッドを定義する
+- インターフェースには、適切なPHPDocを記載する
+- 依存関係では、具体的なDTOクラスではなくインターフェースを参照する
 
 ## DTOクラス用のファクトリー
 

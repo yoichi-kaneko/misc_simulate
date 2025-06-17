@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Calculations\Nash\Formatter;
 
-use App\Calculations\Nash\DTO\NashSimulationResult;
+use App\Calculations\Nash\DTO\NashSimulationResultInterface;
 use Phospr\Fraction;
 
 class NashFormatter
@@ -13,10 +13,10 @@ class NashFormatter
 
     /**
      * シミュレーション結果をフロントエンド用に整形する
-     * @param NashSimulationResult $result
+     * @param NashSimulationResultInterface $result
      * @return array
      */
-    public function format(NashSimulationResult $result): array
+    public function format(NashSimulationResultInterface $result): array
     {
         // ライン状のパラメータを整形
         $line_render_params = [
