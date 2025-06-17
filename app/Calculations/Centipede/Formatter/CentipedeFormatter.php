@@ -6,6 +6,7 @@ namespace App\Calculations\Centipede\Formatter;
 
 use App\Calculations\Centipede\DTO\CentipedeSimulationResultInterface;
 use App\Calculations\Centipede\DTO\CentipedeSimulationStepInterface;
+use App\Traits\ArrayTypeCheckTrait;
 use Illuminate\Support\Arr;
 
 /**
@@ -13,6 +14,7 @@ use Illuminate\Support\Arr;
  */
 class CentipedeFormatter
 {
+    use ArrayTypeCheckTrait;
     /**
      * シミュレーション結果をフロントエンド用に整形する
      * @param CentipedeSimulationResultInterface $result
@@ -60,11 +62,27 @@ class CentipedeFormatter
 
     /**
      * チャート用のデータを生成する
-     * @param array<CentipedeSimulationStepInterface|array> $data
+     * @param array<CentipedeSimulationStepInterface> $data
      * @return array
      */
     public function makeChartData(array $data): array
     {
+        // 配列の各要素がCentipedeSimulationStepInterfaceのインスタンスであることを確認
+        foreach ($data as $index => $item) {
+            if (!($item instanceof CentipedeSimulationStepInterface) && 
+                !(is_array($item) && isset($item['t']) && isset($item['result']))) {
+                $actualType = is_object($item) ? get_class($item) : gettype($item);
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'All items in $data must be instances of %s or arrays with required keys. Item at index %d is %s.',
+                        CentipedeSimulationStepInterface::class,
+                        $index,
+                        $actualType
+                    )
+                );
+            }
+        }
+
         $chartData = [];
         $lastSkippedT = 0;
 

@@ -6,13 +6,16 @@ namespace App\Calculations\Centipede;
 
 use App\Calculations\Centipede\DTO\CentipedeSimulationStepInterface;
 use App\Calculations\Centipede\Formatter\CentipedeFormatter;
+use App\Traits\ArrayTypeCheckTrait;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Centipedeシミュレーション結果を結合するクラス
  */
 class CentipedeDataCombiner
 {
+    use ArrayTypeCheckTrait;
     private CentipedeFormatter $formatter;
 
     /**
@@ -38,6 +41,11 @@ class CentipedeDataCombiner
             // Requestのバリデーションで $combinationPlayerVal には1,2いずれかがセットされていると想定
             $patternData1 = $patternData[$combinationPlayerKey . '_1']['data'];
             $patternData2 = $patternData[$combinationPlayerKey . '_2']['data'];
+
+            // 配列の要素が全てCentipedeSimulationStepInterfaceのインスタンスであることを確認
+            // $this->assertArrayOfType($patternData1, CentipedeSimulationStepInterface::class, 'patternData1');
+            // $this->assertArrayOfType($patternData2, CentipedeSimulationStepInterface::class, 'patternData2');
+
             $player1Is1 = ($combinationPlayerVal === '1');
 
             $data = [];

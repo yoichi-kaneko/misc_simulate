@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Calculations\Centipede\DTO;
 
 use App\Calculations\Centipede\DTO\CentipedeSimulationStepInterface;
+use App\Traits\ArrayTypeCheckTrait;
 
 /**
  * Centipedeシミュレーション結果を保持するDTO
  */
 final class CentipedeSimulationResult implements CentipedeSimulationResultInterface
 {
+    use ArrayTypeCheckTrait;
     private readonly float $cognitiveUnitValue;
     private readonly string $cognitiveUnitLatexText;
     private readonly float $averageOfReversedCausality;
@@ -32,6 +34,8 @@ final class CentipedeSimulationResult implements CentipedeSimulationResultInterf
         array $data,
         array $chartData
     ) {
+        $this->assertArrayOfType($data, CentipedeSimulationStepInterface::class, 'data');
+
         $this->cognitiveUnitValue = $cognitiveUnitValue;
         $this->cognitiveUnitLatexText = $cognitiveUnitLatexText;
         $this->averageOfReversedCausality = $averageOfReversedCausality;
