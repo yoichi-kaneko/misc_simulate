@@ -19,22 +19,22 @@ class CentipedeDataCombinerTest extends TestCase
     {
         // CentipedeFormatterのモックを作成
         $formatterMock = $this->createMock(CentipedeFormatter::class);
-        
+
         // makeChartDataメソッドのモックを設定
         $formatterMock->method('makeChartData')
             ->willReturn([
                 ['x' => 1, 'y' => 0],
                 ['x' => 2, 'y' => 1],
             ]);
-        
+
         // CentipedeDataCombinerのインスタンスを作成
         $combiner = new CentipedeDataCombiner($formatterMock);
-        
+
         // テスト用の入力データを作成
         $combinationPlayer1 = [
             'pattern1' => '1', // Player1が1を選択
         ];
-        
+
         $patternData = [
             'pattern1_1' => [
                 'data' => [
@@ -53,16 +53,16 @@ class CentipedeDataCombinerTest extends TestCase
                 'cognitive_unit_value' => 0.5,
             ],
         ];
-        
+
         // combineメソッドを実行
         $result = $combiner->combine($combinationPlayer1, $patternData);
-        
+
         // 結果を検証
         $this->assertIsArray($result);
         $this->assertArrayHasKey('pattern1', $result);
-        
+
         $patternResult = $result['pattern1'];
-        
+
         // データ構造の検証
         $this->assertArrayHasKey('data', $patternResult);
         $this->assertArrayHasKey('chart_data', $patternResult);
@@ -71,14 +71,14 @@ class CentipedeDataCombinerTest extends TestCase
         $this->assertArrayHasKey('cognitive_unit_value_1', $patternResult);
         $this->assertArrayHasKey('cognitive_unit_value_2', $patternResult);
         $this->assertArrayHasKey('average_of_reversed_causality', $patternResult);
-        
+
         // 値の検証
         // Player1が1を選択した場合、偶数インデックス(0)はpatternData1から、奇数インデックス(1)はpatternData2から取得される
         $expectedData = [
             ['t' => 1, 'result' => false], // インデックス0: patternData1から
             ['t' => 2, 'result' => false], // インデックス1: patternData2から
         ];
-        
+
         $this->assertEquals($expectedData, $patternResult['data']);
         $this->assertEquals([['x' => 1, 'y' => 0], ['x' => 2, 'y' => 1]], $patternResult['chart_data']);
         $this->assertEquals('\dfrac{3^{\frac{1}{2}}}{2^{3}}', $patternResult['cognitive_unit_latex_text_1']);
