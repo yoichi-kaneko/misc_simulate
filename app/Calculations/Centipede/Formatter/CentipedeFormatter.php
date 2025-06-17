@@ -65,7 +65,7 @@ class CentipedeFormatter
 
         // result中にtrueが1件でもあればyは0から開始する。ない場合は1。
         $results = Arr::pluck($data, 'result');
-        $yOffset = in_array(true, $results) ? 0 : 1;
+        $yOffset = in_array(true, $results, true) ? 0 : 1;
 
         foreach ($data as $value) {
             // resultがtrueのデータが出た場合、それを最後にスキップしたtとして値を保存する。

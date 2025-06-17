@@ -40,6 +40,11 @@ class CentipedeDataCombiner
             $player1Is1 = ($combinationPlayerVal === '1');
 
             $data = [];
+            // patternData1とpatternData2の長さが一致していることを確認
+            if (count($patternData1) !== count($patternData2)) {
+                throw new \InvalidArgumentException('patternData1 と patternData2 の長さが一致していません');
+            }
+
             $maxCount = count($patternData1);
             for ($i = 0; $i < $maxCount; $i++) {
                 // Player1が1で$iが偶数（0から始まるため）、Player1が2で$iが奇数の場合にAをセット
