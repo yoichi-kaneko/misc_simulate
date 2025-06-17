@@ -83,12 +83,12 @@ class CentipedeSimulatorTest extends TestCase
         $this->assertCount($maxStep, $data);
 
         foreach ($data as $item) {
-            $this->assertArrayHasKey('t', $item);
-            $this->assertArrayHasKey('max_nu_value', $item);
-            $this->assertArrayHasKey('left_side_value', $item);
-            $this->assertArrayHasKey('right_side_value', $item);
-            $this->assertArrayHasKey('result', $item);
-            $this->assertIsBool($item['result']);
+            $this->assertInstanceOf(\App\Calculations\Centipede\DTO\CentipedeSimulationStepInterface::class, $item);
+            $this->assertIsInt($item->getT());
+            $this->assertIsInt($item->getMaxNuValue());
+            $this->assertIsString($item->getLeftSideValue());
+            $this->assertIsString($item->getRightSideValue());
+            $this->assertIsBool($item->getResult());
         }
 
         // Cognitive Unit値の計算が正しいことを検証

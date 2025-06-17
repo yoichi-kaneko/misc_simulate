@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Calculations\Centipede\Formatter;
 
 use App\Calculations\Centipede\DTO\CentipedeSimulationResultInterface;
+use App\Calculations\Centipede\DTO\CentipedeSimulationStepInterface;
 use Illuminate\Support\Arr;
 
 /**
@@ -19,11 +20,15 @@ class CentipedeFormatter
      */
     public function format(CentipedeSimulationResultInterface $result): array
     {
+        $data = array_map(function($step) {
+            return is_array($step) ? $step : $step->toArray();
+        }, $result->getData());
+
         return [
             'cognitive_unit_latex_text' => $result->getCognitiveUnitLatexText(),
             'cognitive_unit_value' => $result->getCognitiveUnitValue(),
             'average_of_reversed_causality' => $result->getAverageOfReversedCausality(),
-            'data' => $result->getData(),
+            'data' => $data,
             'chart_data' => $result->getChartData(),
         ];
     }
@@ -55,7 +60,7 @@ class CentipedeFormatter
 
     /**
      * チャート用のデータを生成する
-     * @param array $data
+     * @param array<CentipedeSimulationStepInterface|array> $data
      * @return array
      */
     public function makeChartData(array $data): array
@@ -64,23 +69,28 @@ class CentipedeFormatter
         $lastSkippedT = 0;
 
         // result中にtrueが1件でもあればyは0から開始する。ない場合は1。
-        $results = Arr::pluck($data, 'result');
+        $results = array_map(function($step) {
+            return is_array($step) ? $step['result'] : $step->getResult();
+        }, $data);
         $yOffset = in_array(true, $results, true) ? 0 : 1;
 
         foreach ($data as $value) {
             // resultがtrueのデータが出た場合、それを最後にスキップしたtとして値を保存する。
-            if ($value['result'] === true) {
-                $lastSkippedT = $value['t'];
+            $result = is_array($value) ? $value['result'] : $value->getResult();
+            $t = is_array($value) ? $value['t'] : $value->getT();
+
+            if ($result === true) {
+                $lastSkippedT = $t;
             }
             // スキップしたtが一度も出ていない間は、yはt - 1に等しい。
             if ($lastSkippedT === 0) {
-                $y = $value['t'] - 1 + $yOffset;
+                $y = $t - 1 + $yOffset;
                 // スキップしたtが出た場合、スキップした点を起点(0)として、そこから1ずつインクリメントしていく。
             } else {
-                $y = $value['t'] - $lastSkippedT + $yOffset;
+                $y = $t - $lastSkippedT + $yOffset;
             }
             $chartData[] = [
-                'x' => $value['t'],
+                'x' => $t,
                 'y' => $y,
             ];
         }

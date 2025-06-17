@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Calculations\Centipede\Simulator;
 
 use App\Calculations\Centipede\DTO\CentipedeSimulationResult;
+use App\Calculations\Centipede\DTO\CentipedeSimulationStep;
 use App\Calculations\Centipede\Formatter\CentipedeFormatter;
 use Illuminate\Support\Arr;
 
@@ -98,13 +99,13 @@ class CentipedeSimulator
                     $maxNuValue
                 )
             );
-            $data[] = [
-                't' => $i,
-                'max_nu_value' => $maxNuValue,
-                'left_side_value' => $leftSideValue,
-                'right_side_value' => $rightSideValue,
-                'result' => ($leftSideValue < $rightSideValue),
-            ];
+            $data[] = new CentipedeSimulationStep(
+                $i,
+                (int)$maxNuValue,
+                $leftSideValue,
+                $rightSideValue,
+                ($leftSideValue < $rightSideValue)
+            );
         }
         $chartData = $this->formatter->makeChartData($data);
         $cognitiveUnitLatexText = $this->formatter->makeCognitiveUnitLatexText(

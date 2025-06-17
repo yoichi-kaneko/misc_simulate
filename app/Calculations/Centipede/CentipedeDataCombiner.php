@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Calculations\Centipede;
 
+use App\Calculations\Centipede\DTO\CentipedeSimulationStepInterface;
 use App\Calculations\Centipede\Formatter\CentipedeFormatter;
 use Illuminate\Support\Arr;
 
@@ -26,7 +27,7 @@ class CentipedeDataCombiner
     /**
      * 2つのシミュレート結果を合算する
      * @param array $combinationPlayer1
-     * @param array $patternData
+     * @param array $patternData 各キーに'data'要素としてCentipedeSimulationStepInterfaceの配列を含む配列
      * @return array
      */
     public function combine(array $combinationPlayer1, array $patternData): array
