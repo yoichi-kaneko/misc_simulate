@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Calculations\Centipede\DTO;
 
+use App\Calculations\Centipede\DTO\CentipedeChartPoint;
 use App\Calculations\Centipede\DTO\CentipedeSimulationResult;
 use App\Calculations\Centipede\DTO\CentipedeSimulationStep;
 use PHPUnit\Framework\TestCase;
@@ -31,13 +32,9 @@ class CentipedeSimulationResultTest extends TestCase
             new CentipedeSimulationStep(3, 7, 'left3', 'right3', true),
         ];
         $this->chartData = [
-            'labels' => ['A', 'B', 'C'],
-            'datasets' => [
-                [
-                    'label' => 'Dataset 1',
-                    'data' => [10, 20, 30],
-                ],
-            ],
+            new CentipedeChartPoint(1, 1),
+            new CentipedeChartPoint(2, 2),
+            new CentipedeChartPoint(3, 3),
         ];
 
         // CentipedeSimulationResultのインスタンスを作成

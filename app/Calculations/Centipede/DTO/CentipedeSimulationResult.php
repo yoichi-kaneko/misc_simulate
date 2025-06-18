@@ -17,6 +17,7 @@ final class CentipedeSimulationResult implements CentipedeSimulationResultInterf
     private readonly float $averageOfReversedCausality;
     /** @var array<CentipedeSimulationStepInterface> */
     private readonly array $data;
+    /** @var array<CentipedeChartPoint> */
     private readonly array $chartData;
 
     /**
@@ -24,7 +25,7 @@ final class CentipedeSimulationResult implements CentipedeSimulationResultInterf
      * @param string $cognitiveUnitLatexText Cognitive UnitのLatex形式のテキスト
      * @param float $averageOfReversedCausality 逆因果性の平均値
      * @param array<CentipedeSimulationStepInterface> $data シミュレーション結果データ
-     * @param array $chartData チャート用データ
+     * @param array<CentipedeChartPoint> $chartData チャート用データ
      */
     public function __construct(
         float $cognitiveUnitValue,
@@ -34,6 +35,7 @@ final class CentipedeSimulationResult implements CentipedeSimulationResultInterf
         array $chartData
     ) {
         $this->assertArrayOfType($data, CentipedeSimulationStepInterface::class, 'data');
+        $this->assertArrayOfType($chartData, CentipedeChartPoint::class, 'chartData');
 
         $this->cognitiveUnitValue = $cognitiveUnitValue;
         $this->cognitiveUnitLatexText = $cognitiveUnitLatexText;
@@ -80,7 +82,7 @@ final class CentipedeSimulationResult implements CentipedeSimulationResultInterf
 
     /**
      * チャート用データを取得する
-     * @return array
+     * @return array<CentipedeChartPoint>
      */
     public function getChartData(): array
     {

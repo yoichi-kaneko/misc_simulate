@@ -63,7 +63,10 @@ class CentipedeDataCombiner
                     $data[] = $patternData2[$i];
                 }
             }
-            $chartData = $this->formatter->makeChartData($data);
+            // TODO: ここでチャートを配列化しているが、DTOクラスと配列変換の処理実行ポイントは要整理
+            $chartData = array_map(function ($point) {
+                return is_array($point) ? $point : $point->toArray();
+            }, $this->formatter->makeChartData($data));
 
             $averageOfReversedCausality = (array_sum(Arr::pluck($chartData, 'y')) / count($chartData));
 

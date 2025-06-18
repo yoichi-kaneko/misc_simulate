@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Calculations\Centipede\Simulator;
 
+use App\Calculations\Centipede\DTO\CentipedeChartPoint;
 use App\Calculations\Centipede\DTO\CentipedeSimulationResult;
+use App\Calculations\Centipede\DTO\CentipedeSimulationStepInterface;
 use App\Calculations\Centipede\Formatter\CentipedeFormatter;
 use App\Calculations\Centipede\Simulator\CentipedeSimulator;
 use PHPUnit\Framework\TestCase;
@@ -44,8 +46,8 @@ class CentipedeSimulatorTest extends TestCase
 
         // モックデータ
         $mockChartData = [
-            ['x' => 1, 'y' => 0],
-            ['x' => 2, 'y' => 1],
+            new CentipedeChartPoint(1, 0),
+            new CentipedeChartPoint(2, 1),
         ];
         $mockLatexText = '\dfrac{3^{\frac{1}{2}}}{2^{3}}';
 
@@ -83,7 +85,7 @@ class CentipedeSimulatorTest extends TestCase
         $this->assertCount($maxStep, $data);
 
         foreach ($data as $item) {
-            $this->assertInstanceOf(\App\Calculations\Centipede\DTO\CentipedeSimulationStepInterface::class, $item);
+            $this->assertInstanceOf(CentipedeSimulationStepInterface::class, $item);
             $this->assertIsInt($item->getT());
             $this->assertIsInt($item->getMaxNuValue());
             $this->assertIsString($item->getLeftSideValue());
