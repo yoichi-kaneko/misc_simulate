@@ -44,21 +44,63 @@ NashSimulationResult クラス (`App\Calculations\Nash\DTO\NashSimulationResult`
 - ゲッターメソッドを提供
 - 各ゲッターメソッドには適切なPHPDocを記載（プロパティの説明と戻り値の型）
 
-### Centipede クラス
+### Centipede 関連クラス
 
-Centipede クラスは、ムカデゲームのシミュレーションを行います。主な特徴：
+Centipede 関連クラスは、ムカデゲームのシミュレーションを行います。計算処理とフォーマット処理を分離するために、以下のクラス構成になっています：
+
+#### Centipede クラス
+
+Centipede クラスは、計算とフォーマットの橋渡しを行うファサードクラスです。主な特徴：
+
+- `App\Calculations\Centipede\Simulator\CentipedeSimulator`、`App\Calculations\Centipede\Formatter\CentipedeFormatter`、`App\Calculations\Centipede\CentipedeDataCombiner` を内部で使用
+- 主要メソッド：
+  - `run()`: 計算のエントリーポイント（シミュレーションの実行、結合処理、フォーマットを委譲）
+
+#### CentipedeSimulator クラス
+
+CentipedeSimulator クラス (`App\Calculations\Centipede\Simulator\CentipedeSimulator`) は、ムカデゲームのシミュレーション計算ロジックを担当します。主な特徴：
 
 - 複雑な数学的計算を `eval()` を使用して実行
 - 主要メソッド：
-  - `run()`: 複数パターンの計算を実行
-  - `calculatePattern()`: 特定パターンの計算を実行
-  - `unionCalculateData()`: 2つのプレイヤーのシミュレーション結果を合算
+  - `calculatePattern()`: 特定パターンの計算を実行し、`App\Calculations\Centipede\DTO\CentipedeSimulationResult` を返す
   - `calcCognitiveUnitValue()`: 認知単位の値を計算
+
+#### CentipedeFormatter クラス
+
+CentipedeFormatter クラス (`App\Calculations\Centipede\Formatter\CentipedeFormatter`) は、計算結果をフロントエンド用に整形します。主な特徴：
+
+- 主要メソッド：
+  - `format()`: `App\Calculations\Centipede\DTO\CentipedeSimulationResult` をフロントエンド用の配列に変換
   - `makeCognitiveUnitLatexText()`: LaTeX形式のテキストを生成
   - `makeChartData()`: チャート表示用データを生成
 
-**注意(1)**: 現在、Centipedeクラスは計算ロジックと表示ロジックが混在しています。将来的には、Nashクラスと同様に、計算処理（CentipedeSimulator）とフォーマット処理（CentipedeFormatter）に分離し、DTOを使用したリファクタリングを行う予定です。これにより、コードの保守性と拡張性が向上します。
-**注意(2)**: 現在のeval()の使用は、セキュリティ上のリスクがあるため、優先度の高い課題として安全な数式パーサーに置き換えることを検討しています。
+#### CentipedeDataCombiner クラス
+
+CentipedeDataCombiner クラス (`App\Calculations\Centipede\CentipedeDataCombiner`) は、複数のシミュレーション結果を結合します。主な特徴：
+
+- 主要メソッド：
+  - `combine()`: 2つのプレイヤーのシミュレーション結果を結合
+
+#### CentipedeSimulationResult クラス
+
+CentipedeSimulationResult クラス (`App\Calculations\Centipede\DTO\CentipedeSimulationResult`) は、シミュレーション結果を保持するDTOです。主な特徴：
+
+- シミュレーション結果のすべての値を保持
+- ゲッターメソッドを提供
+- 各ゲッターメソッドには適切なPHPDocを記載（プロパティの説明と戻り値の型）
+
+#### 構造的な課題と改善点
+
+- Centipedeシミュレータは、生のシミュレーション結果の算出と、それらの結合処理の2ステップのシミュレーションにより構成されています
+- 結合処理は設定により行う場合と行わない場合があります
+- シミュレーションが複数回行われるため、フォーマット処理と結合処理の順序が適正でないという課題があります
+- 現在の実装では、`CentipedeFormatter::makeChartData()`が異なる場所で異なる入力形式で呼び出されており、データの流れが最適化されていません
+- 改善案として、以下の処理順序が望ましいです：
+  1. 生のシミュレーション結果を取得する
+  2. 必要に応じて結合処理を行う（生データを使用）
+  3. 最後にフォーマット処理を行う
+
+**注意**: 現在のeval()の使用は、セキュリティ上のリスクがあるため、優先度の高い課題として安全な数式パーサーに置き換えることを検討しています。
 
 ## 分数計算の実装
 

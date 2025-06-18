@@ -62,12 +62,13 @@ class CentipedeFormatter
 
     /**
      * チャート用のデータを生成する
-     * @param array<CentipedeSimulationStepInterface>|array $data
+     * @param array<CentipedeSimulationStepInterface|array> $data
      * @return array
      */
     public function makeChartData(array $data): array
     {
         // 配列の各要素がCentipedeSimulationStepInterfaceのインスタンスであることを確認
+        // TODO: CentipedeSimulationStepInterfaceからなる配列のみ許容するように修正する
         foreach ($data as $index => $item) {
             if (!($item instanceof CentipedeSimulationStepInterface) && 
                 !(is_array($item) && isset($item['t']) && isset($item['result']))) {
