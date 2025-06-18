@@ -61,6 +61,20 @@ class CentipedeChartPointListTest extends TestCase
     }
 
     /**
+     * 要素が0件の配列でコンストラクタを呼び出すと例外が発生することをテストします。
+     * @test
+     * @return void
+     */
+    public function testConstructorWithEmptyItem()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $invalidPoints = []; // 空の配列
+
+        new CentipedeChartPointList($invalidPoints);
+    }
+
+    /**
      * getPoints()メソッドが正しく値を返すことをテストします。
      * @test
      * @return void

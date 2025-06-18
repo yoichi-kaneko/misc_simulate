@@ -22,6 +22,11 @@ final class CentipedeChartPointList implements CentipedeChartPointListInterface
     public function __construct(array $points)
     {
         $this->assertArrayOfType($points, CentipedeChartPoint::class, 'points');
+
+        if (count($points) === 0) {
+            throw new \InvalidArgumentException('Points array cannot be empty. At least one CentipedeChartPoint is required.');
+        }
+
         $this->points = $points;
     }
 

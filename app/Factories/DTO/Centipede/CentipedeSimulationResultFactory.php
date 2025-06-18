@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Factories\DTO\Centipede;
 
+use App\Calculations\Centipede\DTO\CentipedeChartPoint;
 use App\Calculations\Centipede\DTO\CentipedeChartPointList;
 use App\Calculations\Centipede\DTO\CentipedeSimulationResult;
 use App\Factories\DTO\AbstractDTOFactory;
@@ -24,7 +25,9 @@ class CentipedeSimulationResultFactory extends AbstractDTOFactory
             '\dfrac{1}{2}',  // cognitiveUnitLatexText
             0.0,  // averageOfReversedCausality
             [],   // data
-            new CentipedeChartPointList([])    // chartData (empty CentipedeChartPointList)
+            new CentipedeChartPointList([
+                new CentipedeChartPoint(1, 2),
+            ])    // chartData (CentipedeChartPointList)
         );
     }
 
