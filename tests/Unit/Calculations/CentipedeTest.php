@@ -12,9 +12,12 @@ use App\Calculations\Centipede\DTO\CentipedeSimulationStep;
 use App\Calculations\Centipede\Formatter\CentipedeFormatter;
 use App\Calculations\Centipede\Simulator\CentipedeSimulator;
 use Tests\TestCase;
+use Tests\Traits\ArrayObjectCheckTrait;
 
 class CentipedeTest extends TestCase
 {
+    use ArrayObjectCheckTrait;
+
     /**
      * makeCognitiveUnitLatexTextメソッドが正しいLaTeX形式のテキストを返すことをテストします。
      * @test
@@ -331,5 +334,6 @@ class CentipedeTest extends TestCase
         $this->assertEquals($max_rc, $result['render_params']['max_rc']);
         $this->assertEquals($patternData, $result['pattern_data']);
         $this->assertEquals($combinedData, $result['combination_data']);
+        $this->assertArrayHasNoObjects($result);
     }
 }
