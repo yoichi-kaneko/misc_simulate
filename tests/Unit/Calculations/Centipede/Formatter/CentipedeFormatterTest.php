@@ -4,12 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Calculations\Centipede\Formatter;
 
+use App\Calculations\Centipede\DTO\CentipedeChartPoint;
+use App\Calculations\Centipede\DTO\CentipedeChartPointList;
 use App\Calculations\Centipede\DTO\CentipedeSimulationResultInterface;
 use App\Calculations\Centipede\Formatter\CentipedeFormatter;
+use App\Factories\DTO\Centipede\CentipedeSimulationStepFactory;
 use PHPUnit\Framework\TestCase;
 
 class CentipedeFormatterTest extends TestCase
 {
+    private CentipedeSimulationStepFactory $stepFactory;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->stepFactory = new CentipedeSimulationStepFactory();
+    }
+
     /**
      * formatメソッドが正しくフォーマットされた結果を返すことをテストします。
      * @test
@@ -25,13 +36,13 @@ class CentipedeFormatterTest extends TestCase
         $simulationResult->method('getCognitiveUnitValue')->willReturn(0.375);
         $simulationResult->method('getAverageOfReversedCausality')->willReturn(0.5);
         $simulationResult->method('getData')->willReturn([
-            ['t' => 1, 'result' => false],
-            ['t' => 2, 'result' => true],
+            $this->stepFactory->createWith(['t' => 1, 'result' => false]),
+            $this->stepFactory->createWith(['t' => 2, 'result' => true]),
         ]);
-        $simulationResult->method('getChartData')->willReturn([
-            ['x' => 1, 'y' => 1],
-            ['x' => 2, 'y' => 0],
-        ]);
+        $simulationResult->method('getChartData')->willReturn(new CentipedeChartPointList([
+            new CentipedeChartPoint(1, 1),
+            new CentipedeChartPoint(2, 0),
+        ]));
 
         // CentipedeFormatterクラスのインスタンスを作成
         $formatter = new CentipedeFormatter();
@@ -51,8 +62,8 @@ class CentipedeFormatterTest extends TestCase
         $this->assertEquals(0.375, $result['cognitive_unit_value']);
         $this->assertEquals(0.5, $result['average_of_reversed_causality']);
         $this->assertEquals([
-            ['t' => 1, 'result' => false],
-            ['t' => 2, 'result' => true],
+            ['t' => 1, 'result' => false, 'max_nu_value' => 0, 'left_side_value' => '', 'right_side_value' => ''],
+            ['t' => 2, 'result' => true, 'max_nu_value' => 0, 'left_side_value' => '', 'right_side_value' => ''],
         ], $result['data']);
         $this->assertEquals([
             ['x' => 1, 'y' => 1],
@@ -103,48 +114,48 @@ class CentipedeFormatterTest extends TestCase
         $formatter = new CentipedeFormatter();
 
         // テストケース1: resultがすべてfalseの場合
-        $data1 = [
+        $data1 = $this->stepFactory->createManyFromArray([
             ['t' => 1, 'result' => false],
             ['t' => 2, 'result' => false],
             ['t' => 3, 'result' => false],
-        ];
-        $expected1 = [
-            ['x' => 1, 'y' => 1],
-            ['x' => 2, 'y' => 2],
-            ['x' => 3, 'y' => 3],
-        ];
+        ]);
+        $expected1 = new CentipedeChartPointList([
+            new CentipedeChartPoint(1, 1),
+            new CentipedeChartPoint(2, 2),
+            new CentipedeChartPoint(3, 3),
+        ]);
         $result1 = $formatter->makeChartData($data1);
         $this->assertEquals($expected1, $result1, "ケース1: チャートデータが期待通りではありません。");
 
         // テストケース2: resultにtrueが含まれる場合
-        $data2 = [
+        $data2 = $this->stepFactory->createManyFromArray([
             ['t' => 1, 'result' => false],
             ['t' => 2, 'result' => true],
             ['t' => 3, 'result' => false],
-        ];
-        $expected2 = [
-            ['x' => 1, 'y' => 0],
-            ['x' => 2, 'y' => 0],
-            ['x' => 3, 'y' => 1],
-        ];
+        ]);
+        $expected2 = new CentipedeChartPointList([
+            new CentipedeChartPoint(1, 0),
+            new CentipedeChartPoint(2, 0),
+            new CentipedeChartPoint(3, 1),
+        ]);
         $result2 = $formatter->makeChartData($data2);
         $this->assertEquals($expected2, $result2, "ケース2: チャートデータが期待通りではありません。");
 
         // テストケース3: 複数のtrueが含まれる場合
-        $data3 = [
+        $data3 = $this->stepFactory->createManyFromArray([
             ['t' => 1, 'result' => false],
             ['t' => 2, 'result' => true],
             ['t' => 3, 'result' => false],
             ['t' => 4, 'result' => true],
             ['t' => 5, 'result' => false],
-        ];
-        $expected3 = [
-            ['x' => 1, 'y' => 0],
-            ['x' => 2, 'y' => 0],
-            ['x' => 3, 'y' => 1],
-            ['x' => 4, 'y' => 0],
-            ['x' => 5, 'y' => 1],
-        ];
+        ]);
+        $expected3 = new CentipedeChartPointList([
+            new CentipedeChartPoint(1, 0),
+            new CentipedeChartPoint(2, 0),
+            new CentipedeChartPoint(3, 1),
+            new CentipedeChartPoint(4, 0),
+            new CentipedeChartPoint(5, 1),
+        ]);
         $result3 = $formatter->makeChartData($data3);
         $this->assertEquals($expected3, $result3, "ケース3: チャートデータが期待通りではありません。");
     }

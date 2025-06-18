@@ -6,12 +6,19 @@ namespace Tests\Unit\Calculations;
 
 use App\Calculations\Centipede;
 use App\Calculations\Centipede\CentipedeDataCombiner;
+use App\Calculations\Centipede\DTO\CentipedeChartPoint;
+use App\Calculations\Centipede\DTO\CentipedeChartPointList;
+use App\Calculations\Centipede\DTO\CentipedeSimulationResult;
+use App\Calculations\Centipede\DTO\CentipedeSimulationStep;
 use App\Calculations\Centipede\Formatter\CentipedeFormatter;
 use App\Calculations\Centipede\Simulator\CentipedeSimulator;
 use Tests\TestCase;
+use Tests\Traits\ArrayObjectCheckTrait;
 
 class CentipedeTest extends TestCase
 {
+    use ArrayObjectCheckTrait;
+
     /**
      * makeCognitiveUnitLatexTextメソッドが正しいLaTeX形式のテキストを返すことをテストします。
      * @test
@@ -107,7 +114,7 @@ class CentipedeTest extends TestCase
         $combination_player_1 = null;
 
         // シミュレーション結果の作成
-        $simulationStep = new \App\Calculations\Centipede\DTO\CentipedeSimulationStep(
+        $simulationStep = new CentipedeSimulationStep(
             1, // t
             5, // maxNuValue
             '1.23456789', // leftSideValue
@@ -115,12 +122,12 @@ class CentipedeTest extends TestCase
             true // result
         );
 
-        $simulationResult = new \App\Calculations\Centipede\DTO\CentipedeSimulationResult(
+        $simulationResult = new CentipedeSimulationResult(
             0.5, // cognitiveUnitValue
             '\dfrac{2^{\frac{1}{2}}}{2^{3}}', // cognitiveUnitLatexText
             0.7, // averageOfReversedCausality
             [$simulationStep], // data
-            [['x' => 1, 'y' => 0]] // chartData
+            new CentipedeChartPointList([new CentipedeChartPoint(1, 0)]), // chartData
         );
 
         // モックの振る舞いを設定
@@ -197,7 +204,7 @@ class CentipedeTest extends TestCase
         $combination_player_1 = ['0' => '1']; // Player 1が1を選択
 
         // シミュレーション結果の作成
-        $simulationStep1 = new \App\Calculations\Centipede\DTO\CentipedeSimulationStep(
+        $simulationStep1 = new CentipedeSimulationStep(
             1, // t
             5, // maxNuValue
             '1.23456789', // leftSideValue
@@ -205,15 +212,15 @@ class CentipedeTest extends TestCase
             true // result
         );
 
-        $simulationResult1 = new \App\Calculations\Centipede\DTO\CentipedeSimulationResult(
+        $simulationResult1 = new CentipedeSimulationResult(
             0.5, // cognitiveUnitValue
             '\dfrac{2^{\frac{1}{2}}}{2^{3}}', // cognitiveUnitLatexText
             0.7, // averageOfReversedCausality
             [$simulationStep1], // data
-            [['x' => 1, 'y' => 0]] // chartData
+            new CentipedeChartPointList([new CentipedeChartPoint(1, 0)]), // chartData
         );
 
-        $simulationStep2 = new \App\Calculations\Centipede\DTO\CentipedeSimulationStep(
+        $simulationStep2 = new CentipedeSimulationStep(
             1, // t
             6, // maxNuValue
             '2.34567890', // leftSideValue
@@ -221,12 +228,12 @@ class CentipedeTest extends TestCase
             true // result
         );
 
-        $simulationResult2 = new \App\Calculations\Centipede\DTO\CentipedeSimulationResult(
+        $simulationResult2 = new CentipedeSimulationResult(
             0.6, // cognitiveUnitValue
             '\dfrac{3^{\frac{2}{3}}}{2^{4}}', // cognitiveUnitLatexText
             0.8, // averageOfReversedCausality
             [$simulationStep2], // data
-            [['x' => 1, 'y' => 0]] // chartData
+            new CentipedeChartPointList([new CentipedeChartPoint(1, 0)]), // chartData
         );
 
         // モックの振る舞いを設定 - 連続した呼び出し
@@ -328,5 +335,6 @@ class CentipedeTest extends TestCase
         $this->assertEquals($max_rc, $result['render_params']['max_rc']);
         $this->assertEquals($patternData, $result['pattern_data']);
         $this->assertEquals($combinedData, $result['combination_data']);
+        $this->assertArrayHasNoObjects($result);
     }
 }

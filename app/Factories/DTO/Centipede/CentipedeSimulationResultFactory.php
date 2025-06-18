@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Factories\DTO\Centipede;
 
+use App\Calculations\Centipede\DTO\CentipedeChartPoint;
+use App\Calculations\Centipede\DTO\CentipedeChartPointList;
 use App\Calculations\Centipede\DTO\CentipedeSimulationResult;
 use App\Factories\DTO\AbstractDTOFactory;
 
@@ -23,7 +25,9 @@ class CentipedeSimulationResultFactory extends AbstractDTOFactory
             '\dfrac{1}{2}',  // cognitiveUnitLatexText
             0.0,  // averageOfReversedCausality
             [],   // data
-            []    // chartData
+            new CentipedeChartPointList([
+                new CentipedeChartPoint(1, 2),
+            ])    // chartData (CentipedeChartPointList)
         );
     }
 
@@ -39,7 +43,7 @@ class CentipedeSimulationResultFactory extends AbstractDTOFactory
             'cognitiveUnitLatexText' => '\dfrac{1}{2}',
             'averageOfReversedCausality' => 0.0,
             'data' => [],
-            'chartData' => [],
+            'chartData' => new CentipedeChartPointList([]), // empty CentipedeChartPointList
         ];
 
         $attributes = array_merge($defaults, $attributes);

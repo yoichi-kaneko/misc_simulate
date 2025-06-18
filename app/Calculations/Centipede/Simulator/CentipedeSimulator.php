@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Calculations\Centipede\Simulator;
 
+use App\Calculations\Centipede\DTO\CentipedeChartPoint;
 use App\Calculations\Centipede\DTO\CentipedeSimulationResult;
 use App\Calculations\Centipede\DTO\CentipedeSimulationStep;
 use App\Calculations\Centipede\Formatter\CentipedeFormatter;
-use Illuminate\Support\Arr;
 
 /**
  * Centipedeシミュレーションを実行するクラス
@@ -114,7 +114,8 @@ class CentipedeSimulator
             $numeratorExp2,
             $denominatorExp
         );
-        $averageOfReversedCausality = (array_sum(Arr::pluck($chartData, 'y')) / count($chartData));
+        $yValues = array_map(fn (CentipedeChartPoint $point) => $point->getY(), $chartData->getPoints());
+        $averageOfReversedCausality = (array_sum($yValues) / count($chartData));
 
         return new CentipedeSimulationResult(
             $cognitiveUnitValue,

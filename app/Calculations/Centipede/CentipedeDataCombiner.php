@@ -63,7 +63,8 @@ class CentipedeDataCombiner
                     $data[] = $patternData2[$i];
                 }
             }
-            $chartData = $this->formatter->makeChartData($data);
+            // CentipedeChartPointListオブジェクトから配列に変換
+            $chartData = $this->formatter->makeChartData($data)->toArray();
 
             $averageOfReversedCausality = (array_sum(Arr::pluck($chartData, 'y')) / count($chartData));
 

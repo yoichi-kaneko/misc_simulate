@@ -17,7 +17,7 @@ class CentipedeControllerTest extends TestCase
     {
         $data = [
             'patterns' => [
-                [
+                'a_1' => [
                     'base_numerator' => 3,
                     'numerator_exp_1' => 1,
                     'numerator_exp_2' => 2,

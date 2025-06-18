@@ -35,7 +35,7 @@ interface CentipedeSimulationResultInterface
 
     /**
      * チャート用データを取得する
-     * @return array
+     * @return CentipedeChartPointList
      */
-    public function getChartData(): array;
+    public function getChartData(): CentipedeChartPointList;
 }
