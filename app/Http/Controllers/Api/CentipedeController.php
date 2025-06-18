@@ -14,16 +14,17 @@ class CentipedeController extends Controller
     /**
      * Centipede計算
      * @param CalculateCentipedeRequest $request
-     * @return array
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @param Centipede $calculator
+     * @return JsonResponse
      */
-    public function calculate(CalculateCentipedeRequest $request): JsonResponse
-    {
+    public function calculate(
+        CalculateCentipedeRequest $request,
+        Centipede $calculator
+    ): JsonResponse {
         $patterns = $request->input('patterns');
         $max_step = (int) $request->input('max_step');
         $max_rc = $request->input('max_rc') ? (int) $request->input('max_rc') : null;
         $combination_player_1 = $request->input('combination_player_1', null);
-        $calculator = app()->make(Centipede::class);
 
         try {
             $result = $calculator->run(
