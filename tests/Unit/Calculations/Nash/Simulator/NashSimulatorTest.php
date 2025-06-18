@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Calculations\Nash\Simulator;
 
 use App\Calculations\Nash\Simulator\NashSimulator;
-use PHPUnit\Framework\TestCase;
 use Phospr\Fraction;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
 class NashSimulatorTest extends TestCase
@@ -77,6 +77,7 @@ class NashSimulatorTest extends TestCase
         $this->expectExceptionMessage('Denominator must be an integer greater than zero');
         $method->invokeArgs($simulator, [1, -1]);
     }
+
     /**
      * calcMidpointメソッドが正しく中点を計算することをテストします。
      * @test

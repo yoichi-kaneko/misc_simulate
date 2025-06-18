@@ -28,7 +28,7 @@ class NashSimulationResultFactory extends AbstractDTOFactory
             new Fraction(8, 9),  // gamma2_y
             [                    // midpoint
                 'x' => new Fraction(9, 10),
-                'y' => new Fraction(10, 11)
+                'y' => new Fraction(10, 11),
             ],
             new Fraction(11, 12) // a_rho
         );
@@ -52,16 +52,16 @@ class NashSimulationResultFactory extends AbstractDTOFactory
             'gamma2_y' => new Fraction(8, 9),
             'midpoint' => [
                 'x' => new Fraction(9, 10),
-                'y' => new Fraction(10, 11)
+                'y' => new Fraction(10, 11),
             ],
-            'a_rho' => new Fraction(11, 12)
+            'a_rho' => new Fraction(11, 12),
         ];
 
         $attributes = array_merge($defaults, $attributes);
 
         if (
-            !isset($attributes['midpoint']['x']) ||
-            !isset($attributes['midpoint']['y']) ||
+            ! isset($attributes['midpoint']['x']) ||
+            ! isset($attributes['midpoint']['y']) ||
             $attributes['midpoint']['x'] instanceof Fraction === false ||
             $attributes['midpoint']['y'] instanceof Fraction === false
         ) {

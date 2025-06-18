@@ -48,7 +48,7 @@ class CalculateNashRequest extends FormRequest
                     $this->input('alpha_2'),
                     $this->input('beta_1'),
                     $this->input('beta_2')
-                )
+                ),
             ],
             'rho' => ['required', 'array', new FractionMax(1)],
         ];

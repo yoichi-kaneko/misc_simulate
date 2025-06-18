@@ -34,15 +34,15 @@ class CalculateCentipedeRequestTest extends TestCase
                     'base_numerator' => 1,
                     'numerator_exp_1' => 2,
                     'numerator_exp_2' => 3,
-                    'denominator_exp' => 4
-                ]
+                    'denominator_exp' => 4,
+                ],
             ],
             'max_step' => 10,
             'max_rc' => 20,
             'combination_player_1' => [
                 'a' => '1',
-                'b' => '2'
-            ]
+                'b' => '2',
+            ],
         ]);
 
         $rules = $request->rules();
@@ -83,15 +83,15 @@ class CalculateCentipedeRequestTest extends TestCase
                     'base_numerator' => 1,
                     'numerator_exp_1' => 2,
                     'numerator_exp_2' => 3,
-                    'denominator_exp' => 4
-                ]
+                    'denominator_exp' => 4,
+                ],
             ],
             'max_step' => 10,
             'max_rc' => 20,
             'combination_player_1' => [
                 'a' => '1',
-                'b' => '2'
-            ]
+                'b' => '2',
+            ],
         ];
 
         $request = new CalculateCentipedeRequest();
@@ -134,15 +134,15 @@ class CalculateCentipedeRequestTest extends TestCase
                     'base_numerator' => 1,
                     'numerator_exp_1' => 2,
                     'numerator_exp_2' => 3,
-                    'denominator_exp' => 4
-                ]
+                    'denominator_exp' => 4,
+                ],
             ],
             'max_step' => 10,
             'max_rc' => 20,
             'combination_player_1' => [
                 'a' => '1',
-                'b' => '2'
-            ]
+                'b' => '2',
+            ],
         ];
 
         return [

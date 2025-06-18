@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Calculations\Centipede\Formatter;
 
-use App\Calculations\Centipede\Formatter\CentipedeFormatter;
 use App\Calculations\Centipede\DTO\CentipedeSimulationResultInterface;
+use App\Calculations\Centipede\Formatter\CentipedeFormatter;
 use PHPUnit\Framework\TestCase;
 
 class CentipedeFormatterTest extends TestCase

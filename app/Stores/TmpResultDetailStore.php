@@ -35,7 +35,7 @@ class TmpResultDetailStore
         $this->_transition_data[] = [
             'obtained_cache' => $obtained_cache,
             'transitions' => $this->_tmp_result_detail->compressTransitions($transitions),
-            'created_at' => date('Y-m-d H:i:s')
+            'created_at' => date('Y-m-d H:i:s'),
         ];
 
         // 保存するデータ量が多いため、Insert処理はまとめて行う。

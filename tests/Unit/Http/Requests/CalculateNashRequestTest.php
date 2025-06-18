@@ -8,8 +8,6 @@ use App\Rules\FractionMax;
 use Illuminate\Support\Facades\Validator;
 use Tests\TestCase;
 
-use function PHPUnit\Framework\isInstanceOf;
-
 class CalculateNashRequestTest extends TestCase
 {
     /**
@@ -302,7 +300,7 @@ class CalculateNashRequestTest extends TestCase
 
         // Coordinateルールはここでは除外する
         $rules[$attribute] = array_filter($rules[$attribute], function ($ruleValue) {
-            return !($ruleValue instanceof Coordinate);
+            return ! ($ruleValue instanceof Coordinate);
         });
 
         $validator = Validator::make($data, $rules);

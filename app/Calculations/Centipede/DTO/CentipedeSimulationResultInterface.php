@@ -29,7 +29,7 @@ interface CentipedeSimulationResultInterface
 
     /**
      * シミュレーション結果データを取得する
-     * @return array
+     * @return array<CentipedeSimulationStepInterface>
      */
     public function getData(): array;
 

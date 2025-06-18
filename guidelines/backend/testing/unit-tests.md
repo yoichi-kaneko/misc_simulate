@@ -112,6 +112,43 @@ PHPのユニットテストは、以下の方針で実装しています：
 2. **テストデータの準備**
    - テストデータは各テストメソッド内で明示的に定義し、グローバル変数や共有状態に依存しない
    - 複雑なテストデータの準備には、ファクトリーやデータプロバイダーを使用する
+   - 1つのメソッドに対して複数のデータパターンを用いて繰り返しテストを行う場合は、dataProviderを定義してそこにデータセットを羅列する
+   - dataProviderでは、配列のキーに日本語を使用することも許容する（例：'ケース1', '正常系', '異常系：値が範囲外'）
+   - dataProviderの実装例：
+     ```php
+     /**
+      * テストメソッド
+      * @test
+      * @dataProvider exampleDataProvider
+      */
+     public function testExample(int $input, string $expected)
+     {
+         $result = $this->someMethod($input);
+         $this->assertEquals($expected, $result);
+     }
+
+     /**
+      * データプロバイダー
+      * @return array<string, mixed>
+      */
+     public static function exampleDataProvider(): array
+     {
+         return [
+             '正常系：通常入力' => [
+                 'input' => 5,
+                 'expected' => '結果A',
+             ],
+             '正常系：境界値' => [
+                 'input' => 10,
+                 'expected' => '結果B',
+             ],
+             '異常系：特殊ケース' => [
+                 'input' => 0,
+                 'expected' => '結果C',
+             ],
+         ];
+     }
+     ```
 
 3. **アサーションの使用**
    - 各テストでは、テスト対象の動作に関連する最小限のアサーションのみを使用する

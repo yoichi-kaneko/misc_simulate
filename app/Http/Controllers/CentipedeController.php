@@ -20,7 +20,7 @@ class CentipedeController extends Controller
     {
         return [
             '1' => 'Case1',
-            '2' => 'Case2'
+            '2' => 'Case2',
         ];
     }
 }

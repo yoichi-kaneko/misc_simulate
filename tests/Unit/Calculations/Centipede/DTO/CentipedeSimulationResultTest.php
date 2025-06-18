@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Calculations\Centipede\DTO;
 
 use App\Calculations\Centipede\DTO\CentipedeSimulationResult;
+use App\Calculations\Centipede\DTO\CentipedeSimulationStep;
 use PHPUnit\Framework\TestCase;
 
 class CentipedeSimulationResultTest extends TestCase
@@ -25,17 +26,18 @@ class CentipedeSimulationResultTest extends TestCase
         $this->cognitiveUnitLatexText = 'C_u = 0.75';
         $this->averageOfReversedCausality = 0.42;
         $this->data = [
-            'player1' => [1, 2, 3],
-            'player2' => [4, 5, 6]
+            new CentipedeSimulationStep(1, 3, 'left1', 'right1', true),
+            new CentipedeSimulationStep(2, 5, 'left2', 'right2', false),
+            new CentipedeSimulationStep(3, 7, 'left3', 'right3', true),
         ];
         $this->chartData = [
             'labels' => ['A', 'B', 'C'],
             'datasets' => [
                 [
                     'label' => 'Dataset 1',
-                    'data' => [10, 20, 30]
-                ]
-            ]
+                    'data' => [10, 20, 30],
+                ],
+            ],
         ];
 
         // CentipedeSimulationResultのインスタンスを作成

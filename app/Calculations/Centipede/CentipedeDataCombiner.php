@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Calculations\Centipede;
 
 use App\Calculations\Centipede\Formatter\CentipedeFormatter;
+use App\Traits\ArrayTypeCheckTrait;
 use Illuminate\Support\Arr;
 
 /**
@@ -12,6 +13,7 @@ use Illuminate\Support\Arr;
  */
 class CentipedeDataCombiner
 {
+    use ArrayTypeCheckTrait;
     private CentipedeFormatter $formatter;
 
     /**
@@ -26,7 +28,7 @@ class CentipedeDataCombiner
     /**
      * 2つのシミュレート結果を合算する
      * @param array $combinationPlayer1
-     * @param array $patternData
+     * @param array $patternData 各キーに'data'要素としてCentipedeSimulationStepInterfaceの配列を含む配列
      * @return array
      */
     public function combine(array $combinationPlayer1, array $patternData): array
@@ -37,6 +39,10 @@ class CentipedeDataCombiner
             // Requestのバリデーションで $combinationPlayerVal には1,2いずれかがセットされていると想定
             $patternData1 = $patternData[$combinationPlayerKey . '_1']['data'];
             $patternData2 = $patternData[$combinationPlayerKey . '_2']['data'];
+
+            // 配列の要素が全てCentipedeSimulationStepInterfaceのインスタンスであることを確認
+            // TODO: 型の問題が解消されたらここで $this->assertArrayOfType によるチェックを行う
+
             $player1Is1 = ($combinationPlayerVal === '1');
 
             $data = [];
@@ -50,7 +56,7 @@ class CentipedeDataCombiner
                 // Player1が1で$iが偶数（0から始まるため）、Player1が2で$iが奇数の場合にAをセット
                 if (
                     $player1Is1 && $i % 2 === 0 ||
-                    !$player1Is1 && $i % 2 > 0
+                    ! $player1Is1 && $i % 2 > 0
                 ) {
                     $data[] = $patternData1[$i];
                 } else {
