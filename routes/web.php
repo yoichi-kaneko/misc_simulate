@@ -11,5 +11,7 @@
 |
 */
 
-Route::get('/centipede', 'CentipedeController@index');
-Route::get('/nash', 'NashController@index');
+use Illuminate\Support\Facades\Route;
+
+Route::get('/centipede', 'CentipedeController@index')->name('centipede.index');
+Route::get('/nash', 'NashController@index')->name('nash.index');
