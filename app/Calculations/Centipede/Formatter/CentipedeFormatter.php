@@ -62,7 +62,7 @@ class CentipedeFormatter
 
     /**
      * チャート用のデータを生成する
-     * @param array<CentipedeSimulationStepInterface> $data
+     * @param array<CentipedeSimulationStepInterface>|array $data
      * @return array
      */
     public function makeChartData(array $data): array
