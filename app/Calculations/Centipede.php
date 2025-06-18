@@ -61,7 +61,7 @@ class Centipede
             $pattern_data[$key] = $this->formatter->format($simulationResult);
         }
 
-        if (!is_null($combination_player_1)) {
+        if (! is_null($combination_player_1)) {
             $combination_data = $this->dataCombiner->combine($combination_player_1, $pattern_data);
         } else {
             $combination_data = null;

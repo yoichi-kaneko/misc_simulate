@@ -6,7 +6,6 @@ namespace Tests\Unit\Calculations;
 
 use App\Calculations\Centipede;
 use App\Calculations\Centipede\CentipedeDataCombiner;
-use App\Calculations\Centipede\DTO\CentipedeSimulationResultInterface;
 use App\Calculations\Centipede\Formatter\CentipedeFormatter;
 use App\Calculations\Centipede\Simulator\CentipedeSimulator;
 use Tests\TestCase;
@@ -101,7 +100,7 @@ class CentipedeTest extends TestCase
                 'numerator_exp_1' => 1,
                 'numerator_exp_2' => 2,
                 'denominator_exp' => 3,
-            ]
+            ],
         ];
         $max_step = 10;
         $max_rc = 5;
@@ -191,7 +190,7 @@ class CentipedeTest extends TestCase
                 'numerator_exp_1' => 2,
                 'numerator_exp_2' => 3,
                 'denominator_exp' => 4,
-            ]
+            ],
         ];
         $max_step = 10;
         $max_rc = 5;
@@ -243,6 +242,7 @@ class CentipedeTest extends TestCase
                     $this->assertEquals(3, $denominatorExp);
                     $this->assertEquals($max_step, $maxStep);
                     $callCount++;
+
                     return $simulationResult1;
                 } else {
                     $this->assertEquals(3, $baseNumerator);
@@ -251,6 +251,7 @@ class CentipedeTest extends TestCase
                     $this->assertEquals(4, $denominatorExp);
                     $this->assertEquals($max_step, $maxStep);
                     $callCount++;
+
                     return $simulationResult2;
                 }
             });
@@ -280,10 +281,12 @@ class CentipedeTest extends TestCase
                 if ($callCount === 0) {
                     $this->assertEquals($simulationResult1, $result);
                     $callCount++;
+
                     return $formattedResult1;
                 } else {
                     $this->assertEquals($simulationResult2, $result);
                     $callCount++;
+
                     return $formattedResult2;
                 }
             });
@@ -302,7 +305,7 @@ class CentipedeTest extends TestCase
                 'cognitive_unit_value_1' => 0.5,
                 'cognitive_unit_value_2' => 0.6,
                 'average_of_reversed_causality' => 0.75,
-            ]
+            ],
         ];
 
         $dataCombinerMock->expects($this->once())

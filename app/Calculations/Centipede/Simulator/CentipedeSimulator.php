@@ -157,6 +157,7 @@ class CentipedeSimulator
         }
 
         $denominator = pow(2, $denominatorExp);
+
         return $numerator / $denominator;
     }
 }

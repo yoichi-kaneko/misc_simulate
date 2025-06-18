@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Calculations\Nash\Formatter;
 
 use App\Calculations\Nash\Formatter\NashFormatter;
-use PHPUnit\Framework\TestCase;
 use Phospr\Fraction;
+use PHPUnit\Framework\TestCase;
 
 class NashFormatterTest extends TestCase
 {

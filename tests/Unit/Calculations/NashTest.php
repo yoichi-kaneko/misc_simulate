@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Calculations;
 
 use App\Calculations\Nash;
-use App\Calculations\Nash\Simulator\NashSimulator;
 use App\Calculations\Nash\Formatter\NashFormatter;
-use App\Calculations\Nash\DTO\NashSimulationResult;
+use App\Calculations\Nash\Simulator\NashSimulator;
 use App\Factories\DTO\Nash\NashSimulationResultFactory;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use PHPUnit\Framework\MockObject\Exception;
@@ -16,13 +15,13 @@ use Tests\TestCase;
 
 class NashTest extends TestCase
 {
-    /** @var NashSimulator&MockObject $simulator */
+    /** @var NashSimulator&MockObject */
     private NashSimulator $simulator;
 
-    /** @var NashFormatter&MockObject $formatter */
+    /** @var NashFormatter&MockObject */
     private NashFormatter $formatter;
 
-    /** @var NashSimulationResultFactory $factory */
+    /** @var NashSimulationResultFactory */
     private NashSimulationResultFactory $factory;
 
     /**
@@ -80,7 +79,7 @@ class NashTest extends TestCase
             'render_params' => [
                 ['title' => 'alpha', 'x' => 1.0, 'y' => 2.0, 'display_text' => '[1.000, 2.000]'],
                 // 他のパラメータは省略
-            ]
+            ],
         ];
 
         // シミュレーターのモックの振る舞いを設定
@@ -104,7 +103,6 @@ class NashTest extends TestCase
         // 結果を検証
         $this->assertEquals($expectedOutput, $result);
     }
-
 
     /**
      * シミュレーターが例外をスローした場合のテスト

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Calculations\Nash\DTO;
 
 use App\Calculations\Nash\DTO\NashSimulationResult;
-use PHPUnit\Framework\TestCase;
 use Phospr\Fraction;
+use PHPUnit\Framework\TestCase;
 
 class NashSimulationResultTest extends TestCase
 {
@@ -37,7 +37,7 @@ class NashSimulationResultTest extends TestCase
         $this->gamma2_y = new Fraction(8, 9);
         $this->midpoint = [
             'x' => new Fraction(9, 10),
-            'y' => new Fraction(10, 11)
+            'y' => new Fraction(10, 11),
         ];
         $this->a_rho = new Fraction(11, 12);
 

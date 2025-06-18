@@ -22,7 +22,7 @@ class CentipedeControllerTest extends TestCase
                     'numerator_exp_1' => 1,
                     'numerator_exp_2' => 2,
                     'denominator_exp' => 1,
-                ]
+                ],
             ],
             'max_step' => 10,
             'max_rc' => 100,
@@ -73,7 +73,7 @@ class CentipedeControllerTest extends TestCase
                     'numerator_exp_1' => 2,
                     'numerator_exp_2' => 3,
                     'denominator_exp' => 4,
-                ]
+                ],
             ],
             'max_step' => 10,
             'max_rc' => 100,
@@ -101,7 +101,7 @@ class CentipedeControllerTest extends TestCase
                         'cognitive_unit_value_1',
                         'cognitive_unit_value_2',
                         'average_of_reversed_causality',
-                    ]
+                    ],
                 ],
             ])
             ->assertJson([

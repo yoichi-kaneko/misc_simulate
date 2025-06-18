@@ -8,7 +8,6 @@ use App\Calculations\Centipede;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CalculateCentipedeRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
 
 class CentipedeController extends Controller
 {

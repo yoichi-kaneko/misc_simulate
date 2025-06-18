@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
-use App\Calculations\Centipede;
 use App\Calculations\Nash;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CalculateNashRequest;
@@ -21,6 +20,7 @@ class NashController extends Controller
     public function calculate(CalculateNashRequest $request): JsonResponse
     {
         $calculator = app()->make(Nash::class);
+
         try {
             $result = $calculator->run(
                 $request->input('alpha_1'),
@@ -32,6 +32,7 @@ class NashController extends Controller
         } catch (\Exception $e) {
             return $this->responseException($e->getMessage());
         }
+
         return response()->json($result);
     }
 }

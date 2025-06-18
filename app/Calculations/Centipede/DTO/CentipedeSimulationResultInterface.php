@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Calculations\Centipede\DTO;
 
-use App\Calculations\Centipede\DTO\CentipedeSimulationStepInterface;
-
 /**
  * Centipedeシミュレーション結果を保持するDTOのインターフェース
  */

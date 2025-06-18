@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Calculations\Centipede;
 
-use App\Calculations\Centipede\DTO\CentipedeSimulationStepInterface;
 use App\Calculations\Centipede\Formatter\CentipedeFormatter;
 use App\Traits\ArrayTypeCheckTrait;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
 
 /**
  * Centipedeシミュレーション結果を結合するクラス
@@ -43,8 +41,7 @@ class CentipedeDataCombiner
             $patternData2 = $patternData[$combinationPlayerKey . '_2']['data'];
 
             // 配列の要素が全てCentipedeSimulationStepInterfaceのインスタンスであることを確認
-            // $this->assertArrayOfType($patternData1, CentipedeSimulationStepInterface::class, 'patternData1');
-            // $this->assertArrayOfType($patternData2, CentipedeSimulationStepInterface::class, 'patternData2');
+            // TODO: 型の問題が解消されたらここで $this->assertArrayOfType によるチェックを行う
 
             $player1Is1 = ($combinationPlayerVal === '1');
 
@@ -59,7 +56,7 @@ class CentipedeDataCombiner
                 // Player1が1で$iが偶数（0から始まるため）、Player1が2で$iが奇数の場合にAをセット
                 if (
                     $player1Is1 && $i % 2 === 0 ||
-                    !$player1Is1 && $i % 2 > 0
+                    ! $player1Is1 && $i % 2 > 0
                 ) {
                     $data[] = $patternData1[$i];
                 } else {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Calculations;
 
-use App\Calculations\Nash\Simulator\NashSimulator;
 use App\Calculations\Nash\Formatter\NashFormatter;
+use App\Calculations\Nash\Simulator\NashSimulator;
 
 class Nash
 {

@@ -32,7 +32,7 @@ class PresetStore
             'title' => $params['title'],
             'params' => json_encode($params['params']),
         ];
-        if (!isset($params['id'])) {
+        if (! isset($params['id'])) {
             return $this->simulate_preset_param->insert($save_data);
         } else {
             return $this->simulate_preset_param->where('id', $params['id'])

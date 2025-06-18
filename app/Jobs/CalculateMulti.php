@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use App\Services\ProgressService;
 use App\Services\SpGame\MultiService;
-use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -56,7 +55,7 @@ class CalculateMulti implements ShouldQueue
             $this->_data['processing_data'] ?? []
         );
 
-        if (!$multi->isCompleted()) {
+        if (! $multi->isCompleted()) {
             CalculateMulti::dispatch(
                 [
                     'banker_prepared_change' => $this->_data['banker_prepared_change'],
@@ -71,7 +70,7 @@ class CalculateMulti implements ShouldQueue
                     'get_chart_data' => $this->_data['get_chart_data'],
                     'save_each_transitions' => $this->_data['save_each_transitions'],
                     'token' => $this->_data['token'],
-                    'processing_data' => $multi->getProcessingData()
+                    'processing_data' => $multi->getProcessingData(),
                 ]
             );
         }

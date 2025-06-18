@@ -39,7 +39,7 @@ class CentipedeSimulationResultFactory extends AbstractDTOFactory
             'cognitiveUnitLatexText' => '\dfrac{1}{2}',
             'averageOfReversedCausality' => 0.0,
             'data' => [],
-            'chartData' => []
+            'chartData' => [],
         ];
 
         $attributes = array_merge($defaults, $attributes);

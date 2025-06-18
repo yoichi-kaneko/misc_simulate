@@ -51,6 +51,7 @@ class Coordinate implements Rule
         $alpha_2 = $this->alpha_2['numerator'] / $this->alpha_2['denominator'];
         $beta_1 = $this->beta_1['numerator'] / $this->beta_1['denominator'];
         $beta_2 = $this->beta_2['numerator'] / $this->beta_2['denominator'];
+
         // 右下にあるかを判定
         return ($alpha_1 > $beta_1 && $alpha_2 < $beta_2);
     }

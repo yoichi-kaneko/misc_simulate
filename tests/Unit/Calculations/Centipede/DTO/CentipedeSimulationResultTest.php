@@ -28,16 +28,16 @@ class CentipedeSimulationResultTest extends TestCase
         $this->data = [
             new CentipedeSimulationStep(1, 3, 'left1', 'right1', true),
             new CentipedeSimulationStep(2, 5, 'left2', 'right2', false),
-            new CentipedeSimulationStep(3, 7, 'left3', 'right3', true)
+            new CentipedeSimulationStep(3, 7, 'left3', 'right3', true),
         ];
         $this->chartData = [
             'labels' => ['A', 'B', 'C'],
             'datasets' => [
                 [
                     'label' => 'Dataset 1',
-                    'data' => [10, 20, 30]
-                ]
-            ]
+                    'data' => [10, 20, 30],
+                ],
+            ],
         ];
 
         // CentipedeSimulationResultのインスタンスを作成

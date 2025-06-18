@@ -3,9 +3,8 @@
 namespace App\Jobs;
 
 use App\Calculations\Linear\Comparison;
-use App\Services\ProgressService;
 use App\Services\ParticipantsSimulationService;
-use Exception;
+use App\Services\ProgressService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

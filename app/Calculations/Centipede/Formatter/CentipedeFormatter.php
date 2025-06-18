@@ -7,7 +7,6 @@ namespace App\Calculations\Centipede\Formatter;
 use App\Calculations\Centipede\DTO\CentipedeSimulationResultInterface;
 use App\Calculations\Centipede\DTO\CentipedeSimulationStepInterface;
 use App\Traits\ArrayTypeCheckTrait;
-use Illuminate\Support\Arr;
 
 /**
  * Centipedeシミュレーション結果のフォーマッタ
@@ -15,6 +14,7 @@ use Illuminate\Support\Arr;
 class CentipedeFormatter
 {
     use ArrayTypeCheckTrait;
+
     /**
      * シミュレーション結果をフロントエンド用に整形する
      * @param CentipedeSimulationResultInterface $result
@@ -22,7 +22,7 @@ class CentipedeFormatter
      */
     public function format(CentipedeSimulationResultInterface $result): array
     {
-        $data = array_map(function($step) {
+        $data = array_map(function ($step) {
             return is_array($step) ? $step : $step->toArray();
         }, $result->getData());
 
@@ -70,9 +70,10 @@ class CentipedeFormatter
         // 配列の各要素がCentipedeSimulationStepInterfaceのインスタンスであることを確認
         // TODO: CentipedeSimulationStepInterfaceからなる配列のみ許容するように修正する
         foreach ($data as $index => $item) {
-            if (!($item instanceof CentipedeSimulationStepInterface) && 
-                !(is_array($item) && isset($item['t']) && isset($item['result']))) {
+            if (! ($item instanceof CentipedeSimulationStepInterface) &&
+                ! (is_array($item) && isset($item['t']) && isset($item['result']))) {
                 $actualType = is_object($item) ? get_class($item) : gettype($item);
+
                 throw new \InvalidArgumentException(
                     sprintf(
                         'All items in $data must be instances of %s or arrays with required keys. Item at index %d is %s.',
@@ -88,7 +89,7 @@ class CentipedeFormatter
         $lastSkippedT = 0;
 
         // result中にtrueが1件でもあればyは0から開始する。ない場合は1。
-        $results = array_map(function($step) {
+        $results = array_map(function ($step) {
             return is_array($step) ? $step['result'] : $step->getResult();
         }, $data);
         $yOffset = in_array(true, $results, true) ? 0 : 1;
