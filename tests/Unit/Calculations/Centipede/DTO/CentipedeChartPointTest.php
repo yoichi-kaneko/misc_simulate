@@ -6,9 +6,12 @@ namespace Tests\Unit\Calculations\Centipede\DTO;
 
 use App\Calculations\Centipede\DTO\CentipedeChartPoint;
 use PHPUnit\Framework\TestCase;
+use Tests\Traits\ArrayObjectCheckTrait;
 
 class CentipedeChartPointTest extends TestCase
 {
+    use ArrayObjectCheckTrait;
+
     private CentipedeChartPoint $chartPoint;
     private int $x;
     private int $y;
@@ -60,5 +63,6 @@ class CentipedeChartPointTest extends TestCase
             'y' => $this->y,
         ];
         $this->assertSame($expected, $this->chartPoint->toArray());
+        $this->assertArrayHasNoObjects($this->chartPoint->toArray());
     }
 }

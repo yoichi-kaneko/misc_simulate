@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Calculations\Centipede;
 
 use App\Calculations\Centipede\CentipedeDataCombiner;
+use App\Calculations\Centipede\DTO\CentipedeChartPoint;
 use App\Calculations\Centipede\Formatter\CentipedeFormatter;
 use PHPUnit\Framework\TestCase;
 
@@ -23,8 +24,8 @@ class CentipedeDataCombinerTest extends TestCase
         // makeChartDataメソッドのモックを設定
         $formatterMock->method('makeChartData')
             ->willReturn([
-                ['x' => 1, 'y' => 0],
-                ['x' => 2, 'y' => 1],
+                new CentipedeChartPoint(1, 0),
+                new CentipedeChartPoint(2, 1),
             ]);
 
         // CentipedeDataCombinerのインスタンスを作成
