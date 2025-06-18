@@ -61,7 +61,7 @@ class CentipedeSimulationStepFactory extends AbstractDTOFactory
     public function createFromArray(array $data): CentipedeSimulationStep
     {
         // 最低限必要なキーがあるか確認
-        if (!isset($data['t']) || !isset($data['result'])) {
+        if (! isset($data['t']) || ! isset($data['result'])) {
             throw new \InvalidArgumentException('Array must contain at least "t" and "result" keys');
         }
 

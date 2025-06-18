@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Calculations\Centipede\Formatter;
 
 use App\Calculations\Centipede\DTO\CentipedeChartPoint;
+use App\Calculations\Centipede\DTO\CentipedeChartPointList;
 use App\Calculations\Centipede\DTO\CentipedeSimulationResultInterface;
 use App\Calculations\Centipede\DTO\CentipedeSimulationStepInterface;
 use App\Traits\ArrayTypeCheckTrait;
@@ -27,10 +28,8 @@ class CentipedeFormatter
             return is_array($step) ? $step : $step->toArray();
         }, $result->getData());
 
-        // CentipedeChartPointオブジェクトを配列に変換
-        $chartData = array_map(function ($point) {
-            return is_array($point) ? $point : $point->toArray();
-        }, $result->getChartData());
+        // CentipedeChartPointListオブジェクトから配列に変換
+        $chartData = $result->getChartData()->toArray();
 
         return [
             'cognitive_unit_latex_text' => $result->getCognitiveUnitLatexText(),
@@ -69,9 +68,9 @@ class CentipedeFormatter
     /**
      * チャート用のデータを生成する
      * @param array<CentipedeSimulationStepInterface|array> $data
-     * @return array<CentipedeChartPoint>
+     * @return CentipedeChartPointList
      */
-    public function makeChartData(array $data): array
+    public function makeChartData(array $data): CentipedeChartPointList
     {
         // 配列の各要素がCentipedeSimulationStepInterfaceのインスタンスであることを確認
         // TODO: CentipedeSimulationStepInterfaceからなる配列のみ許容するように修正する
@@ -118,6 +117,6 @@ class CentipedeFormatter
             $chartData[] = new CentipedeChartPoint($t, $y);
         }
 
-        return $chartData;
+        return new CentipedeChartPointList($chartData);
     }
 }

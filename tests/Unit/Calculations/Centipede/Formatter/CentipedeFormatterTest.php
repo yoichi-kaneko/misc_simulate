@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\Unit\Calculations\Centipede\Formatter;
 
 use App\Calculations\Centipede\DTO\CentipedeChartPoint;
+use App\Calculations\Centipede\DTO\CentipedeChartPointList;
 use App\Calculations\Centipede\DTO\CentipedeSimulationResultInterface;
-use App\Calculations\Centipede\DTO\CentipedeSimulationStep;
 use App\Calculations\Centipede\Formatter\CentipedeFormatter;
 use App\Factories\DTO\Centipede\CentipedeSimulationStepFactory;
 use PHPUnit\Framework\TestCase;
@@ -20,6 +20,7 @@ class CentipedeFormatterTest extends TestCase
         parent::setUp();
         $this->stepFactory = new CentipedeSimulationStepFactory();
     }
+
     /**
      * formatメソッドが正しくフォーマットされた結果を返すことをテストします。
      * @test
@@ -38,10 +39,10 @@ class CentipedeFormatterTest extends TestCase
             $this->stepFactory->createWith(['t' => 1, 'result' => false]),
             $this->stepFactory->createWith(['t' => 2, 'result' => true]),
         ]);
-        $simulationResult->method('getChartData')->willReturn([
-            ['x' => 1, 'y' => 1],
-            ['x' => 2, 'y' => 0],
-        ]);
+        $simulationResult->method('getChartData')->willReturn(new CentipedeChartPointList([
+            new CentipedeChartPoint(1, 1),
+            new CentipedeChartPoint(2, 0),
+        ]));
 
         // CentipedeFormatterクラスのインスタンスを作成
         $formatter = new CentipedeFormatter();
@@ -118,11 +119,11 @@ class CentipedeFormatterTest extends TestCase
             ['t' => 2, 'result' => false],
             ['t' => 3, 'result' => false],
         ]);
-        $expected1 = [
+        $expected1 = new CentipedeChartPointList([
             new CentipedeChartPoint(1, 1),
             new CentipedeChartPoint(2, 2),
             new CentipedeChartPoint(3, 3),
-        ];
+        ]);
         $result1 = $formatter->makeChartData($data1);
         $this->assertEquals($expected1, $result1, "ケース1: チャートデータが期待通りではありません。");
 
@@ -132,11 +133,11 @@ class CentipedeFormatterTest extends TestCase
             ['t' => 2, 'result' => true],
             ['t' => 3, 'result' => false],
         ]);
-        $expected2 = [
+        $expected2 = new CentipedeChartPointList([
             new CentipedeChartPoint(1, 0),
             new CentipedeChartPoint(2, 0),
             new CentipedeChartPoint(3, 1),
-        ];
+        ]);
         $result2 = $formatter->makeChartData($data2);
         $this->assertEquals($expected2, $result2, "ケース2: チャートデータが期待通りではありません。");
 
@@ -148,13 +149,13 @@ class CentipedeFormatterTest extends TestCase
             ['t' => 4, 'result' => true],
             ['t' => 5, 'result' => false],
         ]);
-        $expected3 = [
+        $expected3 = new CentipedeChartPointList([
             new CentipedeChartPoint(1, 0),
             new CentipedeChartPoint(2, 0),
             new CentipedeChartPoint(3, 1),
             new CentipedeChartPoint(4, 0),
             new CentipedeChartPoint(5, 1),
-        ];
+        ]);
         $result3 = $formatter->makeChartData($data3);
         $this->assertEquals($expected3, $result3, "ケース3: チャートデータが期待通りではありません。");
     }

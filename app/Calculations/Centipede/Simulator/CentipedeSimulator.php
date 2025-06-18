@@ -114,7 +114,7 @@ class CentipedeSimulator
             $numeratorExp2,
             $denominatorExp
         );
-        $yValues = array_map(fn (CentipedeChartPoint $point) => $point->getY(), $chartData);
+        $yValues = array_map(fn (CentipedeChartPoint $point) => $point->getY(), $chartData->getPoints());
         $averageOfReversedCausality = (array_sum($yValues) / count($chartData));
 
         return new CentipedeSimulationResult(

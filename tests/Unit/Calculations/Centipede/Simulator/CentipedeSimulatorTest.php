@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Unit\Calculations\Centipede\Simulator;
 
 use App\Calculations\Centipede\DTO\CentipedeChartPoint;
+use App\Calculations\Centipede\DTO\CentipedeChartPointList;
 use App\Calculations\Centipede\DTO\CentipedeSimulationResult;
 use App\Calculations\Centipede\DTO\CentipedeSimulationStepInterface;
 use App\Calculations\Centipede\Formatter\CentipedeFormatter;
@@ -45,10 +46,10 @@ class CentipedeSimulatorTest extends TestCase
         $maxStep = 2;
 
         // モックデータ
-        $mockChartData = [
+        $mockChartData = new CentipedeChartPointList([
             new CentipedeChartPoint(1, 0),
             new CentipedeChartPoint(2, 1),
-        ];
+        ]);
         $mockLatexText = '\dfrac{3^{\frac{1}{2}}}{2^{3}}';
 
         // CentipedeFormatterのモックを作成

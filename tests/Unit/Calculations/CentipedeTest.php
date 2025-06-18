@@ -7,6 +7,7 @@ namespace Tests\Unit\Calculations;
 use App\Calculations\Centipede;
 use App\Calculations\Centipede\CentipedeDataCombiner;
 use App\Calculations\Centipede\DTO\CentipedeChartPoint;
+use App\Calculations\Centipede\DTO\CentipedeChartPointList;
 use App\Calculations\Centipede\DTO\CentipedeSimulationResult;
 use App\Calculations\Centipede\DTO\CentipedeSimulationStep;
 use App\Calculations\Centipede\Formatter\CentipedeFormatter;
@@ -126,7 +127,7 @@ class CentipedeTest extends TestCase
             '\dfrac{2^{\frac{1}{2}}}{2^{3}}', // cognitiveUnitLatexText
             0.7, // averageOfReversedCausality
             [$simulationStep], // data
-            [new CentipedeChartPoint(1, 0)], // chartData
+            new CentipedeChartPointList([new CentipedeChartPoint(1, 0)]), // chartData
         );
 
         // モックの振る舞いを設定
@@ -216,7 +217,7 @@ class CentipedeTest extends TestCase
             '\dfrac{2^{\frac{1}{2}}}{2^{3}}', // cognitiveUnitLatexText
             0.7, // averageOfReversedCausality
             [$simulationStep1], // data
-            [new CentipedeChartPoint(1, 0)], // chartData
+            new CentipedeChartPointList([new CentipedeChartPoint(1, 0)]), // chartData
         );
 
         $simulationStep2 = new CentipedeSimulationStep(
@@ -232,7 +233,7 @@ class CentipedeTest extends TestCase
             '\dfrac{3^{\frac{2}{3}}}{2^{4}}', // cognitiveUnitLatexText
             0.8, // averageOfReversedCausality
             [$simulationStep2], // data
-            [new CentipedeChartPoint(1, 0)], // chartData
+            new CentipedeChartPointList([new CentipedeChartPoint(1, 0)]), // chartData
         );
 
         // モックの振る舞いを設定 - 連続した呼び出し

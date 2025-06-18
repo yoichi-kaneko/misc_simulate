@@ -55,6 +55,6 @@ final class CentipedeChartPointList implements CentipedeChartPointListInterface
      */
     public function toArray(): array
     {
-        return array_map(fn(CentipedeChartPoint $point) => $point->toArray(), $this->points);
+        return array_map(fn (CentipedeChartPoint $point) => $point->toArray(), $this->points);
     }
 }

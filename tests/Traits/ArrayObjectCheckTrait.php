@@ -16,7 +16,7 @@ trait ArrayObjectCheckTrait
     {
         $objects = $this->findObjectsInArray($array);
 
-        if (!empty($objects)) {
+        if (! empty($objects)) {
             $defaultMessage = sprintf(
                 'Array contains %d object(s). First object found: %s at path: %s',
                 count($objects),

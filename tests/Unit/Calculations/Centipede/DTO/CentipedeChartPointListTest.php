@@ -24,7 +24,7 @@ class CentipedeChartPointListTest extends TestCase
         $this->points = [
             new CentipedeChartPoint(1, 2),
             new CentipedeChartPoint(3, 4),
-            new CentipedeChartPoint(5, 6)
+            new CentipedeChartPoint(5, 6),
         ];
 
         // CentipedeChartPointListのインスタンスを作成
@@ -50,13 +50,13 @@ class CentipedeChartPointListTest extends TestCase
     public function testConstructorWithInvalidItems()
     {
         $this->expectException(\InvalidArgumentException::class);
-        
+
         $invalidPoints = [
             new CentipedeChartPoint(1, 2),
             'not a CentipedeChartPoint', // 無効な要素
-            new CentipedeChartPoint(5, 6)
+            new CentipedeChartPoint(5, 6),
         ];
-        
+
         new CentipedeChartPointList($invalidPoints);
     }
 
@@ -89,7 +89,7 @@ class CentipedeChartPointListTest extends TestCase
     {
         $iterator = $this->chartPointList->getIterator();
         $this->assertInstanceOf(\ArrayIterator::class, $iterator);
-        
+
         // イテレータから取得した要素が元の配列と一致することを確認
         $iteratedPoints = iterator_to_array($iterator);
         $this->assertSame($this->points, $iteratedPoints);
@@ -105,9 +105,9 @@ class CentipedeChartPointListTest extends TestCase
         $expected = [
             ['x' => 1, 'y' => 2],
             ['x' => 3, 'y' => 4],
-            ['x' => 5, 'y' => 6]
+            ['x' => 5, 'y' => 6],
         ];
-        
+
         $this->assertSame($expected, $this->chartPointList->toArray());
         $this->assertArrayHasNoObjects($this->chartPointList->toArray());
     }
