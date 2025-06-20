@@ -41,7 +41,7 @@ class CentipedeTest extends TestCase
             $numerator_exp_2,
             $denominator_exp
         );
-        $this->assertEquals($expected, $result, "LaTeX形式のテキストが期待通りではありません。");
+        $this->assertSame($expected, $result, "LaTeX形式のテキストが期待通りではありません。");
     }
 
     /**
@@ -166,10 +166,10 @@ class CentipedeTest extends TestCase
         $result = $centipede->run($patterns, $max_step, $max_rc, $combination_player_1);
 
         // 結果を検証
-        $this->assertEquals('ok', $result['result']);
-        $this->assertEquals($max_step, $result['render_params']['max_step']);
-        $this->assertEquals($max_rc, $result['render_params']['max_rc']);
-        $this->assertEquals($formattedResult, $result['pattern_data']['0']);
+        $this->assertSame('ok', $result['result']);
+        $this->assertSame($max_step, $result['render_params']['max_step']);
+        $this->assertSame($max_rc, $result['render_params']['max_rc']);
+        $this->assertSame($formattedResult, $result['pattern_data']['0']);
         $this->assertNull($result['combination_data']);
     }
 
@@ -243,20 +243,20 @@ class CentipedeTest extends TestCase
                 static $callCount = 0;
 
                 if ($callCount === 0) {
-                    $this->assertEquals(2, $baseNumerator);
-                    $this->assertEquals(1, $numeratorExp1);
-                    $this->assertEquals(2, $numeratorExp2);
-                    $this->assertEquals(3, $denominatorExp);
-                    $this->assertEquals($max_step, $maxStep);
+                    $this->assertSame(2, $baseNumerator);
+                    $this->assertSame(1, $numeratorExp1);
+                    $this->assertSame(2, $numeratorExp2);
+                    $this->assertSame(3, $denominatorExp);
+                    $this->assertSame($max_step, $maxStep);
                     $callCount++;
 
                     return $simulationResult1;
                 } else {
-                    $this->assertEquals(3, $baseNumerator);
-                    $this->assertEquals(2, $numeratorExp1);
-                    $this->assertEquals(3, $numeratorExp2);
-                    $this->assertEquals(4, $denominatorExp);
-                    $this->assertEquals($max_step, $maxStep);
+                    $this->assertSame(3, $baseNumerator);
+                    $this->assertSame(2, $numeratorExp1);
+                    $this->assertSame(3, $numeratorExp2);
+                    $this->assertSame(4, $denominatorExp);
+                    $this->assertSame($max_step, $maxStep);
                     $callCount++;
 
                     return $simulationResult2;
@@ -286,12 +286,12 @@ class CentipedeTest extends TestCase
                 static $callCount = 0;
 
                 if ($callCount === 0) {
-                    $this->assertEquals($simulationResult1, $result);
+                    $this->assertSame($simulationResult1, $result);
                     $callCount++;
 
                     return $formattedResult1;
                 } else {
-                    $this->assertEquals($simulationResult2, $result);
+                    $this->assertSame($simulationResult2, $result);
                     $callCount++;
 
                     return $formattedResult2;
@@ -330,11 +330,11 @@ class CentipedeTest extends TestCase
         $result = $centipede->run($patterns, $max_step, $max_rc, $combination_player_1);
 
         // 結果を検証
-        $this->assertEquals('ok', $result['result']);
-        $this->assertEquals($max_step, $result['render_params']['max_step']);
-        $this->assertEquals($max_rc, $result['render_params']['max_rc']);
-        $this->assertEquals($patternData, $result['pattern_data']);
-        $this->assertEquals($combinedData, $result['combination_data']);
+        $this->assertSame('ok', $result['result']);
+        $this->assertSame($max_step, $result['render_params']['max_step']);
+        $this->assertSame($max_rc, $result['render_params']['max_rc']);
+        $this->assertSame($patternData, $result['pattern_data']);
+        $this->assertSame($combinedData, $result['combination_data']);
         $this->assertArrayHasNoObjects($result);
     }
 }

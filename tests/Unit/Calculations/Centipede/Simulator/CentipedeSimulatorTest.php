@@ -78,8 +78,8 @@ class CentipedeSimulatorTest extends TestCase
 
         // 結果を検証
         $this->assertInstanceOf(CentipedeSimulationResult::class, $result);
-        $this->assertEquals($mockLatexText, $result->getCognitiveUnitLatexText());
-        $this->assertEquals($mockChartData, $result->getChartData());
+        $this->assertSame($mockLatexText, $result->getCognitiveUnitLatexText());
+        $this->assertSame($mockChartData, $result->getChartData());
 
         // データの構造を検証
         $data = $result->getData();
@@ -97,7 +97,7 @@ class CentipedeSimulatorTest extends TestCase
         // Cognitive Unit値の計算が正しいことを検証
         // 期待値: pow(3, 1/2) / pow(2, 3) = 1.73205... / 8 = 0.216506...
         $expectedCognitiveUnitValue = pow($baseNumerator, ($numeratorExp1 / $numeratorExp2)) / pow(2, $denominatorExp);
-        $this->assertEquals($expectedCognitiveUnitValue, $result->getCognitiveUnitValue());
+        $this->assertSame($expectedCognitiveUnitValue, $result->getCognitiveUnitValue());
     }
 
     /**

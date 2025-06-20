@@ -38,7 +38,15 @@ class CentipedeControllerTest extends TestCase
                     'max_step',
                     'max_rc',
                 ],
-                'pattern_data',
+                'pattern_data' => [
+                    'a_1' => [
+                        'cognitive_unit_latex_text',
+                        'cognitive_unit_value',
+                        'average_of_reversed_causality',
+                        'data',
+                        'chart_data',
+                    ],
+                ],
                 'combination_data',
             ])
             ->assertJson([
@@ -48,6 +56,23 @@ class CentipedeControllerTest extends TestCase
                     'max_rc' => 100,
                 ],
             ]);
+
+        // Check the structure of the first element in pattern_data.a_1.data
+        $this->assertArrayHasKey('t', $response->json('pattern_data.a_1.data.0'));
+        $this->assertArrayHasKey('max_nu_value', $response->json('pattern_data.a_1.data.0'));
+        $this->assertArrayHasKey('left_side_value', $response->json('pattern_data.a_1.data.0'));
+        $this->assertArrayHasKey('right_side_value', $response->json('pattern_data.a_1.data.0'));
+        $this->assertArrayHasKey('result', $response->json('pattern_data.a_1.data.0'));
+
+        // Check the number of elements in pattern_data.a_1.data
+        $this->assertCount(10, $response->json('pattern_data.a_1.data')); // max_step
+
+        // Check the structure of the first element in pattern_data.a_1.chart_data
+        $this->assertArrayHasKey('x', $response->json('pattern_data.a_1.chart_data.0'));
+        $this->assertArrayHasKey('y', $response->json('pattern_data.a_1.chart_data.0'));
+
+        // Check the number of elements in pattern_data.a_1.chart_data
+        $this->assertCount(10, $response->json('pattern_data.a_1.chart_data')); // max_step
     }
 
     /**
@@ -91,7 +116,22 @@ class CentipedeControllerTest extends TestCase
                     'max_step',
                     'max_rc',
                 ],
-                'pattern_data',
+                'pattern_data' => [
+                    'a_1' => [
+                        'cognitive_unit_latex_text',
+                        'cognitive_unit_value',
+                        'average_of_reversed_causality',
+                        'data',
+                        'chart_data',
+                    ],
+                    'a_2' => [
+                        'cognitive_unit_latex_text',
+                        'cognitive_unit_value',
+                        'average_of_reversed_causality',
+                        'data',
+                        'chart_data',
+                    ],
+                ],
                 'combination_data' => [
                     'a' => [
                         'data',
@@ -117,5 +157,44 @@ class CentipedeControllerTest extends TestCase
 
         // aキーが存在することを確認
         $this->assertArrayHasKey('a', $response->json('combination_data'));
+
+        // Check pattern_data.a_1.data structure and count
+        $this->assertArrayHasKey('t', $response->json('pattern_data.a_1.data.0'));
+        $this->assertArrayHasKey('max_nu_value', $response->json('pattern_data.a_1.data.0'));
+        $this->assertArrayHasKey('left_side_value', $response->json('pattern_data.a_1.data.0'));
+        $this->assertArrayHasKey('right_side_value', $response->json('pattern_data.a_1.data.0'));
+        $this->assertArrayHasKey('result', $response->json('pattern_data.a_1.data.0'));
+        $this->assertCount(10, $response->json('pattern_data.a_1.data'));
+
+        // Check pattern_data.a_1.chart_data structure and count
+        $this->assertArrayHasKey('x', $response->json('pattern_data.a_1.chart_data.0'));
+        $this->assertArrayHasKey('y', $response->json('pattern_data.a_1.chart_data.0'));
+        $this->assertCount(10, $response->json('pattern_data.a_1.chart_data'));
+
+        // Check pattern_data.a_2.data structure and count
+        $this->assertArrayHasKey('t', $response->json('pattern_data.a_2.data.0'));
+        $this->assertArrayHasKey('max_nu_value', $response->json('pattern_data.a_2.data.0'));
+        $this->assertArrayHasKey('left_side_value', $response->json('pattern_data.a_2.data.0'));
+        $this->assertArrayHasKey('right_side_value', $response->json('pattern_data.a_2.data.0'));
+        $this->assertArrayHasKey('result', $response->json('pattern_data.a_2.data.0'));
+        $this->assertCount(10, $response->json('pattern_data.a_2.data'));
+
+        // Check pattern_data.a_2.chart_data structure and count
+        $this->assertArrayHasKey('x', $response->json('pattern_data.a_2.chart_data.0'));
+        $this->assertArrayHasKey('y', $response->json('pattern_data.a_2.chart_data.0'));
+        $this->assertCount(10, $response->json('pattern_data.a_2.chart_data'));
+
+        // Check combination_data.a.data structure and count
+        $this->assertArrayHasKey('t', $response->json('combination_data.a.data.0'));
+        $this->assertArrayHasKey('max_nu_value', $response->json('combination_data.a.data.0'));
+        $this->assertArrayHasKey('left_side_value', $response->json('combination_data.a.data.0'));
+        $this->assertArrayHasKey('right_side_value', $response->json('combination_data.a.data.0'));
+        $this->assertArrayHasKey('result', $response->json('combination_data.a.data.0'));
+        $this->assertCount(10, $response->json('combination_data.a.data'));
+
+        // Check combination_data.a.chart_data structure and count
+        $this->assertArrayHasKey('x', $response->json('combination_data.a.chart_data.0'));
+        $this->assertArrayHasKey('y', $response->json('combination_data.a.chart_data.0'));
+        $this->assertCount(10, $response->json('combination_data.a.chart_data'));
     }
 }

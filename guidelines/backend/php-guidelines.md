@@ -132,6 +132,25 @@ CentipedeSimulationResult クラス (`App\Calculations\Centipede\DTO\CentipedeSi
 
 **注意**: 既存コードの一部にはまだ詳細な配列型の記述が適用されていない箇所があります。例えば、`NashSimulationResult`クラスの`getMidpoint()`メソッドのPHPDocでは、戻り値の型が単に`array`と記載されています。今後のコード修正時に、ガイドラインに沿った形式に更新していく予定です。
 
+## strict_types宣言
+
+PHPの型の厳格さを保証するために、以下のルールを適用します：
+
+- app/ 配下、tests/ 配下のすべてのPHPファイルは、ファイルの先頭（<?phpタグの直後）に `declare(strict_types=1);` を宣言する
+- この宣言により、関数の引数や戻り値の型チェックが厳格に行われ、型の不一致によるバグを早期に発見できる
+- 既存のファイルを修正する際や新規ファイルを作成する際は、必ずこの宣言を含めること
+
+例：
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers;
+
+// 以下、クラス定義など
+```
+
 ## 関連ドキュメント
 
 - [ユニットテスト](testing/unit-tests.md) - PHPユニットテストの実装方針

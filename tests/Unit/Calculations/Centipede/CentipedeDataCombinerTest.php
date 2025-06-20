@@ -81,12 +81,12 @@ class CentipedeDataCombinerTest extends TestCase
             ['t' => 2, 'result' => false], // インデックス1: patternData2から
         ];
 
-        $this->assertEquals($expectedData, $patternResult['data']);
-        $this->assertEquals([['x' => 1, 'y' => 0], ['x' => 2, 'y' => 1]], $patternResult['chart_data']);
-        $this->assertEquals('\dfrac{3^{\frac{1}{2}}}{2^{3}}', $patternResult['cognitive_unit_latex_text_1']);
-        $this->assertEquals('\dfrac{5^{\frac{2}{3}}}{2^{4}}', $patternResult['cognitive_unit_latex_text_2']);
-        $this->assertEquals(0.375, $patternResult['cognitive_unit_value_1']);
-        $this->assertEquals(0.5, $patternResult['cognitive_unit_value_2']);
-        $this->assertEquals(0.5, $patternResult['average_of_reversed_causality']);
+        $this->assertSame($expectedData, $patternResult['data']);
+        $this->assertSame([['x' => 1, 'y' => 0], ['x' => 2, 'y' => 1]], $patternResult['chart_data']);
+        $this->assertSame('\dfrac{3^{\frac{1}{2}}}{2^{3}}', $patternResult['cognitive_unit_latex_text_1']);
+        $this->assertSame('\dfrac{5^{\frac{2}{3}}}{2^{4}}', $patternResult['cognitive_unit_latex_text_2']);
+        $this->assertSame(0.375, $patternResult['cognitive_unit_value_1']);
+        $this->assertSame(0.5, $patternResult['cognitive_unit_value_2']);
+        $this->assertSame(0.5, $patternResult['average_of_reversed_causality']);
     }
 }

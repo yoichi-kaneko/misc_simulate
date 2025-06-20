@@ -64,8 +64,8 @@ class NashSimulationResultTest extends TestCase
     public function testGetAlphaX()
     {
         $this->assertSame($this->alpha_x, $this->result->getAlphaX());
-        $this->assertEquals($this->alpha_x->getNumerator(), $this->result->getAlphaX()->getNumerator());
-        $this->assertEquals($this->alpha_x->getDenominator(), $this->result->getAlphaX()->getDenominator());
+        $this->assertSame($this->alpha_x->getNumerator(), $this->result->getAlphaX()->getNumerator());
+        $this->assertSame($this->alpha_x->getDenominator(), $this->result->getAlphaX()->getDenominator());
     }
 
     /**
@@ -76,8 +76,8 @@ class NashSimulationResultTest extends TestCase
     public function testGetAlphaY()
     {
         $this->assertSame($this->alpha_y, $this->result->getAlphaY());
-        $this->assertEquals($this->alpha_y->getNumerator(), $this->result->getAlphaY()->getNumerator());
-        $this->assertEquals($this->alpha_y->getDenominator(), $this->result->getAlphaY()->getDenominator());
+        $this->assertSame($this->alpha_y->getNumerator(), $this->result->getAlphaY()->getNumerator());
+        $this->assertSame($this->alpha_y->getDenominator(), $this->result->getAlphaY()->getDenominator());
     }
 
     /**
@@ -88,8 +88,8 @@ class NashSimulationResultTest extends TestCase
     public function testGetBetaX()
     {
         $this->assertSame($this->beta_x, $this->result->getBetaX());
-        $this->assertEquals($this->beta_x->getNumerator(), $this->result->getBetaX()->getNumerator());
-        $this->assertEquals($this->beta_x->getDenominator(), $this->result->getBetaX()->getDenominator());
+        $this->assertSame($this->beta_x->getNumerator(), $this->result->getBetaX()->getNumerator());
+        $this->assertSame($this->beta_x->getDenominator(), $this->result->getBetaX()->getDenominator());
     }
 
     /**
@@ -100,8 +100,8 @@ class NashSimulationResultTest extends TestCase
     public function testGetBetaY()
     {
         $this->assertSame($this->beta_y, $this->result->getBetaY());
-        $this->assertEquals($this->beta_y->getNumerator(), $this->result->getBetaY()->getNumerator());
-        $this->assertEquals($this->beta_y->getDenominator(), $this->result->getBetaY()->getDenominator());
+        $this->assertSame($this->beta_y->getNumerator(), $this->result->getBetaY()->getNumerator());
+        $this->assertSame($this->beta_y->getDenominator(), $this->result->getBetaY()->getDenominator());
     }
 
     /**
@@ -112,8 +112,8 @@ class NashSimulationResultTest extends TestCase
     public function testGetRhoBetaX()
     {
         $this->assertSame($this->rho_beta_x, $this->result->getRhoBetaX());
-        $this->assertEquals($this->rho_beta_x->getNumerator(), $this->result->getRhoBetaX()->getNumerator());
-        $this->assertEquals($this->rho_beta_x->getDenominator(), $this->result->getRhoBetaX()->getDenominator());
+        $this->assertSame($this->rho_beta_x->getNumerator(), $this->result->getRhoBetaX()->getNumerator());
+        $this->assertSame($this->rho_beta_x->getDenominator(), $this->result->getRhoBetaX()->getDenominator());
     }
 
     /**
@@ -124,8 +124,8 @@ class NashSimulationResultTest extends TestCase
     public function testGetRhoBetaY()
     {
         $this->assertSame($this->rho_beta_y, $this->result->getRhoBetaY());
-        $this->assertEquals($this->rho_beta_y->getNumerator(), $this->result->getRhoBetaY()->getNumerator());
-        $this->assertEquals($this->rho_beta_y->getDenominator(), $this->result->getRhoBetaY()->getDenominator());
+        $this->assertSame($this->rho_beta_y->getNumerator(), $this->result->getRhoBetaY()->getNumerator());
+        $this->assertSame($this->rho_beta_y->getDenominator(), $this->result->getRhoBetaY()->getDenominator());
     }
 
     /**
@@ -136,8 +136,8 @@ class NashSimulationResultTest extends TestCase
     public function testGetGamma1X()
     {
         $this->assertSame($this->gamma1_x, $this->result->getGamma1X());
-        $this->assertEquals($this->gamma1_x->getNumerator(), $this->result->getGamma1X()->getNumerator());
-        $this->assertEquals($this->gamma1_x->getDenominator(), $this->result->getGamma1X()->getDenominator());
+        $this->assertSame($this->gamma1_x->getNumerator(), $this->result->getGamma1X()->getNumerator());
+        $this->assertSame($this->gamma1_x->getDenominator(), $this->result->getGamma1X()->getDenominator());
     }
 
     /**
@@ -148,8 +148,8 @@ class NashSimulationResultTest extends TestCase
     public function testGetGamma2Y()
     {
         $this->assertSame($this->gamma2_y, $this->result->getGamma2Y());
-        $this->assertEquals($this->gamma2_y->getNumerator(), $this->result->getGamma2Y()->getNumerator());
-        $this->assertEquals($this->gamma2_y->getDenominator(), $this->result->getGamma2Y()->getDenominator());
+        $this->assertSame($this->gamma2_y->getNumerator(), $this->result->getGamma2Y()->getNumerator());
+        $this->assertSame($this->gamma2_y->getDenominator(), $this->result->getGamma2Y()->getDenominator());
     }
 
     /**
@@ -160,10 +160,10 @@ class NashSimulationResultTest extends TestCase
     public function testGetMidpoint()
     {
         $this->assertSame($this->midpoint, $this->result->getMidpoint());
-        $this->assertEquals($this->midpoint['x']->getNumerator(), $this->result->getMidpoint()['x']->getNumerator());
-        $this->assertEquals($this->midpoint['x']->getDenominator(), $this->result->getMidpoint()['x']->getDenominator());
-        $this->assertEquals($this->midpoint['y']->getNumerator(), $this->result->getMidpoint()['y']->getNumerator());
-        $this->assertEquals($this->midpoint['y']->getDenominator(), $this->result->getMidpoint()['y']->getDenominator());
+        $this->assertSame($this->midpoint['x']->getNumerator(), $this->result->getMidpoint()['x']->getNumerator());
+        $this->assertSame($this->midpoint['x']->getDenominator(), $this->result->getMidpoint()['x']->getDenominator());
+        $this->assertSame($this->midpoint['y']->getNumerator(), $this->result->getMidpoint()['y']->getNumerator());
+        $this->assertSame($this->midpoint['y']->getDenominator(), $this->result->getMidpoint()['y']->getDenominator());
     }
 
     /**
@@ -174,7 +174,7 @@ class NashSimulationResultTest extends TestCase
     public function testGetARho()
     {
         $this->assertSame($this->a_rho, $this->result->getARho());
-        $this->assertEquals($this->a_rho->getNumerator(), $this->result->getARho()->getNumerator());
-        $this->assertEquals($this->a_rho->getDenominator(), $this->result->getARho()->getDenominator());
+        $this->assertSame($this->a_rho->getNumerator(), $this->result->getARho()->getNumerator());
+        $this->assertSame($this->a_rho->getDenominator(), $this->result->getARho()->getDenominator());
     }
 }

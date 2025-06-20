@@ -11,32 +11,55 @@ use PHPUnit\Framework\TestCase;
 class NashFormatterTest extends TestCase
 {
     /**
+     * getDisplayTextメソッドのデータプロバイダー
+     * @return array
+     */
+    public static function getDisplayTextDataProvider(): array
+    {
+        return [
+            '整数の分数' => [
+                'x' => new Fraction(1, 1),
+                'y' => new Fraction(2, 1),
+                'expected' => '[1.000, 2.000]',
+            ],
+            '小数になる分数' => [
+                'x' => new Fraction(1, 2),
+                'y' => new Fraction(1, 4),
+                'expected' => '[0.500, 0.250]',
+            ],
+            'xがnullの場合' => [
+                'x' => null,
+                'y' => new Fraction(3, 1),
+                'expected' => '[0, 3.000]',
+            ],
+            'yがnullの場合' => [
+                'x' => new Fraction(5, 2),
+                'y' => null,
+                'expected' => '[2.500, 0]',
+            ],
+            '両方がnullの場合' => [
+                'x' => null,
+                'y' => null,
+                'expected' => '[0, 0]',
+            ],
+        ];
+    }
+
+    /**
      * getDisplayTextメソッドが正しく表示テキストを生成することをテストします。
      * @test
+     * @dataProvider getDisplayTextDataProvider
      * @return void
      */
-    public function testGetDisplayText()
+    public function testGetDisplayText($x, $y, string $expected)
     {
         // NashFormatterクラスのインスタンスを作成
         $formatter = new NashFormatter();
 
-        // テストケース
-        $testCases = [
-            // x, y, expected
-            [new Fraction(1, 1), new Fraction(2, 1), '[1.000, 2.000]'],
-            [new Fraction(1, 2), new Fraction(1, 4), '[0.500, 0.250]'],
-            [null, new Fraction(3, 1), '[0, 3.000]'],
-            [new Fraction(5, 2), null, '[2.500, 0]'],
-            [null, null, '[0, 0]'],
-        ];
+        $result = $formatter->getDisplayText($x, $y);
 
-        // 各テストケースを実行
-        foreach ($testCases as $index => [$x, $y, $expected]) {
-            $result = $formatter->getDisplayText($x, $y);
-
-            // 結果を検証
-            $this->assertEquals($expected, $result, "ケース $index: 表示テキストが期待通りではありません。");
-        }
+        // 結果を検証
+        $this->assertSame($expected, $result);
     }
 
     /**
@@ -75,7 +98,7 @@ class NashFormatterTest extends TestCase
         $this->assertArrayHasKey('report_params', $result);
         $this->assertArrayHasKey('render_params', $result);
         $this->assertArrayHasKey('a_rho', $result['report_params']);
-        $this->assertEquals('3.500', $result['report_params']['a_rho']);
+        $this->assertSame('3.500', $result['report_params']['a_rho']);
 
         // render_paramsの検証
         $this->assertArrayHasKey('line', $result['render_params']);
@@ -94,12 +117,12 @@ class NashFormatterTest extends TestCase
 
         // dotの検証
         $this->assertCount(1, $result['render_params']['dot']);
-        $this->assertEquals('beta', $result['render_params']['dot'][0]['title']);
+        $this->assertSame('beta', $result['render_params']['dot'][0]['title']);
 
         // lineのX座標でソートされていることを確認
         $x_values = array_column($result['render_params']['line'], 'x');
         $sorted_x_values = $x_values;
         sort($sorted_x_values);
-        $this->assertEquals($sorted_x_values, $x_values);
+        $this->assertSame($sorted_x_values, $x_values);
     }
 }

@@ -14,13 +14,15 @@ class NashController extends Controller
     /**
      * Nash計算
      * @param CalculateNashRequest $request
+     * @param Nash $calculator
      * @return JsonResponse
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function calculate(CalculateNashRequest $request): JsonResponse
+    public function calculate(
+        CalculateNashRequest $request,
+        Nash $calculator
+    ): JsonResponse
     {
-        $calculator = app()->make(Nash::class);
-
         try {
             $result = $calculator->run(
                 $request->input('alpha_1'),

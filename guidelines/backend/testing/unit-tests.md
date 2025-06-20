@@ -12,6 +12,12 @@ PHPのユニットテストは、以下の方針で実装しています：
   - バリデーションルールの存在と内容の検証
   - 有効なデータと無効なデータの両方でのバリデーション検証
   - カスタムバリデーションルール（`FractionMax`, `Coordinate`など）のテスト
+  - Requestクラスルールにminやmaxがある場合、その境界の両方をテストする
+    - 例として、min:1が設定されているならば「0でバリデーションがfalseとなる事、1でバリデーションがtrueとなる事」の2つをテストケースとして記載する
+- Ruleクラスのテストでは：
+  - Ruleクラスで定義されているカスタムルール内には分数に関わるルールがある。これの分数の検証はRuleクラスのユニットテストで定義する
+  - 分数の境界問題は、分母を1000に固定し、分子を変動させる事で境界をテストする
+  - 例として、`FractionMax` の境界のテストを行う際、最大値が5の場合「分母を1000に固定、分子が5001でバリデーションがfalseとなる事、5000でバリデーションがtrueとなる事」の2つをテストケースとして記載する
 - ユニットテストを作成する時は、テスト対象クラスの1メソッドに対してユニットテストもメソッドを1件以上作成すること。1つのユニットテストメソッド内で複数のメソッドを検証しない。
 - PHPユニットテストを書くときは、正常系の確認と異常系の確認は別のケースとして記述すること。これにより、テストの目的が明確になり、障害発生時の原因特定が容易になります。
 
@@ -87,7 +93,7 @@ PHPのユニットテストは、以下の方針で実装しています：
            $result = $instance->methodToTest();
 
            // 結果を検証
-           $this->assertEquals($expectedValue, $result);
+           $this->assertSame($expectedValue, $result);
        }
    }
    ```
@@ -113,6 +119,7 @@ PHPのユニットテストは、以下の方針で実装しています：
    - テストデータは各テストメソッド内で明示的に定義し、グローバル変数や共有状態に依存しない
    - 複雑なテストデータの準備には、ファクトリーやデータプロバイダーを使用する
    - 1つのメソッドに対して複数のデータパターンを用いて繰り返しテストを行う場合は、dataProviderを定義してそこにデータセットを羅列する
+   - ユニットテストでdataProviderを使用するときは、public static functionを宣言する
    - dataProviderでは、配列のキーに日本語を使用することも許容する（例：'ケース1', '正常系', '異常系：値が範囲外'）
    - dataProviderの実装例：
      ```php
@@ -124,7 +131,7 @@ PHPのユニットテストは、以下の方針で実装しています：
      public function testExample(int $input, string $expected)
      {
          $result = $this->someMethod($input);
-         $this->assertEquals($expected, $result);
+         $this->assertSame($expected, $result);
      }
 
      /**
@@ -153,7 +160,51 @@ PHPのユニットテストは、以下の方針で実装しています：
 3. **アサーションの使用**
    - 各テストでは、テスト対象の動作に関連する最小限のアサーションのみを使用する
    - 複数の関連しない動作を1つのテストで検証しない
-   - 適切なアサーションメソッドを使用する（例：`assertEquals`, `assertSame`, `assertInstanceOf`）
+   - 適切なアサーションメソッドを使用する（例：`assertSame`, `assertInstanceOf`）
+   - `assertEquals` は型の厳密な比較を行わないため、利用は非推奨。原則として `assertSame` を使用する
+   - 結果がboolを返すメソッドで、true/falseの結果を比較する際、テストメソッドが引数以外に差分がない場合、dataProviderにexpectedを定義して1つのテストメソッドでまとめて検証する
+   - 例：
+     ```php
+     /**
+      * 座標の位置関係に基づいて正しい結果を返すことをテスト
+      * @test
+      * @dataProvider coordinatesPositionDataProvider
+      */
+     public function passesReturnsCorrectResultBasedOnCoordinatesPosition(
+         array $alpha_1,
+         array $alpha_2,
+         array $beta_1,
+         array $beta_2,
+         bool $expected
+     ) {
+         $rule = new Coordinate($alpha_1, $alpha_2, $beta_1, $beta_2);
+         $this->assertSame($expected, $rule->passes('attribute', null));
+     }
+
+     /**
+      * 座標の位置関係をテストするためのデータプロバイダー
+      * @return array
+      */
+     public static function coordinatesPositionDataProvider(): array
+     {
+         return [
+             '正常系：右下の位置' => [
+                 'alpha_1' => ['numerator' => 3, 'denominator' => 1],
+                 'alpha_2' => ['numerator' => 2, 'denominator' => 1],
+                 'beta_1' => ['numerator' => 1, 'denominator' => 1],
+                 'beta_2' => ['numerator' => 4, 'denominator' => 1],
+                 'expected' => true,
+             ],
+             '異常系：左下の位置' => [
+                 'alpha_1' => ['numerator' => 1, 'denominator' => 1],
+                 'alpha_2' => ['numerator' => 2, 'denominator' => 1],
+                 'beta_1' => ['numerator' => 3, 'denominator' => 1],
+                 'beta_2' => ['numerator' => 4, 'denominator' => 1],
+                 'expected' => false,
+             ],
+         ];
+     }
+     ```
 
 4. **テストの独立性**
    - 各テストは他のテストに依存せず、任意の順序で実行できるようにする

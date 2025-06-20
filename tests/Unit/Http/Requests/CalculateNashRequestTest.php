@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Unit\Http\Requests;
 
 use App\Http\Requests\CalculateNashRequest;
@@ -58,8 +60,8 @@ class CalculateNashRequestTest extends TestCase
         $this->assertArrayHasKey('rho', $rules);
 
         // 分子と分母のルールが正しいことを確認
-        $this->assertEquals('required|integer|min:1|max:1000', $rules['alpha_1.numerator']);
-        $this->assertEquals('required|integer|min:1|max:1000', $rules['alpha_1.denominator']);
+        $this->assertSame('required|integer|min:1|max:1000', $rules['alpha_1.numerator']);
+        $this->assertSame('required|integer|min:1|max:1000', $rules['alpha_1.denominator']);
 
         // FractionMaxルールがすべての分数フィールドに適用されていることを確認
         $this->assertContains('required', $rules['alpha_1']);
@@ -342,36 +344,41 @@ class CalculateNashRequestTest extends TestCase
     }
 
     /**
+     * 無効な座標データのデータプロバイダー
+     * @return array
+     */
+    public static function validationFailsWithInvalidCoordinateDataProvider(): array
+    {
+        return [
+            '無効な分数（最大値より大きい）' => [
+                'data' => [
+                    'alpha_1' => ['numerator' => 2, 'denominator' => 1], // 2 > 1
+                    'alpha_2' => ['numerator' => 3, 'denominator' => 4],
+                    'beta_1' => ['numerator' => 1, 'denominator' => 4],
+                    'beta_2' => ['numerator' => 7, 'denominator' => 8],
+                    'rho' => ['numerator' => 1, 'denominator' => 2],
+                ],
+            ],
+            '無効な座標（beta_1 > alpha_1 かつ beta_2 > alpha_2）' => [
+                'data' => [
+                    'alpha_1' => ['numerator' => 1, 'denominator' => 4],
+                    'alpha_2' => ['numerator' => 3, 'denominator' => 4],
+                    'beta_1' => ['numerator' => 1, 'denominator' => 2],
+                    'beta_2' => ['numerator' => 7, 'denominator' => 8],
+                    'rho' => ['numerator' => 1, 'denominator' => 2],
+                ],
+            ],
+        ];
+    }
+
+    /**
      * 無効なデータでCoordinateのバリデーションが失敗することをテストします。
      * @test
+     * @dataProvider validationFailsWithInvalidCoordinateDataProvider
      * @return void
      */
-    public function testValidationFailsWithInvalidCoordinateData()
+    public function testValidationFailsWithInvalidCoordinateData(array $data)
     {
-        // 無効な分数（最大値より大きい）でテスト
-        $data = [
-            'alpha_1' => ['numerator' => 2, 'denominator' => 1], // 2 > 1
-            'alpha_2' => ['numerator' => 3, 'denominator' => 4],
-            'beta_1' => ['numerator' => 1, 'denominator' => 4],
-            'beta_2' => ['numerator' => 7, 'denominator' => 8],
-            'rho' => ['numerator' => 1, 'denominator' => 2],
-        ];
-
-        $request = new CalculateNashRequest();
-        $request->merge($data);
-
-        $validator = Validator::make($data, $request->rules());
-        $this->assertFalse($validator->passes());
-
-        // 無効な座標（beta_1 > alpha_1 かつ beta_2 > alpha_2）でテスト
-        $data = [
-            'alpha_1' => ['numerator' => 1, 'denominator' => 4],
-            'alpha_2' => ['numerator' => 3, 'denominator' => 4],
-            'beta_1' => ['numerator' => 1, 'denominator' => 2],
-            'beta_2' => ['numerator' => 7, 'denominator' => 8],
-            'rho' => ['numerator' => 1, 'denominator' => 2],
-        ];
-
         $request = new CalculateNashRequest();
         $request->merge($data);
 
@@ -402,7 +409,7 @@ class CalculateNashRequestTest extends TestCase
         $this->assertArrayHasKey('rho.denominator', $attributes);
 
         // 翻訳が正しく定義されていることを確認
-        $this->assertEquals(trans('validation.attributes.alpha_1_numerator'), $attributes['alpha_1.numerator']);
-        $this->assertEquals(trans('validation.attributes.alpha_1_denominator'), $attributes['alpha_1.denominator']);
+        $this->assertSame(trans('validation.attributes.alpha_1_numerator'), $attributes['alpha_1.numerator']);
+        $this->assertSame(trans('validation.attributes.alpha_1_denominator'), $attributes['alpha_1.denominator']);
     }
 }
