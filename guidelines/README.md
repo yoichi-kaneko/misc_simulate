@@ -11,6 +11,7 @@
 - [PHP開発ガイドライン](backend/php-guidelines.md) - App\Calculationsクラスと分数計算の実装
 - テスト関連
   - [ユニットテスト](backend/testing/unit-tests.md) - PHPユニットテストの実装方針
+  - [フィーチャーテスト](backend/testing/feature-tests.md) - APIレスポンスのJSONアサーション規約
   - [カバレッジ](backend/testing/coverage.md) - PHPUnitのカバレッジレポート
 - [DTOガイドライン](backend/dto/dto-guidelines.md) - DTOクラスのPHPDocと配列型の記述方法
 
