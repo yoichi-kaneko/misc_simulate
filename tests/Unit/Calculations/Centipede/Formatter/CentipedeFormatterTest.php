@@ -84,91 +84,139 @@ class CentipedeFormatterTest extends TestCase
     }
 
     /**
+     * makeCognitiveUnitLatexTextメソッドのデータプロバイダー
+     * @return array
+     */
+    public static function makeCognitiveUnitLatexTextDataProvider(): array
+    {
+        return [
+            '基本的なケース' => [
+                'baseNumerator' => 3,
+                'numeratorExp1' => 1,
+                'numeratorExp2' => 2,
+                'denominatorExp' => 3,
+                'expected' => '\dfrac{3^{\frac{1}{2}}}{2^{3}}',
+            ],
+            '異なる分子の底と指数' => [
+                'baseNumerator' => 5,
+                'numeratorExp1' => 2,
+                'numeratorExp2' => 3,
+                'denominatorExp' => 4,
+                'expected' => '\dfrac{5^{\frac{2}{3}}}{2^{4}}',
+            ],
+            '大きな値のケース' => [
+                'baseNumerator' => 7,
+                'numeratorExp1' => 3,
+                'numeratorExp2' => 4,
+                'denominatorExp' => 5,
+                'expected' => '\dfrac{7^{\frac{3}{4}}}{2^{5}}',
+            ],
+        ];
+    }
+
+    /**
      * makeCognitiveUnitLatexTextメソッドが正しくLatexテキストを生成することをテストします。
      * @test
+     * @dataProvider makeCognitiveUnitLatexTextDataProvider
      * @return void
      */
-    public function testMakeCognitiveUnitLatexText()
-    {
+    public function testMakeCognitiveUnitLatexText(
+        int $baseNumerator,
+        int $numeratorExp1,
+        int $numeratorExp2,
+        int $denominatorExp,
+        string $expected
+    ) {
         // CentipedeFormatterクラスのインスタンスを作成
         $formatter = new CentipedeFormatter();
 
-        // テストケース
-        $testCases = [
-            // baseNumerator, numeratorExp1, numeratorExp2, denominatorExp, expected
-            [3, 1, 2, 3, '\dfrac{3^{\frac{1}{2}}}{2^{3}}'],
-            [5, 2, 3, 4, '\dfrac{5^{\frac{2}{3}}}{2^{4}}'],
-            [7, 3, 4, 5, '\dfrac{7^{\frac{3}{4}}}{2^{5}}'],
+        $result = $formatter->makeCognitiveUnitLatexText(
+            $baseNumerator,
+            $numeratorExp1,
+            $numeratorExp2,
+            $denominatorExp
+        );
+
+        // 結果を検証
+        $this->assertSame($expected, $result);
+    }
+
+    /**
+     * makeChartDataメソッドのデータプロバイダー
+     * @return array
+     */
+    public static function makeChartDataDataProvider(): array
+    {
+        return [
+            'resultがすべてfalseの場合' => [
+                'inputData' => [
+                    ['t' => 1, 'result' => false],
+                    ['t' => 2, 'result' => false],
+                    ['t' => 3, 'result' => false],
+                ],
+                'expectedPoints' => [
+                    ['x' => 1, 'y' => 1],
+                    ['x' => 2, 'y' => 2],
+                    ['x' => 3, 'y' => 3],
+                ],
+            ],
+            'resultにtrueが含まれる場合' => [
+                'inputData' => [
+                    ['t' => 1, 'result' => false],
+                    ['t' => 2, 'result' => true],
+                    ['t' => 3, 'result' => false],
+                ],
+                'expectedPoints' => [
+                    ['x' => 1, 'y' => 0],
+                    ['x' => 2, 'y' => 0],
+                    ['x' => 3, 'y' => 1],
+                ],
+            ],
+            '複数のtrueが含まれる場合' => [
+                'inputData' => [
+                    ['t' => 1, 'result' => false],
+                    ['t' => 2, 'result' => true],
+                    ['t' => 3, 'result' => false],
+                    ['t' => 4, 'result' => true],
+                    ['t' => 5, 'result' => false],
+                ],
+                'expectedPoints' => [
+                    ['x' => 1, 'y' => 0],
+                    ['x' => 2, 'y' => 0],
+                    ['x' => 3, 'y' => 1],
+                    ['x' => 4, 'y' => 0],
+                    ['x' => 5, 'y' => 1],
+                ],
+            ],
         ];
-
-        // 各テストケースを実行
-        foreach ($testCases as $index => [$baseNumerator, $numeratorExp1, $numeratorExp2, $denominatorExp, $expected]) {
-            $result = $formatter->makeCognitiveUnitLatexText(
-                $baseNumerator,
-                $numeratorExp1,
-                $numeratorExp2,
-                $denominatorExp
-            );
-
-            // 結果を検証
-            $this->assertSame($expected, $result, "ケース $index: Latexテキストが期待通りではありません。");
-        }
     }
 
     /**
      * makeChartDataメソッドが正しくチャートデータを生成することをテストします。
      * @test
+     * @dataProvider makeChartDataDataProvider
      * @return void
      */
-    public function testMakeChartData()
+    public function testMakeChartData(array $inputData, array $expectedPoints)
     {
         // CentipedeFormatterクラスのインスタンスを作成
         $formatter = new CentipedeFormatter();
 
-        // テストケース1: resultがすべてfalseの場合
-        $data1 = $this->stepFactory->createManyFromArray([
-            ['t' => 1, 'result' => false],
-            ['t' => 2, 'result' => false],
-            ['t' => 3, 'result' => false],
-        ]);
-        $expected1 = new CentipedeChartPointList([
-            new CentipedeChartPoint(1, 1),
-            new CentipedeChartPoint(2, 2),
-            new CentipedeChartPoint(3, 3),
-        ]);
-        $result1 = $formatter->makeChartData($data1);
-        $this->assertSame($expected1->toArray(), $result1->toArray(), "ケース1: チャートデータが期待通りではありません。");
+        // 入力データを作成
+        $data = $this->stepFactory->createManyFromArray($inputData);
 
-        // テストケース2: resultにtrueが含まれる場合
-        $data2 = $this->stepFactory->createManyFromArray([
-            ['t' => 1, 'result' => false],
-            ['t' => 2, 'result' => true],
-            ['t' => 3, 'result' => false],
-        ]);
-        $expected2 = new CentipedeChartPointList([
-            new CentipedeChartPoint(1, 0),
-            new CentipedeChartPoint(2, 0),
-            new CentipedeChartPoint(3, 1),
-        ]);
-        $result2 = $formatter->makeChartData($data2);
-        $this->assertSame($expected2->toArray(), $result2->toArray(), "ケース2: チャートデータが期待通りではありません。");
+        // 期待される結果を作成
+        $expected = new CentipedeChartPointList(
+            array_map(
+                fn ($point) => new CentipedeChartPoint($point['x'], $point['y']),
+                $expectedPoints
+            )
+        );
 
-        // テストケース3: 複数のtrueが含まれる場合
-        $data3 = $this->stepFactory->createManyFromArray([
-            ['t' => 1, 'result' => false],
-            ['t' => 2, 'result' => true],
-            ['t' => 3, 'result' => false],
-            ['t' => 4, 'result' => true],
-            ['t' => 5, 'result' => false],
-        ]);
-        $expected3 = new CentipedeChartPointList([
-            new CentipedeChartPoint(1, 0),
-            new CentipedeChartPoint(2, 0),
-            new CentipedeChartPoint(3, 1),
-            new CentipedeChartPoint(4, 0),
-            new CentipedeChartPoint(5, 1),
-        ]);
-        $result3 = $formatter->makeChartData($data3);
-        $this->assertSame($expected3->toArray(), $result3->toArray(), "ケース3: チャートデータが期待通りではありません。");
+        // テスト対象メソッドを実行
+        $result = $formatter->makeChartData($data);
+
+        // 結果を検証
+        $this->assertSame($expected->toArray(), $result->toArray());
     }
 }

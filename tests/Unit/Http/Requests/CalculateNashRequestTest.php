@@ -344,36 +344,41 @@ class CalculateNashRequestTest extends TestCase
     }
 
     /**
+     * 無効な座標データのデータプロバイダー
+     * @return array
+     */
+    public static function validationFailsWithInvalidCoordinateDataProvider(): array
+    {
+        return [
+            '無効な分数（最大値より大きい）' => [
+                'data' => [
+                    'alpha_1' => ['numerator' => 2, 'denominator' => 1], // 2 > 1
+                    'alpha_2' => ['numerator' => 3, 'denominator' => 4],
+                    'beta_1' => ['numerator' => 1, 'denominator' => 4],
+                    'beta_2' => ['numerator' => 7, 'denominator' => 8],
+                    'rho' => ['numerator' => 1, 'denominator' => 2],
+                ],
+            ],
+            '無効な座標（beta_1 > alpha_1 かつ beta_2 > alpha_2）' => [
+                'data' => [
+                    'alpha_1' => ['numerator' => 1, 'denominator' => 4],
+                    'alpha_2' => ['numerator' => 3, 'denominator' => 4],
+                    'beta_1' => ['numerator' => 1, 'denominator' => 2],
+                    'beta_2' => ['numerator' => 7, 'denominator' => 8],
+                    'rho' => ['numerator' => 1, 'denominator' => 2],
+                ],
+            ],
+        ];
+    }
+
+    /**
      * 無効なデータでCoordinateのバリデーションが失敗することをテストします。
      * @test
+     * @dataProvider validationFailsWithInvalidCoordinateDataProvider
      * @return void
      */
-    public function testValidationFailsWithInvalidCoordinateData()
+    public function testValidationFailsWithInvalidCoordinateData(array $data)
     {
-        // 無効な分数（最大値より大きい）でテスト
-        $data = [
-            'alpha_1' => ['numerator' => 2, 'denominator' => 1], // 2 > 1
-            'alpha_2' => ['numerator' => 3, 'denominator' => 4],
-            'beta_1' => ['numerator' => 1, 'denominator' => 4],
-            'beta_2' => ['numerator' => 7, 'denominator' => 8],
-            'rho' => ['numerator' => 1, 'denominator' => 2],
-        ];
-
-        $request = new CalculateNashRequest();
-        $request->merge($data);
-
-        $validator = Validator::make($data, $request->rules());
-        $this->assertFalse($validator->passes());
-
-        // 無効な座標（beta_1 > alpha_1 かつ beta_2 > alpha_2）でテスト
-        $data = [
-            'alpha_1' => ['numerator' => 1, 'denominator' => 4],
-            'alpha_2' => ['numerator' => 3, 'denominator' => 4],
-            'beta_1' => ['numerator' => 1, 'denominator' => 2],
-            'beta_2' => ['numerator' => 7, 'denominator' => 8],
-            'rho' => ['numerator' => 1, 'denominator' => 2],
-        ];
-
         $request = new CalculateNashRequest();
         $request->merge($data);
 
