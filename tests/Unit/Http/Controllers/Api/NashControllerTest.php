@@ -61,13 +61,13 @@ class NashControllerTest extends TestCase
         $this->assertInstanceOf(JsonResponse::class, $response);
 
         // Assert that the response status code is 422
-        $this->assertEquals(422, $response->getStatusCode());
+        $this->assertSame(422, $response->getStatusCode());
 
         // Assert that the response contains the expected error message
         $responseData = json_decode($response->getContent(), true);
         $this->assertArrayHasKey('errors', $responseData);
         $this->assertArrayHasKey('exception_message', $responseData['errors']);
-        $this->assertEquals(['Test exception message'], $responseData['errors']['exception_message']);
+        $this->assertSame(['Test exception message'], $responseData['errors']['exception_message']);
     }
 
     protected function tearDown(): void

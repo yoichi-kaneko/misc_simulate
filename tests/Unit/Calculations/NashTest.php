@@ -101,7 +101,7 @@ class NashTest extends TestCase
         $result = $nash->run($alpha_1, $alpha_2, $beta_1, $beta_2, $rho);
 
         // 結果を検証
-        $this->assertEquals($expectedOutput, $result);
+        $this->assertSame($expectedOutput, $result);
     }
 
     /**

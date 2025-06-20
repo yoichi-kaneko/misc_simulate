@@ -35,7 +35,7 @@ class NashFormatterTest extends TestCase
             $result = $formatter->getDisplayText($x, $y);
 
             // 結果を検証
-            $this->assertEquals($expected, $result, "ケース $index: 表示テキストが期待通りではありません。");
+            $this->assertSame($expected, $result, "ケース $index: 表示テキストが期待通りではありません。");
         }
     }
 
@@ -75,7 +75,7 @@ class NashFormatterTest extends TestCase
         $this->assertArrayHasKey('report_params', $result);
         $this->assertArrayHasKey('render_params', $result);
         $this->assertArrayHasKey('a_rho', $result['report_params']);
-        $this->assertEquals('3.500', $result['report_params']['a_rho']);
+        $this->assertSame('3.500', $result['report_params']['a_rho']);
 
         // render_paramsの検証
         $this->assertArrayHasKey('line', $result['render_params']);
@@ -94,12 +94,12 @@ class NashFormatterTest extends TestCase
 
         // dotの検証
         $this->assertCount(1, $result['render_params']['dot']);
-        $this->assertEquals('beta', $result['render_params']['dot'][0]['title']);
+        $this->assertSame('beta', $result['render_params']['dot'][0]['title']);
 
         // lineのX座標でソートされていることを確認
         $x_values = array_column($result['render_params']['line'], 'x');
         $sorted_x_values = $x_values;
         sort($sorted_x_values);
-        $this->assertEquals($sorted_x_values, $x_values);
+        $this->assertSame($sorted_x_values, $x_values);
     }
 }

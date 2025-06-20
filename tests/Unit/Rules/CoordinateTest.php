@@ -30,108 +30,92 @@ class CoordinateTest extends TestCase
         $beta1Property = $reflector->getProperty('beta_1');
         $beta2Property = $reflector->getProperty('beta_2');
 
-        $this->assertEquals($alpha_1, $alpha1Property->getValue($rule));
-        $this->assertEquals($alpha_2, $alpha2Property->getValue($rule));
-        $this->assertEquals($beta_1, $beta1Property->getValue($rule));
-        $this->assertEquals($beta_2, $beta2Property->getValue($rule));
+        $this->assertSame($alpha_1, $alpha1Property->getValue($rule));
+        $this->assertSame($alpha_2, $alpha2Property->getValue($rule));
+        $this->assertSame($beta_1, $beta1Property->getValue($rule));
+        $this->assertSame($beta_2, $beta2Property->getValue($rule));
     }
 
     /**
-     * 座標が正しい位置関係（右下）にある場合のデータプロバイダー
+     * 座標の位置関係をテストするためのデータプロバイダー
      * @return array
      */
-    public static function coordinatesInCorrectPositionDataProvider(): array
+    public static function coordinatesPositionDataProvider(): array
     {
         return [
-            '基本的な右下の位置' => [
+            'アルファが基本的な右下の位置' => [
                 'alpha_1' => ['numerator' => 3, 'denominator' => 1],
                 'alpha_2' => ['numerator' => 2, 'denominator' => 1],
                 'beta_1' => ['numerator' => 1, 'denominator' => 1],
                 'beta_2' => ['numerator' => 4, 'denominator' => 1],
+                'expected' => true,
             ],
-            '分数を使った右下の位置' => [
+            'アルファが分数を使った右下の位置' => [
                 'alpha_1' => ['numerator' => 5, 'denominator' => 2],
                 'alpha_2' => ['numerator' => 1, 'denominator' => 2],
                 'beta_1' => ['numerator' => 1, 'denominator' => 1],
                 'beta_2' => ['numerator' => 3, 'denominator' => 2],
+                'expected' => true,
             ],
-        ];
-    }
-
-    /**
-     * 座標が正しい位置関係（右下）にある場合にtrueを返すことをテスト
-     * @test
-     * @dataProvider coordinatesInCorrectPositionDataProvider
-     */
-    public function passesReturnsTrueWhenCoordinatesAreInCorrectPosition(
-        array $alpha_1,
-        array $alpha_2,
-        array $beta_1,
-        array $beta_2
-    ) {
-        $rule = new Coordinate($alpha_1, $alpha_2, $beta_1, $beta_2);
-        $this->assertTrue($rule->passes('attribute', null));
-    }
-
-    /**
-     * 座標が正しくない位置関係にある場合のデータプロバイダー
-     * @return array
-     */
-    public static function coordinatesInIncorrectPositionDataProvider(): array
-    {
-        return [
-            '左下の位置' => [
+            'アルファが左下の位置' => [
                 'alpha_1' => ['numerator' => 1, 'denominator' => 1],
                 'alpha_2' => ['numerator' => 2, 'denominator' => 1],
                 'beta_1' => ['numerator' => 3, 'denominator' => 1],
                 'beta_2' => ['numerator' => 4, 'denominator' => 1],
+                'expected' => false,
             ],
-            '右上の位置' => [
+            'アルファが右上の位置' => [
                 'alpha_1' => ['numerator' => 3, 'denominator' => 1],
                 'alpha_2' => ['numerator' => 4, 'denominator' => 1],
                 'beta_1' => ['numerator' => 1, 'denominator' => 1],
                 'beta_2' => ['numerator' => 2, 'denominator' => 1],
+                'expected' => false,
             ],
-            '左上の位置' => [
+            'アルファが左上の位置' => [
                 'alpha_1' => ['numerator' => 1, 'denominator' => 1],
                 'alpha_2' => ['numerator' => 4, 'denominator' => 1],
                 'beta_1' => ['numerator' => 3, 'denominator' => 1],
                 'beta_2' => ['numerator' => 2, 'denominator' => 1],
+                'expected' => false,
             ],
             'X座標が同じ' => [
                 'alpha_1' => ['numerator' => 3, 'denominator' => 1],
                 'alpha_2' => ['numerator' => 2, 'denominator' => 1],
                 'beta_1' => ['numerator' => 3, 'denominator' => 1],
                 'beta_2' => ['numerator' => 4, 'denominator' => 1],
+                'expected' => false,
             ],
             'Y座標が同じ' => [
                 'alpha_1' => ['numerator' => 3, 'denominator' => 1],
                 'alpha_2' => ['numerator' => 4, 'denominator' => 1],
                 'beta_1' => ['numerator' => 1, 'denominator' => 1],
                 'beta_2' => ['numerator' => 4, 'denominator' => 1],
+                'expected' => false,
             ],
             '両方の座標が同じ' => [
                 'alpha_1' => ['numerator' => 3, 'denominator' => 1],
                 'alpha_2' => ['numerator' => 4, 'denominator' => 1],
                 'beta_1' => ['numerator' => 3, 'denominator' => 1],
                 'beta_2' => ['numerator' => 4, 'denominator' => 1],
+                'expected' => false,
             ],
         ];
     }
 
     /**
-     * 座標が正しくない位置関係にある場合にfalseを返すことをテスト
+     * 座標の位置関係に基づいて正しい結果を返すことをテスト
      * @test
-     * @dataProvider coordinatesInIncorrectPositionDataProvider
+     * @dataProvider coordinatesPositionDataProvider
      */
-    public function passesReturnsFalseWhenCoordinatesAreInIncorrectPosition(
+    public function passesReturnsCorrectResultBasedOnCoordinatesPosition(
         array $alpha_1,
         array $alpha_2,
         array $beta_1,
-        array $beta_2
+        array $beta_2,
+        bool $expected
     ) {
         $rule = new Coordinate($alpha_1, $alpha_2, $beta_1, $beta_2);
-        $this->assertFalse($rule->passes('attribute', null));
+        $this->assertSame($expected, $rule->passes('attribute', null));
     }
 
     /**
@@ -154,6 +138,6 @@ class CoordinateTest extends TestCase
             ->once()
             ->andReturn('座標の位置関係が不正です。');
 
-        $this->assertEquals('座標の位置関係が不正です。', $rule->message());
+        $this->assertSame('座標の位置関係が不正です。', $rule->message());
     }
 }

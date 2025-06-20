@@ -60,8 +60,8 @@ class CalculateNashRequestTest extends TestCase
         $this->assertArrayHasKey('rho', $rules);
 
         // 分子と分母のルールが正しいことを確認
-        $this->assertEquals('required|integer|min:1|max:1000', $rules['alpha_1.numerator']);
-        $this->assertEquals('required|integer|min:1|max:1000', $rules['alpha_1.denominator']);
+        $this->assertSame('required|integer|min:1|max:1000', $rules['alpha_1.numerator']);
+        $this->assertSame('required|integer|min:1|max:1000', $rules['alpha_1.denominator']);
 
         // FractionMaxルールがすべての分数フィールドに適用されていることを確認
         $this->assertContains('required', $rules['alpha_1']);
@@ -404,7 +404,7 @@ class CalculateNashRequestTest extends TestCase
         $this->assertArrayHasKey('rho.denominator', $attributes);
 
         // 翻訳が正しく定義されていることを確認
-        $this->assertEquals(trans('validation.attributes.alpha_1_numerator'), $attributes['alpha_1.numerator']);
-        $this->assertEquals(trans('validation.attributes.alpha_1_denominator'), $attributes['alpha_1.denominator']);
+        $this->assertSame(trans('validation.attributes.alpha_1_numerator'), $attributes['alpha_1.numerator']);
+        $this->assertSame(trans('validation.attributes.alpha_1_denominator'), $attributes['alpha_1.denominator']);
     }
 }

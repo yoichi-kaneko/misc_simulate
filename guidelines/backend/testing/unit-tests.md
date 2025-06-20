@@ -93,7 +93,7 @@ PHPのユニットテストは、以下の方針で実装しています：
            $result = $instance->methodToTest();
 
            // 結果を検証
-           $this->assertEquals($expectedValue, $result);
+           $this->assertSame($expectedValue, $result);
        }
    }
    ```
@@ -131,7 +131,7 @@ PHPのユニットテストは、以下の方針で実装しています：
      public function testExample(int $input, string $expected)
      {
          $result = $this->someMethod($input);
-         $this->assertEquals($expected, $result);
+         $this->assertSame($expected, $result);
      }
 
      /**
@@ -160,7 +160,51 @@ PHPのユニットテストは、以下の方針で実装しています：
 3. **アサーションの使用**
    - 各テストでは、テスト対象の動作に関連する最小限のアサーションのみを使用する
    - 複数の関連しない動作を1つのテストで検証しない
-   - 適切なアサーションメソッドを使用する（例：`assertEquals`, `assertSame`, `assertInstanceOf`）
+   - 適切なアサーションメソッドを使用する（例：`assertSame`, `assertInstanceOf`）
+   - `assertSame` は型の厳密な比較を行わないため、利用は非推奨。原則として `assertSame` を使用する
+   - 結果がboolを返すメソッドで、true/falseの結果を比較する際、テストメソッドが引数以外に差分がない場合、dataProviderにexpectedを定義して1つのテストメソッドでまとめて検証する
+   - 例：
+     ```php
+     /**
+      * 座標の位置関係に基づいて正しい結果を返すことをテスト
+      * @test
+      * @dataProvider coordinatesPositionDataProvider
+      */
+     public function passesReturnsCorrectResultBasedOnCoordinatesPosition(
+         array $alpha_1,
+         array $alpha_2,
+         array $beta_1,
+         array $beta_2,
+         bool $expected
+     ) {
+         $rule = new Coordinate($alpha_1, $alpha_2, $beta_1, $beta_2);
+         $this->assertSame($expected, $rule->passes('attribute', null));
+     }
+
+     /**
+      * 座標の位置関係をテストするためのデータプロバイダー
+      * @return array
+      */
+     public static function coordinatesPositionDataProvider(): array
+     {
+         return [
+             '正常系：右下の位置' => [
+                 'alpha_1' => ['numerator' => 3, 'denominator' => 1],
+                 'alpha_2' => ['numerator' => 2, 'denominator' => 1],
+                 'beta_1' => ['numerator' => 1, 'denominator' => 1],
+                 'beta_2' => ['numerator' => 4, 'denominator' => 1],
+                 'expected' => true,
+             ],
+             '異常系：左下の位置' => [
+                 'alpha_1' => ['numerator' => 1, 'denominator' => 1],
+                 'alpha_2' => ['numerator' => 2, 'denominator' => 1],
+                 'beta_1' => ['numerator' => 3, 'denominator' => 1],
+                 'beta_2' => ['numerator' => 4, 'denominator' => 1],
+                 'expected' => false,
+             ],
+         ];
+     }
+     ```
 
 4. **テストの独立性**
    - 各テストは他のテストに依存せず、任意の順序で実行できるようにする

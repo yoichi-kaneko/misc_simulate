@@ -38,7 +38,7 @@ class AuthenticateTest extends TestCase
 
         // メソッドを実行して結果を検証
         $result = $method->invoke($this->middleware, $request);
-        $this->assertEquals(route('centipede.index'), $result);
+        $this->assertSame(route('centipede.index'), $result);
     }
 
     /**

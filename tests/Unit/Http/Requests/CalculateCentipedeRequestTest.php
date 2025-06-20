@@ -61,15 +61,15 @@ class CalculateCentipedeRequestTest extends TestCase
         $this->assertArrayHasKey('combination_player_1.b', $rules);
 
         // ルールが正しいことを確認
-        $this->assertEquals('required|integer|min:1|max:2000', $rules['patterns.*.base_numerator']);
-        $this->assertEquals('required|integer|min:1|max:5', $rules['patterns.*.numerator_exp_1']);
-        $this->assertEquals('required|integer|min:1|max:5', $rules['patterns.*.numerator_exp_2']);
-        $this->assertEquals('required|integer|min:0|max:12', $rules['patterns.*.denominator_exp']);
-        $this->assertEquals('required|integer|min:1|max:200', $rules['max_step']);
-        $this->assertEquals('nullable|integer|min:1|max:200', $rules['max_rc']);
-        $this->assertEquals('nullable|array', $rules['combination_player_1']);
-        $this->assertEquals('nullable|regex:/^[12]$/', $rules['combination_player_1.a']);
-        $this->assertEquals('nullable|regex:/^[12]$/', $rules['combination_player_1.b']);
+        $this->assertSame('required|integer|min:1|max:2000', $rules['patterns.*.base_numerator']);
+        $this->assertSame('required|integer|min:1|max:5', $rules['patterns.*.numerator_exp_1']);
+        $this->assertSame('required|integer|min:1|max:5', $rules['patterns.*.numerator_exp_2']);
+        $this->assertSame('required|integer|min:0|max:12', $rules['patterns.*.denominator_exp']);
+        $this->assertSame('required|integer|min:1|max:200', $rules['max_step']);
+        $this->assertSame('nullable|integer|min:1|max:200', $rules['max_rc']);
+        $this->assertSame('nullable|array', $rules['combination_player_1']);
+        $this->assertSame('nullable|regex:/^[12]$/', $rules['combination_player_1.a']);
+        $this->assertSame('nullable|regex:/^[12]$/', $rules['combination_player_1.b']);
     }
 
     /**
@@ -283,9 +283,9 @@ class CalculateCentipedeRequestTest extends TestCase
         $this->assertArrayHasKey('patterns.*.denominator_exp', $attributes);
 
         // 翻訳が正しく定義されていることを確認
-        $this->assertEquals(trans('validation.attributes.base_numerator'), $attributes['patterns.*.base_numerator']);
-        $this->assertEquals(trans('validation.attributes.numerator_exp_1'), $attributes['patterns.*.numerator_exp_1']);
-        $this->assertEquals(trans('validation.attributes.numerator_exp_2'), $attributes['patterns.*.numerator_exp_2']);
-        $this->assertEquals(trans('validation.attributes.denominator_exp'), $attributes['patterns.*.denominator_exp']);
+        $this->assertSame(trans('validation.attributes.base_numerator'), $attributes['patterns.*.base_numerator']);
+        $this->assertSame(trans('validation.attributes.numerator_exp_1'), $attributes['patterns.*.numerator_exp_1']);
+        $this->assertSame(trans('validation.attributes.numerator_exp_2'), $attributes['patterns.*.numerator_exp_2']);
+        $this->assertSame(trans('validation.attributes.denominator_exp'), $attributes['patterns.*.denominator_exp']);
     }
 }

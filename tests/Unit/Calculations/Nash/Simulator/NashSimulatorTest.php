@@ -30,8 +30,8 @@ class NashSimulatorTest extends TestCase
         // ケース1: 分母が正の整数の時、正常にFractionインスタンスを返す
         $result = $method->invokeArgs($simulator, [1, 2]);
         $this->assertInstanceOf(Fraction::class, $result);
-        $this->assertEquals(1, $result->getNumerator());
-        $this->assertEquals(2, $result->getDenominator());
+        $this->assertSame(1, $result->getNumerator());
+        $this->assertSame(2, $result->getDenominator());
     }
 
     /**
@@ -107,11 +107,11 @@ class NashSimulatorTest extends TestCase
         foreach ($testCases as [$gamma1_x, $gamma2_y, $expected_x, $expected_y]) {
             $result = $method->invokeArgs($simulator, [$gamma1_x, $gamma2_y]);
 
-            $this->assertEquals($expected_x->getNumerator(), $result['x']->getNumerator(), "X座標の分子が期待通りではありません。");
-            $this->assertEquals($expected_x->getDenominator(), $result['x']->getDenominator(), "X座標の分母が期待通りではありません。");
+            $this->assertSame($expected_x->getNumerator(), $result['x']->getNumerator(), "X座標の分子が期待通りではありません。");
+            $this->assertSame($expected_x->getDenominator(), $result['x']->getDenominator(), "X座標の分母が期待通りではありません。");
 
-            $this->assertEquals($expected_y->getNumerator(), $result['y']->getNumerator(), "Y座標の分子が期待通りではありません。");
-            $this->assertEquals($expected_y->getDenominator(), $result['y']->getDenominator(), "Y座標の分母が期待通りではありません。");
+            $this->assertSame($expected_y->getNumerator(), $result['y']->getNumerator(), "Y座標の分子が期待通りではありません。");
+            $this->assertSame($expected_y->getDenominator(), $result['y']->getDenominator(), "Y座標の分母が期待通りではありません。");
         }
     }
 
@@ -149,8 +149,8 @@ class NashSimulatorTest extends TestCase
             $result = $method->invokeArgs($simulator, [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y]);
 
             // 計算結果を検証
-            $this->assertEquals($expected->getNumerator(), $result->getNumerator(), "ケース $index: ガンマ1のX点の分子が期待通りではありません。");
-            $this->assertEquals($expected->getDenominator(), $result->getDenominator(), "ケース $index: ガンマ1のX点の分母が期待通りではありません。");
+            $this->assertSame($expected->getNumerator(), $result->getNumerator(), "ケース $index: ガンマ1のX点の分子が期待通りではありません。");
+            $this->assertSame($expected->getDenominator(), $result->getDenominator(), "ケース $index: ガンマ1のX点の分母が期待通りではありません。");
         }
     }
 
@@ -188,8 +188,8 @@ class NashSimulatorTest extends TestCase
             $result = $method->invokeArgs($simulator, [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y]);
 
             // 計算結果を検証
-            $this->assertEquals($expected->getNumerator(), $result->getNumerator(), "ケース $index: ガンマ2のY点の分子が期待通りではありません。");
-            $this->assertEquals($expected->getDenominator(), $result->getDenominator(), "ケース $index: ガンマ2のY点の分母が期待通りではありません。");
+            $this->assertSame($expected->getNumerator(), $result->getNumerator(), "ケース $index: ガンマ2のY点の分子が期待通りではありません。");
+            $this->assertSame($expected->getDenominator(), $result->getDenominator(), "ケース $index: ガンマ2のY点の分母が期待通りではありません。");
         }
     }
 
@@ -227,8 +227,8 @@ class NashSimulatorTest extends TestCase
             $result = $method->invokeArgs($simulator, [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y]);
 
             // 計算結果を検証
-            $this->assertEquals($expected->getNumerator(), $result->getNumerator(), "ケース $index: a_rhoの値の分子が期待通りではありません。");
-            $this->assertEquals($expected->getDenominator(), $result->getDenominator(), "ケース $index: a_rhoの値の分母が期待通りではありません。");
+            $this->assertSame($expected->getNumerator(), $result->getNumerator(), "ケース $index: a_rhoの値の分子が期待通りではありません。");
+            $this->assertSame($expected->getDenominator(), $result->getDenominator(), "ケース $index: a_rhoの値の分母が期待通りではありません。");
         }
     }
 

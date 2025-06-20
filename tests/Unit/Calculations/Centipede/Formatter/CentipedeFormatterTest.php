@@ -58,14 +58,26 @@ class CentipedeFormatterTest extends TestCase
         $this->assertArrayHasKey('data', $result);
         $this->assertArrayHasKey('chart_data', $result);
 
-        $this->assertEquals('\dfrac{3^{\frac{1}{2}}}{2^{3}}', $result['cognitive_unit_latex_text']);
-        $this->assertEquals(0.375, $result['cognitive_unit_value']);
-        $this->assertEquals(0.5, $result['average_of_reversed_causality']);
-        $this->assertEquals([
-            ['t' => 1, 'result' => false, 'max_nu_value' => 0, 'left_side_value' => '', 'right_side_value' => ''],
-            ['t' => 2, 'result' => true, 'max_nu_value' => 0, 'left_side_value' => '', 'right_side_value' => ''],
+        $this->assertSame('\dfrac{3^{\frac{1}{2}}}{2^{3}}', $result['cognitive_unit_latex_text']);
+        $this->assertSame(0.375, $result['cognitive_unit_value']);
+        $this->assertSame(0.5, $result['average_of_reversed_causality']);
+        $this->assertSame([
+            [
+                't' => 1,
+                'max_nu_value' => 0,
+                'left_side_value' => '',
+                'right_side_value' => '',
+                'result' => false,
+            ],
+            [
+                't' => 2,
+                'max_nu_value' => 0,
+                'left_side_value' => '',
+                'right_side_value' => '',
+                'result' => true,
+            ],
         ], $result['data']);
-        $this->assertEquals([
+        $this->assertSame([
             ['x' => 1, 'y' => 1],
             ['x' => 2, 'y' => 0],
         ], $result['chart_data']);
@@ -99,7 +111,7 @@ class CentipedeFormatterTest extends TestCase
             );
 
             // 結果を検証
-            $this->assertEquals($expected, $result, "ケース $index: Latexテキストが期待通りではありません。");
+            $this->assertSame($expected, $result, "ケース $index: Latexテキストが期待通りではありません。");
         }
     }
 
@@ -125,7 +137,7 @@ class CentipedeFormatterTest extends TestCase
             new CentipedeChartPoint(3, 3),
         ]);
         $result1 = $formatter->makeChartData($data1);
-        $this->assertEquals($expected1, $result1, "ケース1: チャートデータが期待通りではありません。");
+        $this->assertSame($expected1->toArray(), $result1->toArray(), "ケース1: チャートデータが期待通りではありません。");
 
         // テストケース2: resultにtrueが含まれる場合
         $data2 = $this->stepFactory->createManyFromArray([
@@ -139,7 +151,7 @@ class CentipedeFormatterTest extends TestCase
             new CentipedeChartPoint(3, 1),
         ]);
         $result2 = $formatter->makeChartData($data2);
-        $this->assertEquals($expected2, $result2, "ケース2: チャートデータが期待通りではありません。");
+        $this->assertSame($expected2->toArray(), $result2->toArray(), "ケース2: チャートデータが期待通りではありません。");
 
         // テストケース3: 複数のtrueが含まれる場合
         $data3 = $this->stepFactory->createManyFromArray([
@@ -157,6 +169,6 @@ class CentipedeFormatterTest extends TestCase
             new CentipedeChartPoint(5, 1),
         ]);
         $result3 = $formatter->makeChartData($data3);
-        $this->assertEquals($expected3, $result3, "ケース3: チャートデータが期待通りではありません。");
+        $this->assertSame($expected3->toArray(), $result3->toArray(), "ケース3: チャートデータが期待通りではありません。");
     }
 }

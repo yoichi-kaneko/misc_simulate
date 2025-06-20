@@ -21,7 +21,7 @@ class FractionMaxTest extends TestCase
         $reflector = new \ReflectionClass(FractionMax::class);
         $property = $reflector->getProperty('max');
 
-        $this->assertEquals(5, $property->getValue($rule));
+        $this->assertSame(5, $property->getValue($rule));
     }
 
     /**
@@ -123,6 +123,6 @@ class FractionMaxTest extends TestCase
             ->once()
             ->andReturn('分数は5以下である必要があります。');
 
-        $this->assertEquals('分数は5以下である必要があります。', $rule->message());
+        $this->assertSame('分数は5以下である必要があります。', $rule->message());
     }
 }
