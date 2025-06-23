@@ -51,7 +51,7 @@ class NashFormatterTest extends TestCase
      * @dataProvider getDisplayTextDataProvider
      * @return void
      */
-    public function testGetDisplayText($x, $y, string $expected)
+    public function getDisplayText_入力値と変換される表示テキストの検証($x, $y, string $expected)
     {
         // NashFormatterクラスのインスタンスを作成
         $formatter = new NashFormatter();
@@ -67,7 +67,7 @@ class NashFormatterTest extends TestCase
      * @test
      * @return void
      */
-    public function testFormat()
+    public function format_フォーマットされた結果を返す()
     {
         // モックのNashSimulationResultInterfaceを作成
         $simulationResult = $this->createMock(\App\Calculations\Nash\DTO\NashSimulationResultInterface::class);

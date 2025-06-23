@@ -17,7 +17,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCreateFraction()
+    public function createFraction_正常系_Fractionオブジェクトを生成して返す()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -40,7 +40,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCreateFractionWithZeroDenominator()
+    public function createFraction_異常系_分母が0の時に例外をスローする()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -62,7 +62,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCreateFractionWithNegativeDenominator()
+    public function createFraction_異常系_分母が負の整数の時に例外をスローする()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -84,7 +84,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcMidpoint()
+    public function calcMidpoint_中点を計算して返す()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -153,7 +153,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcGamma1X(
+    public function calcGamma1X_入力値と計算結果の検証(
         Fraction $alpha_x,
         Fraction $alpha_y,
         Fraction $rho_beta_x,
@@ -218,7 +218,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcGamma2Y(
+    public function calcGamma2Y_入力値と計算結果の検証(
         Fraction $alpha_x,
         Fraction $alpha_y,
         Fraction $rho_beta_x,
@@ -283,7 +283,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcARho(
+    public function calcARho_入力値と計算結果の検証(
         Fraction $alpha_x,
         Fraction $alpha_y,
         Fraction $rho_beta_x,
@@ -316,7 +316,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcGamma1XWithZeroDenominator()
+    public function calcGamma1X_異常系_分母が0の時に例外をスローする()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -343,7 +343,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcGamma1XWithNegativeDenominator()
+    public function calcGamma1X_異常系_分母が負の値の時に例外をスローする()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -370,7 +370,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcGamma2YWithZeroDenominator()
+    public function calcGamma2Y_異常系_分母が0の時に例外をスローする()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -397,7 +397,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcGamma2YWithNegativeDenominator()
+    public function calcGamma2Y_異常系_分母が負の値の時に例外をスローする()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -424,7 +424,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcARhoWithZeroDenominator()
+    public function calcARho_異常系_分母が0の時に例外をスローする()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -451,7 +451,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcARhoWithNegativeDenominator()
+    public function calcARho_異常系_分母が負の値の時に例外をスローする()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
