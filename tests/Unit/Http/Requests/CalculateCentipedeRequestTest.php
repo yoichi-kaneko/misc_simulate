@@ -73,45 +73,15 @@ class CalculateCentipedeRequestTest extends TestCase
     }
 
     /**
-     * 有効なデータでバリデーションが通ることをテストします。
+     * バリデーションをテストします。
      * @test
-     * @return void
-     */
-    public function testValidationPassesWithValidData()
-    {
-        $data = [
-            'patterns' => [
-                [
-                    'base_numerator' => 1,
-                    'numerator_exp_1' => 2,
-                    'numerator_exp_2' => 3,
-                    'denominator_exp' => 4,
-                ],
-            ],
-            'max_step' => 10,
-            'max_rc' => 20,
-            'combination_player_1' => [
-                'a' => '1',
-                'b' => '2',
-            ],
-        ];
-
-        $request = new CalculateCentipedeRequest();
-        $request->merge($data);
-
-        $validator = Validator::make($data, $request->rules());
-        $this->assertTrue($validator->passes());
-    }
-
-    /**
-     * 無効なデータでバリデーションが失敗することをテストします。
-     * @test
-     * @dataProvider validationFailsWithInvalidDataProvider
+     * @dataProvider validationDataProvider
      * @param array $data
      * @param string $field
+     * @param bool $expected
      * @return void
      */
-    public function testValidationFailsWithInvalidData(array $data, string $field)
+    public function testValidation(array $data, string $field, bool $expected)
     {
         $request = new CalculateCentipedeRequest();
         $request->merge($data);
@@ -121,147 +91,286 @@ class CalculateCentipedeRequestTest extends TestCase
         }, ARRAY_FILTER_USE_KEY);
 
         $validator = Validator::make($data, $rules);
-        $this->assertFalse($validator->passes());
+        $this->assertSame($expected, $validator->passes());
     }
 
     /**
-     * 無効なデータでバリデーションが失敗することをテストするためのデータプロバイダです。
+     * バリデーションのテストデータを提供するデータプロバイダです。
      * @return array
      */
-    public static function validationFailsWithInvalidDataProvider(): array
+    public static function validationDataProvider(): array
     {
-        $base_data = [
-            'patterns' => [
-                [
-                    'base_numerator' => 1,
-                    'numerator_exp_1' => 2,
-                    'numerator_exp_2' => 3,
-                    'denominator_exp' => 4,
-                ],
-            ],
-            'max_step' => 10,
-            'max_rc' => 20,
-            'combination_player_1' => [
-                'a' => '1',
-                'b' => '2',
-            ],
-        ];
-
         return [
+            // 有効なデータのバリデーションケース
+            '有効なデータ' => [
+                'data' => [
+                    'patterns' => [
+                        [
+                            'base_numerator' => 1,
+                        ],
+                    ],
+                ],
+                'field' => 'patterns.*.base_numerator',
+                'expected' => true,
+            ],
+
             // patterns.*.base_numerator のバリデーションケース
             'patterns.*.base_numeratorが空欄' => [
-                'data' => array_merge($base_data, ['patterns' => [['base_numerator' => null, 'numerator_exp_1' => 2, 'numerator_exp_2' => 3, 'denominator_exp' => 4]]]),
+                'data' => [
+                    'patterns' => [
+                        [
+                            'base_numerator' => null,
+                        ],
+                    ],
+                ],
                 'field' => 'patterns.*.base_numerator',
+                'expected' => false,
             ],
             'patterns.*.base_numeratorが整数でない' => [
-                'data' => array_merge($base_data, ['patterns' => [['base_numerator' => 'String', 'numerator_exp_1' => 2, 'numerator_exp_2' => 3, 'denominator_exp' => 4]]]),
+                'data' => [
+                    'patterns' => [
+                        [
+                            'base_numerator' => 'String',
+                        ],
+                    ],
+                ],
                 'field' => 'patterns.*.base_numerator',
+                'expected' => false,
             ],
             'patterns.*.base_numeratorが0以下' => [
-                'data' => array_merge($base_data, ['patterns' => [['base_numerator' => 0, 'numerator_exp_1' => 2, 'numerator_exp_2' => 3, 'denominator_exp' => 4]]]),
+                'data' => [
+                    'patterns' => [
+                        [
+                            'base_numerator' => 0,
+                        ],
+                    ],
+                ],
                 'field' => 'patterns.*.base_numerator',
+                'expected' => false,
             ],
             'patterns.*.base_numeratorが2001以上' => [
-                'data' => array_merge($base_data, ['patterns' => [['base_numerator' => 2001, 'numerator_exp_1' => 2, 'numerator_exp_2' => 3, 'denominator_exp' => 4]]]),
+                'data' => [
+                    'patterns' => [
+                        [
+                            'base_numerator' => 2001,
+                        ],
+                    ],
+                ],
                 'field' => 'patterns.*.base_numerator',
+                'expected' => false,
             ],
 
             // patterns.*.numerator_exp_1 のバリデーションケース
             'patterns.*.numerator_exp_1が空欄' => [
-                'data' => array_merge($base_data, ['patterns' => [['base_numerator' => 1, 'numerator_exp_1' => null, 'numerator_exp_2' => 3, 'denominator_exp' => 4]]]),
+                'data' => [
+                    'patterns' => [
+                        [
+                            'numerator_exp_1' => null,
+                        ],
+                    ],
+                ],
                 'field' => 'patterns.*.numerator_exp_1',
+                'expected' => false,
             ],
             'patterns.*.numerator_exp_1が整数でない' => [
-                'data' => array_merge($base_data, ['patterns' => [['base_numerator' => 1, 'numerator_exp_1' => 'String', 'numerator_exp_2' => 3, 'denominator_exp' => 4]]]),
+                'data' => [
+                    'patterns' => [
+                        [
+                            'numerator_exp_1' => 'String',
+                        ],
+                    ],
+                ],
                 'field' => 'patterns.*.numerator_exp_1',
+                'expected' => false,
             ],
             'patterns.*.numerator_exp_1が0以下' => [
-                'data' => array_merge($base_data, ['patterns' => [['base_numerator' => 1, 'numerator_exp_1' => 0, 'numerator_exp_2' => 3, 'denominator_exp' => 4]]]),
+                'data' => [
+                    'patterns' => [
+                        [
+                            'numerator_exp_1' => 0,
+                        ],
+                    ],
+                ],
                 'field' => 'patterns.*.numerator_exp_1',
+                'expected' => false,
             ],
             'patterns.*.numerator_exp_1が6以上' => [
-                'data' => array_merge($base_data, ['patterns' => [['base_numerator' => 1, 'numerator_exp_1' => 6, 'numerator_exp_2' => 3, 'denominator_exp' => 4]]]),
+                'data' => [
+                    'patterns' => [
+                        [
+                            'numerator_exp_1' => 6,
+                        ],
+                    ],
+                ],
                 'field' => 'patterns.*.numerator_exp_1',
+                'expected' => false,
             ],
 
             // patterns.*.numerator_exp_2 のバリデーションケース
             'patterns.*.numerator_exp_2が空欄' => [
-                'data' => array_merge($base_data, ['patterns' => [['base_numerator' => 1, 'numerator_exp_1' => 2, 'numerator_exp_2' => null, 'denominator_exp' => 4]]]),
+                'data' => [
+                    'patterns' => [
+                        [
+                            'numerator_exp_2' => null,
+                        ],
+                    ],
+                ],
                 'field' => 'patterns.*.numerator_exp_2',
+                'expected' => false,
             ],
             'patterns.*.numerator_exp_2が整数でない' => [
-                'data' => array_merge($base_data, ['patterns' => [['base_numerator' => 1, 'numerator_exp_1' => 2, 'numerator_exp_2' => 'String', 'denominator_exp' => 4]]]),
+                'data' => [
+                    'patterns' => [
+                        [
+                            'numerator_exp_2' => 'String',
+                        ],
+                    ],
+                ],
                 'field' => 'patterns.*.numerator_exp_2',
+                'expected' => false,
             ],
             'patterns.*.numerator_exp_2が0以下' => [
-                'data' => array_merge($base_data, ['patterns' => [['base_numerator' => 1, 'numerator_exp_1' => 2, 'numerator_exp_2' => 0, 'denominator_exp' => 4]]]),
+                'data' => [
+                    'patterns' => [
+                        [
+                            'numerator_exp_2' => 0,
+                        ],
+                    ],
+                ],
                 'field' => 'patterns.*.numerator_exp_2',
+                'expected' => false,
             ],
             'patterns.*.numerator_exp_2が6以上' => [
-                'data' => array_merge($base_data, ['patterns' => [['base_numerator' => 1, 'numerator_exp_1' => 2, 'numerator_exp_2' => 6, 'denominator_exp' => 4]]]),
+                'data' => [
+                    'patterns' => [
+                        [
+                            'numerator_exp_2' => 6,
+                        ],
+                    ],
+                ],
                 'field' => 'patterns.*.numerator_exp_2',
+                'expected' => false,
             ],
 
             // patterns.*.denominator_exp のバリデーションケース
             'patterns.*.denominator_expが空欄' => [
-                'data' => array_merge($base_data, ['patterns' => [['base_numerator' => 1, 'numerator_exp_1' => 2, 'numerator_exp_2' => 3, 'denominator_exp' => null]]]),
+                'data' => [
+                    'patterns' => [
+                        [
+                            'denominator_exp' => null,
+                        ],
+                    ],
+                ],
                 'field' => 'patterns.*.denominator_exp',
+                'expected' => false,
             ],
             'patterns.*.denominator_expが整数でない' => [
-                'data' => array_merge($base_data, ['patterns' => [['base_numerator' => 1, 'numerator_exp_1' => 2, 'numerator_exp_2' => 3, 'denominator_exp' => 'String']]]),
+                'data' => [
+                    'patterns' => [
+                        [
+                            'denominator_exp' => 'String',
+                        ],
+                    ],
+                ],
                 'field' => 'patterns.*.denominator_exp',
+                'expected' => false,
             ],
             'patterns.*.denominator_expが0未満' => [
-                'data' => array_merge($base_data, ['patterns' => [['base_numerator' => 1, 'numerator_exp_1' => 2, 'numerator_exp_2' => 3, 'denominator_exp' => -1]]]),
+                'data' => [
+                    'patterns' => [
+                        [
+                            'denominator_exp' => -1,
+                        ],
+                    ],
+                ],
                 'field' => 'patterns.*.denominator_exp',
+                'expected' => false,
             ],
             'patterns.*.denominator_expが13以上' => [
-                'data' => array_merge($base_data, ['patterns' => [['base_numerator' => 1, 'numerator_exp_1' => 2, 'numerator_exp_2' => 3, 'denominator_exp' => 13]]]),
+                'data' => [
+                    'patterns' => [
+                        [
+                            'denominator_exp' => 13,
+                        ],
+                    ],
+                ],
                 'field' => 'patterns.*.denominator_exp',
+                'expected' => false,
             ],
 
             // max_step のバリデーションケース
             'max_stepが空欄' => [
-                'data' => array_merge($base_data, ['max_step' => null]),
+                'data' => [
+                    'max_step' => null,
+                ],
                 'field' => 'max_step',
+                'expected' => false,
             ],
             'max_stepが整数でない' => [
-                'data' => array_merge($base_data, ['max_step' => 'String']),
+                'data' => [
+                    'max_step' => 'String',
+                ],
                 'field' => 'max_step',
+                'expected' => false,
             ],
             'max_stepが0以下' => [
-                'data' => array_merge($base_data, ['max_step' => 0]),
+                'data' => [
+                    'max_step' => 0,
+                ],
                 'field' => 'max_step',
+                'expected' => false,
             ],
             'max_stepが201以上' => [
-                'data' => array_merge($base_data, ['max_step' => 201]),
+                'data' => [
+                    'max_step' => 201,
+                ],
                 'field' => 'max_step',
+                'expected' => false,
             ],
 
             // max_rc のバリデーションケース
             'max_rcが整数でない' => [
-                'data' => array_merge($base_data, ['max_rc' => 'String']),
+                'data' => [
+                    'max_rc' => 'String',
+                ],
                 'field' => 'max_rc',
+                'expected' => false,
             ],
             'max_rcが0以下' => [
-                'data' => array_merge($base_data, ['max_rc' => 0]),
+                'data' => [
+                    'max_rc' => 0,
+                ],
                 'field' => 'max_rc',
+                'expected' => false,
             ],
             'max_rcが201以上' => [
-                'data' => array_merge($base_data, ['max_rc' => 201]),
+                'data' => [
+                    'max_rc' => 201,
+                ],
                 'field' => 'max_rc',
+                'expected' => false,
             ],
 
             // combination_player_1.a のバリデーションケース
             'combination_player_1.aが不正な値' => [
-                'data' => array_merge($base_data, ['combination_player_1' => ['a' => '3', 'b' => '2']]),
+                'data' => [
+                    'combination_player_1' => [
+                        'a' => '3',
+                    ],
+                ],
                 'field' => 'combination_player_1.a',
+                'expected' => false,
             ],
 
             // combination_player_1.b のバリデーションケース
             'combination_player_1.bが不正な値' => [
-                'data' => array_merge($base_data, ['combination_player_1' => ['a' => '1', 'b' => '3']]),
+                'data' => [
+                    'combination_player_1' => [
+                        'b' => '3',
+                    ],
+                ],
                 'field' => 'combination_player_1.b',
+                'expected' => false,
             ],
         ];
     }

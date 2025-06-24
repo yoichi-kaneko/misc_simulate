@@ -85,14 +85,14 @@ class CentipedeControllerTest extends TestCase
                 'datasets' => [
                     [
                         'label' => 'Pattern 1',
-                        'data' => [0.1, 0.2, 0.3, 0.4, 0.5]
+                        'data' => [0.1, 0.2, 0.3, 0.4, 0.5],
                     ],
                     [
                         'label' => 'Pattern 2',
-                        'data' => [0.5, 0.4, 0.3, 0.2, 0.1]
-                    ]
-                ]
-            ]
+                        'data' => [0.5, 0.4, 0.3, 0.2, 0.1],
+                    ],
+                ],
+            ],
         ];
 
         $calculator = Mockery::mock(Centipede::class);

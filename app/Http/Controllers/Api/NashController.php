@@ -21,8 +21,7 @@ class NashController extends Controller
     public function calculate(
         CalculateNashRequest $request,
         Nash $calculator
-    ): JsonResponse
-    {
+    ): JsonResponse {
         try {
             $result = $calculator->run(
                 $request->input('alpha_1'),

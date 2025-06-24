@@ -20,13 +20,19 @@ class Nash
 
     /**
      * 計算を実行する
-     * @param array $alpha_1
-     * @param array $alpha_2
-     * @param array $beta_1
-     * @param array $beta_2
-     * @param array $rho
-     * @return array
-     * @throws \Exception
+     * @param array{numerator: string, denominator: string} $alpha_1 分数形式のalpha_1パラメータ
+     * @param array{numerator: string, denominator: string} $alpha_2 分数形式のalpha_2パラメータ
+     * @param array{numerator: string, denominator: string} $beta_1 分数形式のbeta_1パラメータ
+     * @param array{numerator: string, denominator: string} $beta_2 分数形式のbeta_2パラメータ
+     * @param array{numerator: string, denominator: string} $rho 分数形式のrhoパラメータ
+     * @return array{
+     *     report_params: array{a_rho: string},
+     *     render_params: array{
+     *         line: array<array{title: string, display_text: string, x: float, y: float}>,
+     *         dot: array<array{title: string, display_text: string, x: float, y: float}>
+     *     }
+     * } フロントエンド表示用にフォーマットされた計算結果
+     * @throws \Exception シミュレーション実行中にエラーが発生した場合
      */
     public function run(
         array $alpha_1,
