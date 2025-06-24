@@ -101,19 +101,6 @@ class CalculateCentipedeRequestTest extends TestCase
     public static function validationDataProvider(): array
     {
         return [
-            // 有効なデータのバリデーションケース
-            '有効なデータ' => [
-                'data' => [
-                    'patterns' => [
-                        [
-                            'base_numerator' => 1,
-                        ],
-                    ],
-                ],
-                'field' => 'patterns.*.base_numerator',
-                'expected' => true,
-            ],
-
             // patterns.*.base_numerator のバリデーションケース
             'patterns.*.base_numeratorが空欄' => [
                 'data' => [
@@ -158,6 +145,28 @@ class CalculateCentipedeRequestTest extends TestCase
                 ],
                 'field' => 'patterns.*.base_numerator',
                 'expected' => false,
+            ],
+            'patterns.*.base_numeratorが最小値(1)' => [
+                'data' => [
+                    'patterns' => [
+                        [
+                            'base_numerator' => 1,
+                        ],
+                    ],
+                ],
+                'field' => 'patterns.*.base_numerator',
+                'expected' => true,
+            ],
+            'patterns.*.base_numeratorが最大値(2000)' => [
+                'data' => [
+                    'patterns' => [
+                        [
+                            'base_numerator' => 2000,
+                        ],
+                    ],
+                ],
+                'field' => 'patterns.*.base_numerator',
+                'expected' => true,
             ],
 
             // patterns.*.numerator_exp_1 のバリデーションケース
@@ -205,6 +214,28 @@ class CalculateCentipedeRequestTest extends TestCase
                 'field' => 'patterns.*.numerator_exp_1',
                 'expected' => false,
             ],
+            'patterns.*.numerator_exp_1が最小値(1)' => [
+                'data' => [
+                    'patterns' => [
+                        [
+                            'numerator_exp_1' => 1,
+                        ],
+                    ],
+                ],
+                'field' => 'patterns.*.numerator_exp_1',
+                'expected' => true,
+            ],
+            'patterns.*.numerator_exp_1が最大値(5)' => [
+                'data' => [
+                    'patterns' => [
+                        [
+                            'numerator_exp_1' => 5,
+                        ],
+                    ],
+                ],
+                'field' => 'patterns.*.numerator_exp_1',
+                'expected' => true,
+            ],
 
             // patterns.*.numerator_exp_2 のバリデーションケース
             'patterns.*.numerator_exp_2が空欄' => [
@@ -250,6 +281,28 @@ class CalculateCentipedeRequestTest extends TestCase
                 ],
                 'field' => 'patterns.*.numerator_exp_2',
                 'expected' => false,
+            ],
+            'patterns.*.numerator_exp_2が最小値(1)' => [
+                'data' => [
+                    'patterns' => [
+                        [
+                            'numerator_exp_2' => 1,
+                        ],
+                    ],
+                ],
+                'field' => 'patterns.*.numerator_exp_2',
+                'expected' => true,
+            ],
+            'patterns.*.numerator_exp_2が最大値(5)' => [
+                'data' => [
+                    'patterns' => [
+                        [
+                            'numerator_exp_2' => 5,
+                        ],
+                    ],
+                ],
+                'field' => 'patterns.*.numerator_exp_2',
+                'expected' => true,
             ],
 
             // patterns.*.denominator_exp のバリデーションケース
@@ -297,6 +350,28 @@ class CalculateCentipedeRequestTest extends TestCase
                 'field' => 'patterns.*.denominator_exp',
                 'expected' => false,
             ],
+            'patterns.*.denominator_expが最小値(0)' => [
+                'data' => [
+                    'patterns' => [
+                        [
+                            'denominator_exp' => 0,
+                        ],
+                    ],
+                ],
+                'field' => 'patterns.*.denominator_exp',
+                'expected' => true,
+            ],
+            'patterns.*.denominator_expが最大値(12)' => [
+                'data' => [
+                    'patterns' => [
+                        [
+                            'denominator_exp' => 12,
+                        ],
+                    ],
+                ],
+                'field' => 'patterns.*.denominator_exp',
+                'expected' => true,
+            ],
 
             // max_step のバリデーションケース
             'max_stepが空欄' => [
@@ -327,6 +402,20 @@ class CalculateCentipedeRequestTest extends TestCase
                 'field' => 'max_step',
                 'expected' => false,
             ],
+            'max_stepが最小値(1)' => [
+                'data' => [
+                    'max_step' => 1,
+                ],
+                'field' => 'max_step',
+                'expected' => true,
+            ],
+            'max_stepが最大値(200)' => [
+                'data' => [
+                    'max_step' => 200,
+                ],
+                'field' => 'max_step',
+                'expected' => true,
+            ],
 
             // max_rc のバリデーションケース
             'max_rcが整数でない' => [
@@ -349,6 +438,20 @@ class CalculateCentipedeRequestTest extends TestCase
                 ],
                 'field' => 'max_rc',
                 'expected' => false,
+            ],
+            'max_rcが最小値(1)' => [
+                'data' => [
+                    'max_rc' => 1,
+                ],
+                'field' => 'max_rc',
+                'expected' => true,
+            ],
+            'max_rcが最大値(200)' => [
+                'data' => [
+                    'max_rc' => 200,
+                ],
+                'field' => 'max_rc',
+                'expected' => true,
             ],
 
             // combination_player_1.a のバリデーションケース
