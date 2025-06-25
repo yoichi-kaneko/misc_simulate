@@ -94,9 +94,9 @@ class CalculateNashRequest extends FormRequest
                     // 配列の場合のみCoordinateルールを適用
                     $coordinateRule = new Coordinate($alpha_1, $alpha_2, $beta_1, $beta_2);
 
-                    if (! $coordinateRule->passes('beta_2', $beta_2)) {
-                        $validator->errors()->add('beta_2', $coordinateRule->message());
-                    }
+                    $coordinateRule->validate('beta_2', $beta_2, function ($message) use ($validator) {
+                        $validator->errors()->add('beta_2', $message);
+                    });
                 }
             }
         });
