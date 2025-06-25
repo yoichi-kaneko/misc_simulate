@@ -471,6 +471,7 @@ class NashSimulatorTest extends TestCase
         $this->expectException(\Exception::class);
         $method->invokeArgs($simulator, [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y]);
     }
+
     /**
      * runメソッドがrho_beta_y <= alpha_yの時に例外をスローすることをテストします。
      * @test

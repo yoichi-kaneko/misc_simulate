@@ -105,13 +105,13 @@ class CalculateNashRequestTest extends TestCase
     /**
      * バリデーションをテストします。（単体のケース）
      * @test
-     * @dataProvider validationFailsWithSingleInvalidDataProvider
+     * @dataProvider singleFieldValidationDataProvider
      * @param array $data
      * @param string $field
      * @param bool $expected
      * @return void
      */
-    public function testValidationFails_値単体のケース(array $data, string $field, bool $expected): void
+    public function testSingleFieldValidation(array $data, string $field, bool $expected): void
     {
         $request = new CalculateNashRequest();
         $request->merge($data);
@@ -125,10 +125,10 @@ class CalculateNashRequestTest extends TestCase
     }
 
     /**
-     * バリデーションをテストするためのデータプロバイダです。
+     * 単一フィールドのバリデーションをテストするためのデータプロバイダです。
      * @return array
      */
-    public static function validationFailsWithSingleInvalidDataProvider(): array
+    public static function singleFieldValidationDataProvider(): array
     {
         return [
             // alpha_1.numerator のバリデーションケース
@@ -460,74 +460,129 @@ class CalculateNashRequestTest extends TestCase
                 'field' => 'rho.denominator',
                 'expected' => true,
             ],
+
+            // alpha_1 のバリデーションケース
+            'alpha_1が空欄' => [
+                'data' => ['alpha_1' => null],
+                'field' => 'alpha_1',
+                'expected' => false,
+            ],
+            'alpha_1が配列でない' => [
+                'data' => ['alpha_1' => 'String'],
+                'field' => 'alpha_1',
+                'expected' => false,
+            ],
+            'alpha_1が1より大きい' => [
+                'data' => ['alpha_1' => ['numerator' => 15, 'denominator' => 10]],
+                'field' => 'alpha_1',
+                'expected' => false,
+            ],
+            // alpha_1 の有効なケース
+            'alpha_1が有効な値' => [
+                'data' => ['alpha_1' => ['numerator' => 1, 'denominator' => 2]],
+                'field' => 'alpha_1',
+                'expected' => true,
+            ],
+
+            // alpha_2 のバリデーションケース
+            'alpha_2が空欄' => [
+                'data' => ['alpha_2' => null],
+                'field' => 'alpha_2',
+                'expected' => false,
+            ],
+            'alpha_2が配列でない' => [
+                'data' => ['alpha_2' => 'String'],
+                'field' => 'alpha_2',
+                'expected' => false,
+            ],
+            'alpha_2が1より大きい' => [
+                'data' => ['alpha_2' => ['numerator' => 5, 'denominator' => 4]],
+                'field' => 'alpha_2',
+                'expected' => false,
+            ],
+            // alpha_2 の有効なケース
+            'alpha_2が有効な値' => [
+                'data' => ['alpha_2' => ['numerator' => 3, 'denominator' => 4]],
+                'field' => 'alpha_2',
+                'expected' => true,
+            ],
+
+            // beta_1 のバリデーションケース
+            'beta_1が空欄' => [
+                'data' => ['beta_1' => null],
+                'field' => 'beta_1',
+                'expected' => false,
+            ],
+            'beta_1が配列でない' => [
+                'data' => ['beta_1' => 'String'],
+                'field' => 'beta_1',
+                'expected' => false,
+            ],
+            'beta_1が1より大きい' => [
+                'data' => ['beta_1' => ['numerator' => 5, 'denominator' => 4]],
+                'field' => 'beta_1',
+                'expected' => false,
+            ],
+            // beta_1 の有効なケース
+            'beta_1が有効な値' => [
+                'data' => ['beta_1' => ['numerator' => 1, 'denominator' => 4]],
+                'field' => 'beta_1',
+                'expected' => true,
+            ],
+
+            // beta_2 のバリデーションケース
+            'beta_2が空欄' => [
+                'data' => ['beta_2' => null],
+                'field' => 'beta_2',
+                'expected' => false,
+            ],
+            'beta_2が配列でない' => [
+                'data' => ['beta_2' => 'String'],
+                'field' => 'beta_2',
+                'expected' => false,
+            ],
+            'beta_2が1より大きい' => [
+                'data' => ['beta_2' => ['numerator' => 9, 'denominator' => 8]],
+                'field' => 'beta_2',
+                'expected' => false,
+            ],
+            // beta_2 の有効なケース
+            'beta_2が有効な値' => [
+                'data' => ['beta_2' => ['numerator' => 7, 'denominator' => 8]],
+                'field' => 'beta_2',
+                'expected' => true,
+            ],
+
+            // rho のバリデーションケース
+            'rhoが空欄' => [
+                'data' => ['rho' => null],
+                'field' => 'rho',
+                'expected' => false,
+            ],
+            'rhoが配列でない' => [
+                'data' => ['rho' => 'String'],
+                'field' => 'rho',
+                'expected' => false,
+            ],
+            'rhoが1より大きい' => [
+                'data' => ['rho' => ['numerator' => 3, 'denominator' => 2]],
+                'field' => 'rho',
+                'expected' => false,
+            ],
+            // rho の有効なケース
+            'rhoが有効な値' => [
+                'data' => ['rho' => ['numerator' => 1, 'denominator' => 2]],
+                'field' => 'rho',
+                'expected' => true,
+            ],
         ];
     }
 
     /**
-     * 無効なデータで分数のバリデーションが失敗することをテストします。
-     * @test
-     * @dataProvider validationFailsWithInvalidFractionDataProvider
-     * @return void
-     */
-    public function testValidationFailsWithInvalidFractionData(
-        array $data,
-        string $attribute
-    ) {
-        $request = new CalculateNashRequest();
-        $request->merge($data);
-
-        $rules = array_filter($request->rules(), function ($attributeKey) use ($attribute) {
-            return $attributeKey === $attribute;
-        }, ARRAY_FILTER_USE_KEY);
-
-        // Coordinateルールはここでは除外する
-        $rules[$attribute] = array_filter($rules[$attribute], function ($ruleValue) {
-            return ! ($ruleValue instanceof Coordinate);
-        });
-
-        $validator = Validator::make($data, $rules);
-        $this->assertFalse($validator->passes());
-    }
-
-    public static function validationFailsWithInvalidFractionDataProvider(): array
-    {
-        $base_data = [
-            'alpha_1' => ['numerator' => 1, 'denominator' => 2],
-            'alpha_2' => ['numerator' => 3, 'denominator' => 4],
-            'beta_1' => ['numerator' => 1, 'denominator' => 4],
-            'beta_2' => ['numerator' => 7, 'denominator' => 8],
-            'rho' => ['numerator' => 1, 'denominator' => 2],
-        ];
-
-        return [
-            'alpha_1が1以上' => [
-                'data' => array_merge($base_data, ['alpha_1' => ['numerator' => 15, 'denominator' => 10]]),
-                'attribute' => 'alpha_1',
-            ],
-            'alpha_2が1以上' => [
-                'data' => array_merge($base_data, ['alpha_2' => ['numerator' => 5, 'denominator' => 4]]),
-                'attribute' => 'alpha_2',
-            ],
-            'beta_1が1以上' => [
-                'data' => array_merge($base_data, ['beta_1' => ['numerator' => 5, 'denominator' => 4]]),
-                'attribute' => 'beta_1',
-            ],
-            'beta_2が1以上' => [
-                'data' => array_merge($base_data, ['beta_2' => ['numerator' => 9, 'denominator' => 8]]),
-                'attribute' => 'beta_2',
-            ],
-            'rhoが1以上' => [
-                'data' => array_merge($base_data, ['rho' => ['numerator' => 3, 'denominator' => 2]]),
-                'attribute' => 'rho',
-            ],
-        ];
-    }
-
-    /**
-     * 無効な座標データのデータプロバイダー
+     * 座標バリデーションのテストデータプロバイダー
      * @return array
      */
-    public static function validationFailsWithInvalidCoordinateDataProvider(): array
+    public static function coordinateValidationDataProvider(): array
     {
         return [
             '無効な分数（最大値より大きい）' => [
@@ -552,12 +607,12 @@ class CalculateNashRequestTest extends TestCase
     }
 
     /**
-     * 無効なデータでCoordinateのバリデーションが失敗することをテストします。
+     * 座標データのバリデーションをテストします。
      * @test
-     * @dataProvider validationFailsWithInvalidCoordinateDataProvider
+     * @dataProvider coordinateValidationDataProvider
      * @return void
      */
-    public function testValidationFailsWithInvalidCoordinateData(array $data)
+    public function testCoordinateValidation(array $data)
     {
         $request = new CalculateNashRequest();
         $request->merge($data);
