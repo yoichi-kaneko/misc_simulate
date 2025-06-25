@@ -161,4 +161,71 @@ class CoordinateTest extends TestCase
 
         $this->assertSame('座標の位置関係が不正です。', $message);
     }
+
+    /**
+     * 分数の境界値テスト用データプロバイダー
+     * @return array
+     */
+    public static function fractionBoundaryDataProvider(): array
+    {
+        return [
+            'X座標の境界（アルファが右側ぎりぎり）- 有効' => [
+                'alpha_1' => ['numerator' => 1001, 'denominator' => 1000],
+                'alpha_2' => ['numerator' => 500, 'denominator' => 1000],
+                'beta_1' => ['numerator' => 1000, 'denominator' => 1000],
+                'beta_2' => ['numerator' => 2000, 'denominator' => 1000],
+                'expected' => true,
+            ],
+            'X座標の境界（アルファが右側ぎりぎり）- 無効' => [
+                'alpha_1' => ['numerator' => 1000, 'denominator' => 1000],
+                'alpha_2' => ['numerator' => 500, 'denominator' => 1000],
+                'beta_1' => ['numerator' => 1000, 'denominator' => 1000],
+                'beta_2' => ['numerator' => 2000, 'denominator' => 1000],
+                'expected' => false,
+            ],
+            'Y座標の境界（アルファが下側ぎりぎり）- 有効' => [
+                'alpha_1' => ['numerator' => 2000, 'denominator' => 1000],
+                'alpha_2' => ['numerator' => 999, 'denominator' => 1000],
+                'beta_1' => ['numerator' => 1000, 'denominator' => 1000],
+                'beta_2' => ['numerator' => 1000, 'denominator' => 1000],
+                'expected' => true,
+            ],
+            'Y座標の境界（アルファが下側ぎりぎり）- 無効' => [
+                'alpha_1' => ['numerator' => 2000, 'denominator' => 1000],
+                'alpha_2' => ['numerator' => 1000, 'denominator' => 1000],
+                'beta_1' => ['numerator' => 1000, 'denominator' => 1000],
+                'beta_2' => ['numerator' => 1000, 'denominator' => 1000],
+                'expected' => false,
+            ],
+        ];
+    }
+
+    /**
+     * 分数の境界値テスト
+     * 分母を1000に固定し、分子を変動させることで境界をテスト
+     * @test
+     * @dataProvider fractionBoundaryDataProvider
+     */
+    public function validateHandlesFractionBoundaryCorrectly(
+        array $alpha_1,
+        array $alpha_2,
+        array $beta_1,
+        array $beta_2,
+        bool $expected
+    ) {
+        $rule = new Coordinate($alpha_1, $alpha_2, $beta_1, $beta_2);
+
+        $failCalled = false;
+        $fail = function ($message) use (&$failCalled) {
+            $failCalled = true;
+
+            return $message;
+        };
+
+        $rule->validate('attribute', null, $fail);
+
+        // $expected が true の場合は $fail が呼ばれないはず（バリデーション成功）
+        // $expected が false の場合は $fail が呼ばれるはず（バリデーション失敗）
+        $this->assertSame(! $expected, $failCalled);
+    }
 }

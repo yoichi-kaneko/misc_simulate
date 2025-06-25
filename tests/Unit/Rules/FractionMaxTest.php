@@ -165,4 +165,67 @@ class FractionMaxTest extends TestCase
 
         $this->assertSame('分数は5以下である必要があります。', $message);
     }
+
+    /**
+     * 分数の境界値テスト用データプロバイダー
+     * @return array
+     */
+    public static function fractionBoundaryDataProvider(): array
+    {
+        return [
+            '最大値5の境界（分子5000、分母1000）- 有効' => [
+                'max' => 5,
+                'numerator' => 5000,
+                'denominator' => 1000,
+                'shouldFail' => false,
+            ],
+            '最大値5の境界（分子5001、分母1000）- 無効' => [
+                'max' => 5,
+                'numerator' => 5001,
+                'denominator' => 1000,
+                'shouldFail' => true,
+            ],
+            '最大値2の境界（分子2000、分母1000）- 有効' => [
+                'max' => 2,
+                'numerator' => 2000,
+                'denominator' => 1000,
+                'shouldFail' => false,
+            ],
+            '最大値2の境界（分子2001、分母1000）- 無効' => [
+                'max' => 2,
+                'numerator' => 2001,
+                'denominator' => 1000,
+                'shouldFail' => true,
+            ],
+        ];
+    }
+
+    /**
+     * 分数の境界値テスト
+     * 分母を1000に固定し、分子を変動させることで境界をテスト
+     * @test
+     * @dataProvider fractionBoundaryDataProvider
+     */
+    public function validateHandlesFractionBoundaryCorrectly(int $max, int $numerator, int $denominator, bool $shouldFail)
+    {
+        $rule = new FractionMax($max);
+
+        $failCalled = false;
+        $fail = function ($message) use (&$failCalled) {
+            $failCalled = true;
+
+            return $message;
+        };
+
+        $rule->validate('fraction', [
+            'numerator' => $numerator,
+            'denominator' => $denominator,
+        ], $fail);
+
+        if ($shouldFail) {
+            $this->assertTrue($failCalled, "分子が{$numerator}、分母が{$denominator}の場合、バリデーションは失敗するべきです");
+        } else {
+            $this->assertFalse($failCalled, "分子が{$numerator}、分母が{$denominator}の場合、バリデーションは成功するべきです");
+        }
+    }
 }
