@@ -53,7 +53,7 @@ class CentipedeSimulationResultTest extends TestCase
      * @test
      * @return void
      */
-    public function testGetCognitiveUnitValue()
+    public function getCognitiveUnitValue_メンバ変数cognitiveUnitValueを返す()
     {
         $this->assertSame($this->cognitiveUnitValue, $this->result->getCognitiveUnitValue());
     }
@@ -63,7 +63,7 @@ class CentipedeSimulationResultTest extends TestCase
      * @test
      * @return void
      */
-    public function testGetCognitiveUnitLatexText()
+    public function getCognitiveUnitLatexText_メンバ変数cognitiveUnitLatexTextを返す()
     {
         $this->assertSame($this->cognitiveUnitLatexText, $this->result->getCognitiveUnitLatexText());
     }
@@ -73,7 +73,7 @@ class CentipedeSimulationResultTest extends TestCase
      * @test
      * @return void
      */
-    public function testGetAverageOfReversedCausality()
+    public function getAverageOfReversedCausality_メンバ変数averageOfReversedCausalityを返す()
     {
         $this->assertSame($this->averageOfReversedCausality, $this->result->getAverageOfReversedCausality());
     }
@@ -83,7 +83,7 @@ class CentipedeSimulationResultTest extends TestCase
      * @test
      * @return void
      */
-    public function testGetData()
+    public function getData_メンバ変数dataを返す()
     {
         $this->assertSame($this->data, $this->result->getData());
     }
@@ -93,7 +93,7 @@ class CentipedeSimulationResultTest extends TestCase
      * @test
      * @return void
      */
-    public function testGetChartData()
+    public function getChartData_メンバ変数chartDataを返す()
     {
         $this->assertSame($this->chartData, $this->result->getChartData());
     }

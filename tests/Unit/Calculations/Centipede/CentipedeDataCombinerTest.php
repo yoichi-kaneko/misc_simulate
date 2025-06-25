@@ -13,6 +13,53 @@ use PHPUnit\Framework\TestCase;
 class CentipedeDataCombinerTest extends TestCase
 {
     /**
+     * combineメソッドが異なる長さのパターンデータ配列で例外をスローすることをテストします。
+     * @test
+     * @return void
+     */
+    public function testCombineThrowsExceptionWhenPatternDataLengthsDiffer()
+    {
+        // CentipedeFormatterのモックを作成
+        $formatterMock = $this->createMock(CentipedeFormatter::class);
+
+        // CentipedeDataCombinerのインスタンスを作成
+        $combiner = new CentipedeDataCombiner($formatterMock);
+
+        // テスト用の入力データを作成（異なる長さのデータ配列）
+        $combinationPlayer1 = [
+            'pattern1' => '1',
+        ];
+
+        $patternData = [
+            'pattern1_1' => [
+                'data' => [
+                    ['t' => 1, 'result' => false],
+                    ['t' => 2, 'result' => true],
+                    ['t' => 3, 'result' => false], // 追加の要素
+                ],
+                'cognitive_unit_latex_text' => '\dfrac{3^{\frac{1}{2}}}{2^{3}}',
+                'cognitive_unit_value' => 0.375,
+            ],
+            'pattern1_2' => [
+                'data' => [
+                    ['t' => 1, 'result' => true],
+                    ['t' => 2, 'result' => false],
+                    // pattern1_1より1つ少ない
+                ],
+                'cognitive_unit_latex_text' => '\dfrac{5^{\frac{2}{3}}}{2^{4}}',
+                'cognitive_unit_value' => 0.5,
+            ],
+        ];
+
+        // InvalidArgumentExceptionが投げられることを期待
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('patternData1 と patternData2 の長さが一致していません');
+
+        // combineメソッドを実行（例外が発生するはず）
+        $combiner->combine($combinationPlayer1, $patternData);
+    }
+
+    /**
      * combineメソッドが正常に動作することをテストします。
      * @test
      * @return void

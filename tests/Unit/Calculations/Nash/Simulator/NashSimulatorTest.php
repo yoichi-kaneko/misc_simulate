@@ -17,7 +17,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCreateFraction()
+    public function createFraction_正常系_Fractionオブジェクトを生成して返す()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -40,7 +40,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCreateFractionWithZeroDenominator()
+    public function createFraction_異常系_分母が0の時に例外をスローする()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -62,7 +62,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCreateFractionWithNegativeDenominator()
+    public function createFraction_異常系_分母が負の整数の時に例外をスローする()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -84,7 +84,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcMidpoint()
+    public function calcMidpoint_中点を計算して返す()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -153,7 +153,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcGamma1X(
+    public function calcGamma1X_入力値と計算結果の検証(
         Fraction $alpha_x,
         Fraction $alpha_y,
         Fraction $rho_beta_x,
@@ -218,7 +218,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcGamma2Y(
+    public function calcGamma2Y_入力値と計算結果の検証(
         Fraction $alpha_x,
         Fraction $alpha_y,
         Fraction $rho_beta_x,
@@ -283,7 +283,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcARho(
+    public function calcARho_入力値と計算結果の検証(
         Fraction $alpha_x,
         Fraction $alpha_y,
         Fraction $rho_beta_x,
@@ -316,7 +316,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcGamma1XWithZeroDenominator()
+    public function calcGamma1X_異常系_分母が0の時に例外をスローする()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -343,7 +343,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcGamma1XWithNegativeDenominator()
+    public function calcGamma1X_異常系_分母が負の値の時に例外をスローする()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -370,7 +370,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcGamma2YWithZeroDenominator()
+    public function calcGamma2Y_異常系_分母が0の時に例外をスローする()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -397,7 +397,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcGamma2YWithNegativeDenominator()
+    public function calcGamma2Y_異常系_分母が負の値の時に例外をスローする()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -424,7 +424,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcARhoWithZeroDenominator()
+    public function calcARho_異常系_分母が0の時に例外をスローする()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -451,7 +451,7 @@ class NashSimulatorTest extends TestCase
      * @return void
      * @throws \ReflectionException
      */
-    public function testCalcARhoWithNegativeDenominator()
+    public function calcARho_異常系_分母が負の値の時に例外をスローする()
     {
         // NashSimulatorクラスのインスタンスを作成
         $simulator = new NashSimulator();
@@ -470,5 +470,53 @@ class NashSimulatorTest extends TestCase
         // 例外が発生することを期待
         $this->expectException(\Exception::class);
         $method->invokeArgs($simulator, [$alpha_x, $alpha_y, $rho_beta_x, $rho_beta_y]);
+    }
+
+    /**
+     * runメソッドがrho_beta_y <= alpha_yの時に例外をスローすることをテストします。
+     * @test
+     * @return void
+     */
+    public function run_異常系_rho_beta_yがalpha_y以下の時に例外をスローする()
+    {
+        // NashSimulatorクラスのインスタンスを作成
+        $simulator = new NashSimulator();
+
+        // 例外が発生するパラメータを設定
+        // alpha_y = 3, rho_beta_y = 3 (等しい場合)
+        $alpha_1 = ['numerator' => '2', 'denominator' => '1']; // alpha_x
+        $alpha_2 = ['numerator' => '3', 'denominator' => '1']; // alpha_y
+        $beta_1 = ['numerator' => '1', 'denominator' => '1']; // beta_x
+        $beta_2 = ['numerator' => '3', 'denominator' => '1']; // beta_y
+        $rho = ['numerator' => '1', 'denominator' => '1']; // rho = 1なので、rho_beta_y = beta_y = 3
+
+        // 例外が発生することを期待
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('ガンマの値が求められませんでした。');
+        $simulator->run($alpha_1, $alpha_2, $beta_1, $beta_2, $rho);
+    }
+
+    /**
+     * runメソッドがrho_beta_y < alpha_yの時に例外をスローすることをテストします。
+     * @test
+     * @return void
+     */
+    public function run_異常系_rho_beta_yがalpha_yより小さい時に例外をスローする()
+    {
+        // NashSimulatorクラスのインスタンスを作成
+        $simulator = new NashSimulator();
+
+        // 例外が発生するパラメータを設定
+        // alpha_y = 4, rho_beta_y = 3 (小さい場合)
+        $alpha_1 = ['numerator' => '2', 'denominator' => '1']; // alpha_x
+        $alpha_2 = ['numerator' => '4', 'denominator' => '1']; // alpha_y
+        $beta_1 = ['numerator' => '1', 'denominator' => '1']; // beta_x
+        $beta_2 = ['numerator' => '3', 'denominator' => '1']; // beta_y
+        $rho = ['numerator' => '1', 'denominator' => '1']; // rho = 1なので、rho_beta_y = beta_y = 3
+
+        // 例外が発生することを期待
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('ガンマの値が求められませんでした。');
+        $simulator->run($alpha_1, $alpha_2, $beta_1, $beta_2, $rho);
     }
 }

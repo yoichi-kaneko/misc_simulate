@@ -95,7 +95,7 @@ class NashControllerTest extends TestCase
             'p1' => 0.5,
             'p2' => 0.5,
             'u1' => 0.25,
-            'u2' => 0.25
+            'u2' => 0.25,
         ];
 
         $calculator = Mockery::mock(Nash::class);

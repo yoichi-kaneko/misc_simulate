@@ -61,7 +61,7 @@ class NashSimulationResultTest extends TestCase
      * @test
      * @return void
      */
-    public function testGetAlphaX()
+    public function getAlphaX_メンバ変数alpha_xを返す()
     {
         $this->assertSame($this->alpha_x, $this->result->getAlphaX());
         $this->assertSame($this->alpha_x->getNumerator(), $this->result->getAlphaX()->getNumerator());
@@ -73,7 +73,7 @@ class NashSimulationResultTest extends TestCase
      * @test
      * @return void
      */
-    public function testGetAlphaY()
+    public function getAlphaY_メンバ変数alpha_yを返す()
     {
         $this->assertSame($this->alpha_y, $this->result->getAlphaY());
         $this->assertSame($this->alpha_y->getNumerator(), $this->result->getAlphaY()->getNumerator());
@@ -85,7 +85,7 @@ class NashSimulationResultTest extends TestCase
      * @test
      * @return void
      */
-    public function testGetBetaX()
+    public function getBetaX_メンバ変数beta_xを返す()
     {
         $this->assertSame($this->beta_x, $this->result->getBetaX());
         $this->assertSame($this->beta_x->getNumerator(), $this->result->getBetaX()->getNumerator());
@@ -97,7 +97,7 @@ class NashSimulationResultTest extends TestCase
      * @test
      * @return void
      */
-    public function testGetBetaY()
+    public function getBetaY_メンバ変数beta_yを返す()
     {
         $this->assertSame($this->beta_y, $this->result->getBetaY());
         $this->assertSame($this->beta_y->getNumerator(), $this->result->getBetaY()->getNumerator());
@@ -109,7 +109,7 @@ class NashSimulationResultTest extends TestCase
      * @test
      * @return void
      */
-    public function testGetRhoBetaX()
+    public function getRhoBetaX_メンバ変数rho_beta_xを返す()
     {
         $this->assertSame($this->rho_beta_x, $this->result->getRhoBetaX());
         $this->assertSame($this->rho_beta_x->getNumerator(), $this->result->getRhoBetaX()->getNumerator());
@@ -121,7 +121,7 @@ class NashSimulationResultTest extends TestCase
      * @test
      * @return void
      */
-    public function testGetRhoBetaY()
+    public function getRhoBetaY_メンバ変数rho_beta_yを返す()
     {
         $this->assertSame($this->rho_beta_y, $this->result->getRhoBetaY());
         $this->assertSame($this->rho_beta_y->getNumerator(), $this->result->getRhoBetaY()->getNumerator());
@@ -133,7 +133,7 @@ class NashSimulationResultTest extends TestCase
      * @test
      * @return void
      */
-    public function testGetGamma1X()
+    public function getGamma1X_メンバ変数gamma1_xを返す()
     {
         $this->assertSame($this->gamma1_x, $this->result->getGamma1X());
         $this->assertSame($this->gamma1_x->getNumerator(), $this->result->getGamma1X()->getNumerator());
@@ -145,7 +145,7 @@ class NashSimulationResultTest extends TestCase
      * @test
      * @return void
      */
-    public function testGetGamma2Y()
+    public function getGamma2Y_メンバ変数gamma2_yを返す()
     {
         $this->assertSame($this->gamma2_y, $this->result->getGamma2Y());
         $this->assertSame($this->gamma2_y->getNumerator(), $this->result->getGamma2Y()->getNumerator());

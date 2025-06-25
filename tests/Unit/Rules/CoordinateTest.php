@@ -107,7 +107,7 @@ class CoordinateTest extends TestCase
      * @test
      * @dataProvider coordinatesPositionDataProvider
      */
-    public function passesReturnsCorrectResultBasedOnCoordinatesPosition(
+    public function validateCallsFailClosureBasedOnCoordinatesPosition(
         array $alpha_1,
         array $alpha_2,
         array $beta_1,
@@ -115,18 +115,30 @@ class CoordinateTest extends TestCase
         bool $expected
     ) {
         $rule = new Coordinate($alpha_1, $alpha_2, $beta_1, $beta_2);
-        $this->assertSame($expected, $rule->passes('attribute', null));
+
+        $failCalled = false;
+        $fail = function ($message) use (&$failCalled) {
+            $failCalled = true;
+
+            return $message;
+        };
+
+        $rule->validate('attribute', null, $fail);
+
+        // $expected が true の場合は $fail が呼ばれないはず（バリデーション成功）
+        // $expected が false の場合は $fail が呼ばれるはず（バリデーション失敗）
+        $this->assertSame(! $expected, $failCalled);
     }
 
     /**
-     * メッセージメソッドが正しい翻訳を返すことをテスト
+     * バリデーション失敗時に正しいエラーメッセージが設定されることをテスト
      * @test
      */
-    public function messageReturnsCorrectTranslation()
+    public function validateSetsCorrectErrorMessage()
     {
-        $alpha_1 = ['numerator' => 3, 'denominator' => 1];
+        $alpha_1 = ['numerator' => 1, 'denominator' => 1]; // 左下の位置（バリデーション失敗するケース）
         $alpha_2 = ['numerator' => 2, 'denominator' => 1];
-        $beta_1 = ['numerator' => 1, 'denominator' => 1];
+        $beta_1 = ['numerator' => 3, 'denominator' => 1];
         $beta_2 = ['numerator' => 4, 'denominator' => 1];
 
         $rule = new Coordinate($alpha_1, $alpha_2, $beta_1, $beta_2);
@@ -138,6 +150,82 @@ class CoordinateTest extends TestCase
             ->once()
             ->andReturn('座標の位置関係が不正です。');
 
-        $this->assertSame('座標の位置関係が不正です。', $rule->message());
+        $message = null;
+        $fail = function ($msg) use (&$message) {
+            $message = $msg;
+
+            return $msg;
+        };
+
+        $rule->validate('attribute', null, $fail);
+
+        $this->assertSame('座標の位置関係が不正です。', $message);
+    }
+
+    /**
+     * 分数の境界値テスト用データプロバイダー
+     * @return array
+     */
+    public static function fractionBoundaryDataProvider(): array
+    {
+        return [
+            'X座標の境界（アルファが右側ぎりぎり）- 有効' => [
+                'alpha_1' => ['numerator' => 1001, 'denominator' => 1000],
+                'alpha_2' => ['numerator' => 500, 'denominator' => 1000],
+                'beta_1' => ['numerator' => 1000, 'denominator' => 1000],
+                'beta_2' => ['numerator' => 2000, 'denominator' => 1000],
+                'expected' => true,
+            ],
+            'X座標の境界（アルファが右側ぎりぎり）- 無効' => [
+                'alpha_1' => ['numerator' => 1000, 'denominator' => 1000],
+                'alpha_2' => ['numerator' => 500, 'denominator' => 1000],
+                'beta_1' => ['numerator' => 1000, 'denominator' => 1000],
+                'beta_2' => ['numerator' => 2000, 'denominator' => 1000],
+                'expected' => false,
+            ],
+            'Y座標の境界（アルファが下側ぎりぎり）- 有効' => [
+                'alpha_1' => ['numerator' => 2000, 'denominator' => 1000],
+                'alpha_2' => ['numerator' => 999, 'denominator' => 1000],
+                'beta_1' => ['numerator' => 1000, 'denominator' => 1000],
+                'beta_2' => ['numerator' => 1000, 'denominator' => 1000],
+                'expected' => true,
+            ],
+            'Y座標の境界（アルファが下側ぎりぎり）- 無効' => [
+                'alpha_1' => ['numerator' => 2000, 'denominator' => 1000],
+                'alpha_2' => ['numerator' => 1000, 'denominator' => 1000],
+                'beta_1' => ['numerator' => 1000, 'denominator' => 1000],
+                'beta_2' => ['numerator' => 1000, 'denominator' => 1000],
+                'expected' => false,
+            ],
+        ];
+    }
+
+    /**
+     * 分数の境界値テスト
+     * 分母を1000に固定し、分子を変動させることで境界をテスト
+     * @test
+     * @dataProvider fractionBoundaryDataProvider
+     */
+    public function validateHandlesFractionBoundaryCorrectly(
+        array $alpha_1,
+        array $alpha_2,
+        array $beta_1,
+        array $beta_2,
+        bool $expected
+    ) {
+        $rule = new Coordinate($alpha_1, $alpha_2, $beta_1, $beta_2);
+
+        $failCalled = false;
+        $fail = function ($message) use (&$failCalled) {
+            $failCalled = true;
+
+            return $message;
+        };
+
+        $rule->validate('attribute', null, $fail);
+
+        // $expected が true の場合は $fail が呼ばれないはず（バリデーション成功）
+        // $expected が false の場合は $fail が呼ばれるはず（バリデーション失敗）
+        $this->assertSame(! $expected, $failCalled);
     }
 }

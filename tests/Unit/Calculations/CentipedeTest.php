@@ -25,7 +25,7 @@ class CentipedeTest extends TestCase
      * @dataProvider makeCognitiveUnitLatexTextDataProvider
      * @return void
      */
-    public function testMakeCognitiveUnitLatexText(
+    public function makeCognitiveUnitLatexText_入力値と計算結果の検証(
         int $base_numerator,
         int $numerator_exp_1,
         int $numerator_exp_2,
@@ -93,7 +93,7 @@ class CentipedeTest extends TestCase
      * runメソッドのテスト - $combination_player_1がnullの場合
      * @test
      */
-    public function testRunWithNullCombinationPlayer1()
+    public function run_combination_player_1がnullの場合()
     {
         // モックの作成
         $simulatorMock = $this->createMock(CentipedeSimulator::class);
@@ -177,7 +177,7 @@ class CentipedeTest extends TestCase
      * runメソッドのテスト - $combination_player_1がnullでない場合
      * @test
      */
-    public function testRunWithNonNullCombinationPlayer1()
+    public function run_combination_player_1がnullでない場合()
     {
         // モックの作成
         $simulatorMock = $this->createMock(CentipedeSimulator::class);

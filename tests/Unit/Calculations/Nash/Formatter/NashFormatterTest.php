@@ -7,6 +7,7 @@ namespace Tests\Unit\Calculations\Nash\Formatter;
 use App\Calculations\Nash\Formatter\NashFormatter;
 use Phospr\Fraction;
 use PHPUnit\Framework\TestCase;
+use ReflectionMethod;
 
 class NashFormatterTest extends TestCase
 {
@@ -51,12 +52,14 @@ class NashFormatterTest extends TestCase
      * @dataProvider getDisplayTextDataProvider
      * @return void
      */
-    public function testGetDisplayText($x, $y, string $expected)
+    public function getDisplayText_入力値と変換される表示テキストの検証($x, $y, string $expected)
     {
         // NashFormatterクラスのインスタンスを作成
         $formatter = new NashFormatter();
 
-        $result = $formatter->getDisplayText($x, $y);
+        // Reflectionを使用してprivateメソッドにアクセス
+        $reflectionMethod = new ReflectionMethod(NashFormatter::class, 'getDisplayText');
+        $result = $reflectionMethod->invoke($formatter, $x, $y);
 
         // 結果を検証
         $this->assertSame($expected, $result);
@@ -67,7 +70,7 @@ class NashFormatterTest extends TestCase
      * @test
      * @return void
      */
-    public function testFormat()
+    public function format_フォーマットされた結果を返す()
     {
         // モックのNashSimulationResultInterfaceを作成
         $simulationResult = $this->createMock(\App\Calculations\Nash\DTO\NashSimulationResultInterface::class);

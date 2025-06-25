@@ -84,7 +84,7 @@ class NashFormatter
      * @param Fraction|null $y
      * @return string
      */
-    public function getDisplayText(?Fraction $x, ?Fraction $y): string
+    private function getDisplayText(?Fraction $x, ?Fraction $y): string
     {
         if (is_null($x)) {
             $x_text = '0';

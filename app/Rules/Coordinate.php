@@ -2,14 +2,18 @@
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class Coordinate implements Rule
+class Coordinate implements ValidationRule
 {
     private $alpha_1;
     private $alpha_2;
     private $beta_1;
     private $beta_2;
+
+    // For backward compatibility
+    private $validationFailed = false;
 
     /**
      * @param array $alpha_1
@@ -30,13 +34,14 @@ class Coordinate implements Rule
     }
 
     /**
-     * Determine if the validation rule passes.
+     * Run the validation rule.
      *
      * @param  string  $attribute
      * @param  mixed  $value
-     * @return bool
+     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @return void
      */
-    public function passes($attribute, $value): bool
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         /*
          * [alpha_1, alpha_2]
@@ -53,10 +58,33 @@ class Coordinate implements Rule
         $beta_2 = $this->beta_2['numerator'] / $this->beta_2['denominator'];
 
         // 右下にあるかを判定
-        return ($alpha_1 > $beta_1 && $alpha_2 < $beta_2);
+        if (! ($alpha_1 > $beta_1 && $alpha_2 < $beta_2)) {
+            $this->validationFailed = true;
+            $fail(trans('validation.invalid_coordinate'));
+        } else {
+            $this->validationFailed = false;
+        }
     }
 
     /**
+     * For backward compatibility with the old Rule interface
+     * Determine if the validation rule passes.
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @return bool
+     */
+    public function passes($attribute, $value): bool
+    {
+        $this->validate($attribute, $value, function ($message) {
+            // Do nothing, just capture the failure
+        });
+
+        return ! $this->validationFailed;
+    }
+
+    /**
+     * For backward compatibility with the old Rule interface
      * Get the validation error message.
      *
      * @return string

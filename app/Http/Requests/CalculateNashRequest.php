@@ -36,22 +36,70 @@ class CalculateNashRequest extends FormRequest
             'beta_2.denominator' => 'required|integer|min:1|max:1000',
             'rho.numerator' => 'required|integer|min:1|max:1000',
             'rho.denominator' => 'required|integer|min:1|max:1000',
-            'alpha_1' => ['required', 'array', new FractionMax(1)],
-            'alpha_2' => ['required', 'array', new FractionMax(1)],
-            'beta_1' => ['required', 'array', new FractionMax(1)],
-            'beta_2' => [
+            'alpha_1' => [
+                'bail',
                 'required',
                 'array',
                 new FractionMax(1),
-                new Coordinate(
-                    $this->input('alpha_1'),
-                    $this->input('alpha_2'),
-                    $this->input('beta_1'),
-                    $this->input('beta_2')
-                ),
             ],
-            'rho' => ['required', 'array', new FractionMax(1)],
+            'alpha_2' => [
+                'bail',
+                'required',
+                'array',
+                new FractionMax(1),
+            ],
+            'beta_1' => [
+                'bail',
+                'required',
+                'array',
+                new FractionMax(1),
+            ],
+            'beta_2' => [
+                'bail',
+                'required',
+                'array',
+                new FractionMax(1),
+            ],
+            'rho' => [
+                'bail',
+                'required',
+                'array',
+                new FractionMax(1),
+            ],
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param \Illuminate\Validation\Validator $validator
+     * @return void
+     */
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            // 最初のバリデーションが成功した場合のみ、Coordinateルールを適用
+            if (! $validator->errors()->has('alpha_1') &&
+                ! $validator->errors()->has('alpha_2') &&
+                ! $validator->errors()->has('beta_1') &&
+                ! $validator->errors()->has('beta_2')) {
+
+                // すべての入力が配列であることを確認
+                $alpha_1 = $this->input('alpha_1');
+                $alpha_2 = $this->input('alpha_2');
+                $beta_1 = $this->input('beta_1');
+                $beta_2 = $this->input('beta_2');
+
+                if (is_array($alpha_1) && is_array($alpha_2) && is_array($beta_1) && is_array($beta_2)) {
+                    // 配列の場合のみCoordinateルールを適用
+                    $coordinateRule = new Coordinate($alpha_1, $alpha_2, $beta_1, $beta_2);
+
+                    $coordinateRule->validate('beta_2', $beta_2, function ($message) use ($validator) {
+                        $validator->errors()->add('beta_2', $message);
+                    });
+                }
+            }
+        });
     }
 
     public function attributes()
